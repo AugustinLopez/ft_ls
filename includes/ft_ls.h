@@ -37,22 +37,19 @@ typedef struct		s_file
 	gid_t			group;
 	off_t			size;
 	time_t			lastmod;
-	blkcnt_t		block;*/
-	t_stat			*stat;
+	blkcnt_t		block;
+	t_stat			*stat;*/
 	char			*name;
+	struct s_file	*prev;
+	struct s_file	*next;
 }					t_file;
 
 typedef struct		s_ls
 {
-	t_list			*file;
-	t_list			*curr_file;
-	t_list			*last_file;
+	t_file			*file;
+	t_file			*curr_file;
 	t_list			*directory;
-	t_list			*curr_dir;
-	t_list			*last_dir;
-	size_t			indexdir;
 	int				flags;
-	int				error;
 }					t_ls;
 //t_list directory : contains the path of the directory and a unique indexdir
 //t_list file : contains the t_file structure and the relevant indexdir
@@ -62,6 +59,6 @@ typedef struct		s_ls
 
 int			ls_parsing(int ac, char **av, int *flags);
 int			ls_print_error(char *str, int errflag);
-int			ls_initialize_struct(t_ls *ls, int ac, char **av);
-int			ls_read_from_directory(t_ls *ls);
+//int			ls_initialize_struct(t_ls *ls, int ac, char **av);
+//int			ls_read_from_directory(t_ls *ls);
 #endif

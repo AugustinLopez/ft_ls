@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 09:58:36 by aulopez           #+#    #+#             */
-/*   Updated: 2019/01/10 15:05:38 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/12 14:39:44 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int				gnl(const int fd, char **line)
 		while ((ret = read(fd, buf, 4096)) && ret != -1)
 		{
 			buf[ret] = '\0';
-			if (!(tmp = ft_strjoin(neur->pv, buf)) 
+			if (!(tmp = ft_strjoin(neur->pv, buf))
 			|| ft_strlen(buf) != (unsigned int)ret)
 				return (free_mem_and_exit(0, &neur, 0, &memory));
 			(void)free_mem_and_exit(1, 0, &tmp, &memory);
