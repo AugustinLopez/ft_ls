@@ -11,11 +11,21 @@ int		load_directory(t_ls *ls)
 	return (1);
 }
 
+int		load_stats(t_ls *ls)
+{
+	struct stat filestat;
+
+	if (stat(ls->curr_file->name, &filestat) < 0)
+		return (-1);
+	ls->curr_file->stat = &filestat;
+	printf("Nombre d'inode = %lld\n", ls->curr_file->stat->st_ino);
+	return (0);
+}
+
 int		load_info(t_ls *ls)
 {
 	DIR 		*ddd;
 	t_dirent	*dir;
-
 
 	if ((ddd = opendir((char*)(ls->directory->pv))))
 	{
@@ -26,6 +36,7 @@ int		load_info(t_ls *ls)
 				if (!(ls->curr_file->name = ft_strdup(&(dir->d_name[0]))))
 					return (ls_print_error(0, LSERR_MALLOC));
 				ft_printf("%s ", ls->curr_file->name);
+				load_stats(ls);
 			}
 		}
 	}
