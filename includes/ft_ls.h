@@ -59,6 +59,10 @@ typedef struct		s_ls
 
 int			ls_parsing(int ac, char **av, int *flags);
 int			ls_print_error(char *str, int errflag);
+int			load_directory(t_ls *ls);
+int			load_file(t_ls *ls);
+int			load_info(t_ls *ls);
+int			load_stat(t_ls *ls);
 //int			ls_initialize_struct(t_ls *ls, int ac, char **av);
 //int			ls_read_from_directory(t_ls *ls);
 #endif
