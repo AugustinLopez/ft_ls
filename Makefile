@@ -6,7 +6,7 @@
 #    By: aulopez <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/12 11:06:27 by aulopez           #+#    #+#              #
-#    Updated: 2019/02/12 12:16:46 by aulopez          ###   ########.fr        #
+#    Updated: 2019/02/12 15:12:33 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ INCLUDES=$(HDR:%=$(PATH_HDR)%)
 # --- 4.Compilation Variables --------------------------------------------------
 
 CC=gcc
-FLAGS=-Wall -Wextra -Werror
+FLAGS=-Wall -Wextra -Werror -g3
 OPTION_O=$(CC) $(FLAGS) -c -I$(PATH_HDR)
 OPTION_C=$(CC) $(FLAGS) -o $(NAME) -I$(PATH_HDR) -L$(PATH_LIB) -lft
 RED=\033[31m
