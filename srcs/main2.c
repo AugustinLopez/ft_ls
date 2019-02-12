@@ -16,8 +16,8 @@ int		load_directory(t_ls *ls)
 		tmp[1] = '/';
 		tmp[2] = 0;
 		free(ls->directory->pv);
-		ft->directory->pv = tmp;
-		ft->directory->zu= 2;
+		ls->directory->pv = tmp;
+		ls->directory->zu= 2;
 		return (1);
 	}
 	if (!(tmpdir = ft_lstnew("./", sizeof(char) * 2)))
