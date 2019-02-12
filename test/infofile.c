@@ -4,7 +4,6 @@
 # include <unistd.h>
 # include <errno.h>
 # include <time.h>
-# include <sys/sysmacros.h>
 
 typedef struct stat	t_stat;
 typedef struct tm	t_tm;
@@ -18,12 +17,12 @@ char * format_time(time_t cal_time)
   strftime(string, sizeof string, "%h %e %H:%M\n", time_struct);
   return(string);
 }
-int	main(void)
+int	main(int argc, char **argv)
 {
 	t_stat pstat;
 	errno = ENOENT;
 
-	if((stat("infofile.c", &pstat)) == -1)
+	if((stat(argv[1], &pstat)) == -1)
 	{
 		perror("stat");
 		return (-1);

@@ -7,26 +7,26 @@
 
 typedef struct dirent t_dirent;
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	DIR			*directory;
 	t_dirent	*file;
 
 	errno = ENOENT;
-	if(!(directory = opendir("test")))
+	if (!(directory = opendir(argv[1])))
 	{
 		perror("opendir");
 		return (-1);
 	}
 	while ((file = readdir(directory)))
-		printf("%-10s %-20lu %hhu\n", file->d_name, file->d_ino, file->d_type);
+		printf("%-10s %-20llu %hhu\n", file->d_name, file->d_ino, file->d_type);
 	if (closedir(directory) == -1)
 	{
 		perror("closedir");
 		return (-1);
 	}
 	return (0);
-	/*
+/*
 	printf("DT_BLK=%hhu\n", DT_BLK);
 	printf("DT_CHR=%hhu\n", DT_CHR);
 	printf("DT_DIR=%hhu\n", DT_DIR);
