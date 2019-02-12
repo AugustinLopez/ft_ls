@@ -10,7 +10,7 @@ int		main(int ac, char **av)
 		return (EXIT_FAILURE);
 	ac -= options;
 	av += options;
-	if (ls_initialize_struct(&ls, ac, av))
+	/*if (ls_initialize_struct(&ls, ac, av))
 		return (EXIT_FAILURE); //free_ls
 	if (ls.directory)
 		ls_read_from_directory(&ls);
@@ -19,6 +19,6 @@ int		main(int ac, char **av)
 		//ls_ascii_order(&ls);
 		//ls_find_directory(&ls);
 		ls_read_from_directory(&ls);
-	}
+	}*/
 	return (EXIT_SUCCESS);
 }
