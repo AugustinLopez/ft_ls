@@ -1,6 +1,6 @@
 #include <ft_ls.h>
 
-int		load_directory(t_ls *ls)
+int		ls_load_directory(t_ls *ls)
 {
 	char		*tmp;
 	size_t		i;
