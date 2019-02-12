@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 08:40:39 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/12 12:15:04 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/12 18:18:15 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,10 @@ typedef struct		s_list
 	size_t			zu;
 	struct s_list	*next;
 }					t_list;
-
 /*
 ** --- Put Functions -----------------------------------------------------------
-** To write.
+* To write
 */
-
 void				ft_putchar(char c);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putendl(char const *s);
@@ -38,12 +36,10 @@ int					ft_printf(const char *format, ...);
 int					ft_dprintf(int fd, const char *format, ...);
 int					ft_nprintf(const char *format, ...);
 char				*ft_sprintf(const char *format, ...);
-
 /*
 ** --- Mem Functions -----------------------------------------------------------
 ** To use raw memory area
 */
-
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 void				ft_memdel(void **ap);
 void				ft_bzero(void *s, size_t n);
@@ -53,10 +49,9 @@ void				*ft_memccpy(void *dst, const void *src, int c, size_t n);
 void				*ft_memmove(void *dst, const void *src, size_t len);
 void				*ft_memchr(const void *s, int c, size_t n);
 void				*ft_memalloc(size_t size);
-
 /*
 ** --- List Functions ----------------------------------------------------------
-** To deal with a single-link list.
+** To deal with a single-link list
 **
 **
 ** t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
@@ -65,15 +60,14 @@ void				*ft_memalloc(size_t size);
 t_list				*ft_lstnew(void const *content, size_t content_size);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
-void				ft_lstadd(t_list **alst, t_list *new);
-void				ft_lstinsert(t_list **alst, t_list *new);
-void				ft_lstappend(t_list **alst, t_list *new);
+void				ft_lstadd(t_list **alst, t_list *n);
+void				ft_lstinsert(t_list **alst, t_list *n);
+void				ft_lstappend(t_list **alst, t_list *n);
 void				ft_lstfree(void *content, size_t content_size);
 size_t				ft_lstsize(t_list *lst);
-
 /*
 ** --- Is Functions ------------------------------------------------------------
-** boolean return.
+** boolean return
 **
 **
 ** int					ft_isalpha(int c);
@@ -96,14 +90,13 @@ size_t				ft_lstsize(t_list *lst);
 ** --- To Functions ------------------------------------------------------------
 ** Conversion functions.
 **
-** 
+**
 ** int					ft_toupper(int c);
 ** int					ft_tolower(int c);
 */
 int					ft_atoi(const char *src);
 char				*ft_itoa(int n);
 size_t				ft_atozu(const char *src);
-
 /*
 ** --- String Search Functions -------------------------------------------------
 ** To find information with strings.
@@ -128,7 +121,6 @@ size_t				ft_wstrlen(unsigned *str);
 size_t				ft_wcharlen(unsigned wc);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
-
 /*
 ** --- String Set Functions ----------------------------------------------------
 **
@@ -152,12 +144,9 @@ char				*ft_strcpy(char *dst, const char *src);
 char				*ft_strnew(size_t size);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
-
-
 /*
 ** --- Other Functions ---------------------------------------------------------
 ** Function with unique properties.
 */
-
 int					ft_gnl(const int fd, char **line);
 #endif

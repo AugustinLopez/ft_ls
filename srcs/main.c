@@ -1,15 +1,16 @@
-#include <ft_ls.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/12 17:23:37 by lubenard          #+#    #+#             */
+/*   Updated: 2019/02/12 21:23:01 by lubenard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int		load_directory(t_ls *ls)
-{
-	if (!ls->directory && !ls->file) //first call no argument given
-	{
-		if (!(ls->directory = ft_lstnew(".", sizeof(char) * 2)))
-			return (ls_print_error(0, LSERR_MALLOC));
-		return (1);
-	}
-	return (1);
-}
+#include <ft_ls.h>
 
 int		load_stats(t_ls *ls)
 {
@@ -20,32 +21,34 @@ int		load_stats(t_ls *ls)
 	ls->curr_file->stat = &filestat;
 	if (S_ISDIR(ls->curr_file->stat->st_mode))
 	{
+		printf("fichier called %s\n", ls->curr_file->name);
 		if (ft_strcmp(ls->curr_file->name, ".") != 0
-			&& ft_strcmp(ls->curr_file->name, "..") != 0)
-				load_directory(ls);
+		&& ft_strcmp(ls->curr_file->name, "..") != 0)
+		{
+			printf("EUUUUH\n");
+			load_directory(ls);
+		}
 	}
 	return (0);
 }
 
 int		load_info(t_ls *ls)
 {
-	DIR 		*ddd;
+	DIR			*ddd;
 	t_dirent	*dir;
 
 	if ((ddd = opendir((char*)(ls->directory->pv))))
 	{
 		while ((dir = readdir(ddd)))
 		{
-//			if (dir->d_name[0] != '.' || ls->flags & LSO_A)
-//			{
+			if (dir->d_name[0] != '.' || ls->flags & LSO_A)
+			{
 				if (!(ls->curr_file->name = ft_strdup(&(dir->d_name[0]))))
 					return (ls_print_error(0, LSERR_MALLOC));
-				ft_printf("%s ", ls->curr_file->name);
 				load_stats(ls);
-//			}
+			}
 		}
 	}
-	printf("\n");
 	if (ddd)
 		closedir(ddd);
 	return (0);
