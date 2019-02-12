@@ -37,8 +37,8 @@ typedef struct		s_file
 	gid_t			group;
 	off_t			size;
 	time_t			lastmod;
-	blkcnt_t		block;
-	t_stat			*stat;*/
+	blkcnt_t		block;*/
+	t_stat			*stat;
 	char			*name;
 	struct s_file	*prev;
 	struct s_file	*next;
