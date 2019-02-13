@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:23:37 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/13 12:19:49 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/13 15:07:33 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,28 @@
 int		load_stats(t_ls *ls, char *filename)
 {
 	struct stat filestat;
-	
+	char	*tmp;
+
+	tmp = (char*)(ls->directory->pv);
 	load_file(ls);
 	if (!(ls->curr_file->name = ft_strdup(filename)))
 		return (ls_print_error(0, LSERR_MALLOC));
-	if (lstat(filename, &filestat) < 0) //filename should be the whole path. Use ls->directory->pv. Current strlen of ls->directory->pv is contain in ls->directory->zu
+	printf("Getting info about %s%s\n", ls->directory->pv, filename);
+	if (lstat(ft_strcat(ls->directory->pv, filename), &filestat) < 0) //filename should be the whole path. Use ls->directory->pv. Current strlen of ls->directory->pv is contain in ls->directory->zu
 		return (-1);
-			ls->curr_file->stat = &filestat;
+	printf("tmp = %s\n", tmp);
+	tmp[ls->directory->zu] = 0;
+	ls->curr_file->stat = &filestat;
+	printf("mode %ho\n", filestat.st_mode);
 	if (S_ISDIR(filestat.st_mode))
 	{
-		printf("Directory called %s\n", ls->curr_file->name);
+		printf("Directory called %s\n\n", ls->curr_file->name);
 		if (ft_strcmp(ls->curr_file->name, ".") != 0
 		&& ft_strcmp(ls->curr_file->name, "..") != 0)
-		{
-			//printf("EUUUUH\n");
-
 			load_directory(ls);
-
-		}
-
 	}
 	else
-	{
 		printf("File called %s\n", ls->curr_file->name);
-
-	}
 	return (0);
 }
 
@@ -110,7 +107,7 @@ int		main(int ac, char **av)
 	ls.curr_file = ls.file;
 	while (ls.curr_file)
 	{
-		print_ls(&ls);
+	//	print_ls(&ls); Disabled print ls to avoid message spamming 
 		ls.curr_file = (ls.curr_file)->next;
 	}
 	t_list *tmp;

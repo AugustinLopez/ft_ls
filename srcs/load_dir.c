@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 20:43:00 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/13 10:40:37 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/13 15:03:47 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,14 @@ int		load_directory(t_ls *ls)
 	if (!(tmpdir = ft_lstnew("./", sizeof(char) * 2)))
 		return (ls_print_error(0, LSERR_MALLOC));
 	i = ft_strlen(ls->curr_file->name);
-	if (!(tmp = ft_strnew(i + 1 + 256)))
+	if (!(tmp = ft_strnew(i + 1 + 256 + ls->directory->zu)))
 		return (ls_print_error(0, LSERR_MALLOC));
+	ft_strcat(tmp, ls->directory->pv);
 	ft_strcat(tmp, ls->curr_file->name);
-	tmp[i] = '/';
-	tmp[i + 1] = 0;
+	ft_strcat(tmp, "/");
+	tmp[i + 2 + ls->directory->zu] = 0;
 	tmpdir->pv = tmp;
-	tmpdir->zu = i;
+	tmpdir->zu = i + 1 + ls->directory->zu;
 	if (!ls->directory)
 		ls->directory = tmpdir;
 	else if (!ls->directory->next)
