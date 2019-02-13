@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:23:37 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/13 19:10:22 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/13 23:09:14 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,11 @@ int		main(int ac, char **av)
 		if (!(load_directory(&ls)))
 			return (EXIT_FAILURE);
 		load_info(&ls);
-	}
+}
 	ls.curr_file = ls.file;
 	while (ls.curr_file)
 	{
-		print_ls(&ls); //Disabled print ls to avoid message spamming 
+		print_ls(&ls);
 		ls.curr_file = (ls.curr_file)->next;
 	}
 	t_list *tmp;

@@ -63,7 +63,8 @@ int			load_directory(t_ls *ls);
 int			load_file(t_ls *ls);
 int			load_info(t_ls *ls);
 int			load_stat(t_ls *ls, char *filename);
-
+void		sort2(t_ls *lkd_list);
+void		display_file(t_file *file);
 
 void		print_ls(t_ls *liste1);
 //int			ls_initialize_struct(t_ls *ls, int ac, char **av);
