@@ -62,7 +62,7 @@ int			ls_print_error(char *str, int errflag);
 int			load_directory(t_ls *ls);
 int			load_file(t_ls *ls);
 int			load_info(t_ls *ls);
-int			load_stat(t_ls *ls);
+int			load_stat(t_ls *ls, char *filename);
 
 
 void		print_ls(t_ls *liste1);

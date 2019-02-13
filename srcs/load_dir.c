@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 20:43:00 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/12 21:41:48 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/13 10:40:37 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,5 @@ int		load_directory(t_ls *ls)
 		ls->directory->next = tmpdir;
 	else
 		ft_lstadd(&(ls->directory->next), tmpdir);
-	print_ls(ls);
 	return (1);
 }

@@ -6,28 +6,39 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:23:37 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/12 21:23:01 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/13 12:19:49 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-int		load_stats(t_ls *ls)
+int		load_stats(t_ls *ls, char *filename)
 {
 	struct stat filestat;
-
-	if (lstat(ls->curr_file->name, &filestat) < 0)
+	
+	load_file(ls);
+	if (!(ls->curr_file->name = ft_strdup(filename)))
+		return (ls_print_error(0, LSERR_MALLOC));
+	if (lstat(filename, &filestat) < 0) //filename should be the whole path. Use ls->directory->pv. Current strlen of ls->directory->pv is contain in ls->directory->zu
 		return (-1);
-	ls->curr_file->stat = &filestat;
-	if (S_ISDIR(ls->curr_file->stat->st_mode))
+			ls->curr_file->stat = &filestat;
+	if (S_ISDIR(filestat.st_mode))
 	{
-		printf("fichier called %s\n", ls->curr_file->name);
+		printf("Directory called %s\n", ls->curr_file->name);
 		if (ft_strcmp(ls->curr_file->name, ".") != 0
 		&& ft_strcmp(ls->curr_file->name, "..") != 0)
 		{
-			printf("EUUUUH\n");
+			//printf("EUUUUH\n");
+
 			load_directory(ls);
+
 		}
+
+	}
+	else
+	{
+		printf("File called %s\n", ls->curr_file->name);
+
 	}
 	return (0);
 }
@@ -43,9 +54,9 @@ int		load_info(t_ls *ls)
 		{
 			if (dir->d_name[0] != '.' || ls->flags & LSO_A)
 			{
-				if (!(ls->curr_file->name = ft_strdup(&(dir->d_name[0]))))
-					return (ls_print_error(0, LSERR_MALLOC));
-				load_stats(ls);
+				//if (!(ls->curr_file->name = ft_strdup(&(dir->d_name[0]))))
+				//	return (ls_print_error(0, LSERR_MALLOC));
+				load_stats(ls, &dir->d_name[0]);
 			}
 		}
 	}
@@ -56,28 +67,27 @@ int		load_info(t_ls *ls)
 
 int		load_file(t_ls *ls)
 {
-	t_file elem;
-
 	if (ls->directory) //every case except first call argument given
 	{
-		if (!ls->curr_file) //we need to create a link
+		if (!ls->file) //we need to create a link
 		{
-			if (!ls->file) //we need to create the list
-			{
-				ft_bzero(&elem, sizeof(elem));
-				if (!(ls->file = malloc(sizeof(elem))))
-					return (ls_print_error(0, LSERR_MALLOC));
-				ls->curr_file = ls->file;
-			}
-			else
-			{
-				ft_bzero(&elem, sizeof(elem));
-				if (!(ls->curr_file = malloc(sizeof(elem))))
-					return (ls_print_error(0, LSERR_MALLOC));
-			}
+			if (!(ls->file = malloc(sizeof(t_file))))
+				return (ls_print_error(0, LSERR_MALLOC));
+			ft_bzero(ls->file, sizeof(ls->file));
+			ls->curr_file = ls->file;
 		}
+		else if (!ls->curr_file->next)
+		{
+			if (!(ls->curr_file->next = malloc(sizeof(t_file))))
+				return (ls_print_error(0, LSERR_MALLOC));
+			ft_bzero(ls->curr_file->next, sizeof(ls->file));
+			ls->curr_file->next->prev = ls->curr_file;
+			ls->curr_file = ls->curr_file->next;
+			ls->curr_file->next = 0;
+		}
+		else
+			ls->curr_file = ls->curr_file->next;
 	}
-	load_info(ls);
 	return (1);
 }
 
@@ -93,8 +103,32 @@ int		main(int ac, char **av)
 	av += options;
 	if (!ac)
 	{
-		if (!(load_directory(&ls)) || !(load_file(&ls)))
+		if (!(load_directory(&ls)))
 			return (EXIT_FAILURE);
+		load_info(&ls);
+	}
+	ls.curr_file = ls.file;
+	while (ls.curr_file)
+	{
+		print_ls(&ls);
+		ls.curr_file = (ls.curr_file)->next;
+	}
+	t_list *tmp;
+	tmp = ls.directory;
+	ls.directory = ls.directory->next;
+	ls.curr_file = ls.file;
+	load_info(&ls);
+	ls.curr_file = ls.file;
+	printf("\n\n\n\n\n\n\n\n");
+	while (ls.curr_file)
+	{
+		print_ls(&ls);
+		ls.curr_file = (ls.curr_file)->next;
+	}
+	while (tmp)
+	{
+		printf("%s\n", (char*)(tmp->pv));
+		tmp = (tmp)->next;
 	}
 	/*if (ls_initialize_struct(&ls, ac, av))
 		return (EXIT_FAILURE); //free_ls
