@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:23:37 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/13 15:07:33 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/13 19:10:22 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		load_stats(t_ls *ls, char *filename)
 	printf("tmp = %s\n", tmp);
 	tmp[ls->directory->zu] = 0;
 	ls->curr_file->stat = &filestat;
-	printf("mode %ho\n", filestat.st_mode);
+	printf("size - %ld\n", filestat.st_mtime);
 	if (S_ISDIR(filestat.st_mode))
 	{
 		printf("Directory called %s\n\n", ls->curr_file->name);
@@ -107,7 +107,7 @@ int		main(int ac, char **av)
 	ls.curr_file = ls.file;
 	while (ls.curr_file)
 	{
-	//	print_ls(&ls); Disabled print ls to avoid message spamming 
+		print_ls(&ls); //Disabled print ls to avoid message spamming 
 		ls.curr_file = (ls.curr_file)->next;
 	}
 	t_list *tmp;

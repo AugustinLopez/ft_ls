@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 19:28:08 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/13 15:04:11 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/13 17:50:40 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	print_ls(t_ls *liste1)
 		"actual = %p\n"
 		"previous = %p\n"
 		"----------------------------------------------------------------\n",
-		tmp->st_ino, tmp->st_mode, tmp->st_nlink, tmp->st_uid, 
+		tmp->st_ino, tmp->st_mode, tmp->st_nlink, tmp->st_uid,
 		tmp->st_gid, tmp->st_blksize, tmp->st_size, tmp->st_blocks, tmp2->next, tmp2, tmp2->prev);
 	}
 }
