@@ -38,7 +38,7 @@ typedef struct		s_file
 	off_t			size;
 	time_t			lastmod;
 	blkcnt_t		block;*/
-	t_stat			*stat;
+	t_stat			stat;
 	char			*name;
 	struct s_file	*prev;
 	struct s_file	*next;
@@ -67,6 +67,7 @@ void		sort2(t_ls *lkd_list);
 void		display_file(t_file *file);
 
 void		print_ls(t_ls *liste1);
+void		print_previous(t_ls *ls);
 //int			ls_initialize_struct(t_ls *ls, int ac, char **av);
 //int			ls_read_from_directory(t_ls *ls);
 #endif

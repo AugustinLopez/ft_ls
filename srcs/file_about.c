@@ -6,13 +6,13 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 15:55:31 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/13 19:42:08 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/14 11:17:28 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-void		compute_date(t_file *file)
+/*void		compute_date(t_file *file)
 {
 	time_t	stat;
 
@@ -55,4 +55,4 @@ void		display_file(t_file *file)
 	printf(" %lld", file->stat->st_size);
 	compute_date(file);
 	printf("%s\n", file->name);
-}
+}*/
