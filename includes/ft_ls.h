@@ -51,23 +51,15 @@ typedef struct		s_ls
 	t_list			*directory;
 	int				flags;
 }					t_ls;
-//t_list directory : contains the path of the directory and a unique indexdir
-//t_list file : contains the t_file structure and the relevant indexdir
-//If a new directory is found, it is inserted in the list at the right place
-//When the file list is over, back at the beginning and we refill for the next directory
-//the indexdir is used as reference to know if the file list is over
+
 
 int			ls_parsing(int ac, char **av, int *flags);
 int			ls_print_error(char *str, int errflag);
+int			load_info_from_directory(t_ls *ls);
 int			load_directory(t_ls *ls);
-int			load_file(t_ls *ls);
-int			load_info(t_ls *ls);
-int			load_stat(t_ls *ls, char *filename);
 void		sort2(t_ls *lkd_list);
 void		display_file(t_file *file);
 
 void		print_ls(t_ls *liste1);
-void		print_previous(t_ls *ls);
-//int			ls_initialize_struct(t_ls *ls, int ac, char **av);
-//int			ls_read_from_directory(t_ls *ls);
+
 #endif
