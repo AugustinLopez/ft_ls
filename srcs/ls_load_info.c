@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/14 12:09:32 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/14 12:39:22 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/14 13:00:39 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,13 @@ int						load_info_from_directory(t_ls *ls)
 	t_list		*tmp;
 
 	if ((ddd = opendir((char*)(ls->directory->pv))))
+	{
 		while ((dir = readdir(ddd)))
 			if (dir->d_name[0] != '.' || ls->flags & LSO_A)
 				load_file_stats(ls, &(*dir->d_name));
+	}
+		else
+			return (ls_print_error((char*)(ls->directory->pv), LSERR_OPENDIR));
 	if (ddd)
 		closedir(ddd);
 	tmp = ls->directory;
