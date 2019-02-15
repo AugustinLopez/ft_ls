@@ -14,7 +14,7 @@
 # include <sys/ioctl.h>
 # include <stdio.h> //To be removed
 
-enum {LSERR_USAGE, LSERR_MALLOC, LSERR_OTHER, LSERR_CLOSEDIR, LSERR_OPENDIR, LSERR_PATH, LSERR_LONG};
+enum {LSERR_USAGE, LSERR_MALLOC, LSERR_OTHER, LSERR_OPENFILE, LSERR_CLOSEDIR, LSERR_OPENDIR, LSERR_PATH, LSERR_LONG};
 # define LSO_L 2
 # define LSO_RR 4
 # define LSO_A 8
@@ -56,8 +56,8 @@ int			ls_parsing(int ac, char **av, int *flags);
 int			ls_print_error(char *str, int errflag);
 int			load_info_from_directory(t_ls *ls);
 int			load_info_from_argument(t_ls *ls, int argc, char **argv);
-int			create_directory_from_argument(t_ls *ls, char *argv);
-int			load_directory(t_ls *ls);
+int			create_directory_from_arg(t_ls *ls, char *argv);
+int			create_directory(t_ls *ls);
 void		sort2(t_ls *lkd_list);
 void		display_file(t_file *file);
 

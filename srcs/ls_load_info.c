@@ -54,18 +54,18 @@ inline static int		load_file_stats(t_ls *ls, char *filename)
 	tmp = (char*)(ls->directory->pv);
 	if (!(ls->curr_file->name = ft_strdup(filename)))
 		return (ls_print_error(0, LSERR_MALLOC));
-	if (lstat(ft_strcat(tmp, filename), &(ls->curr_file->stat)) < 0) 
-		return (-1);
 	tmp[ls->directory->zu] = 0;
-	if ((ls->flags & LSO_RR) && S_ISDIR(ls->curr_file->stat.st_mode))
-	{
-		if (ft_strcmp(ls->curr_file->name, ".") != 0
-		&& ft_strcmp(ls->curr_file->name, "..") != 0)
-			load_directory(ls);
-	}
+	if (lstat(ft_strcat(tmp, filename), &(ls->curr_file->stat)) < 0) 
+		return (ls_print_error(filename, LSERR_OPENFILE));
+	if ((ls->flags & LSO_RR)
+	&& S_ISDIR(ls->curr_file->stat.st_mode)
+	&& ft_strcmp(ls->curr_file->name, ".") != 0
+	&& ft_strcmp(ls->curr_file->name, "..") != 0
+	&& !(create_directory(ls)))
+		return (0);
 	if (ls->flags & LSO_1STFILE)
 		ls->flags &= ~LSO_1STFILE;
-	return (0);
+	return (1);
 }
 
 int						load_info_from_directory(t_ls *ls)
@@ -74,10 +74,6 @@ int						load_info_from_directory(t_ls *ls)
 	t_dirent	*dir;
 	t_list		*tmp;
 
-	if (ls->flags && LSO_ARGC && !strncmp((char*)ls->directory->pv, "./", 2))
-		ft_printf("%s\n", ((char*)ls->directory->pv) + 2);
-	else
-		ft_printf("%s\n", (char*)ls->directory->pv);
 	ls->numfile = 0;
 	if ((ddd = opendir((char*)(ls->directory->pv))))
 	{
@@ -87,8 +83,8 @@ int						load_info_from_directory(t_ls *ls)
 			if ((dir->d_name[0] != '.' || ls->flags & LSO_A) && ++(ls->numfile))
 				load_file_stats(ls, &(dir->d_name[0]));
 	}
-		else
-			return (ls_print_error((char*)(ls->directory->pv), LSERR_OPENDIR));
+	else
+		ls_print_error((char*)(ls->directory->pv), LSERR_OPENDIR);
 	if (ddd)
 		closedir(ddd);
 	tmp = ls->directory;
@@ -100,39 +96,27 @@ int						load_info_from_directory(t_ls *ls)
 
 int						load_info_from_argument(t_ls *ls, int argc, char **argv)
 {
-	t_stat	stat;
-	int		i;
-	t_list		*tmp;
+	t_stat		stat;
+	int			i;
 
 	i = 0;
 	while (i < argc)
 	{
 		if (ft_strchr("/~", argv[i][0]) || ft_strncmp(argv[i], "./", 2))
-		{
-			((char*)ls->directory->pv)[0] = 0;
-			((char*)ls->directory->pv)[1] = 0;
-			((char*)ls->directory->pv)[2] = 0;
-		}
+			ft_bzero(ls->directory->pv, 3);
 		else
-		{
-			((char*)ls->directory->pv)[0] = '.';
-			((char*)ls->directory->pv)[1] = '/';
-			((char*)ls->directory->pv)[2] = 0;
-		}
+			ft_strcpy("./", ls->directory->pv);
 		if (lstat(argv[i], &stat) < 0) 
-			return (-1);
-		if (S_ISDIR(stat.st_mode))
-			create_directory_from_argument(ls, argv[i]);
-		else
-		{
+			ls_print_error(argv[i], LSERR_OPENFILE);
+		else if (S_ISDIR(stat.st_mode))
+			create_directory_from_arg(ls, argv[i]);
+		else if (++(ls->numfile))
 			load_file_stats(ls, argv[i]);
-			++(ls->numfile);
-		}
 		i++;
 	}
-	tmp = ls->directory;
-	ls->directory = ls->directory->next;
 	ls->curr_dir = ls->directory;
-	ft_lstdelone(&tmp, *ft_lstfree);
+	ls->directory = ls->directory->next;
+	ft_lstdelone(&ls->curr_dir, *ft_lstfree);
+	ls->curr_dir = ls->directory;
 	return (1);
 }

@@ -24,6 +24,19 @@ static inline void	readder(t_ls *ls)
 	}
 }
 
+static inline void	free_list(t_ls *ls)
+{
+	while (ls->file)
+	{
+		ls->curr_file = ls->file->next;
+		free(ls->file->name);
+		free(ls->file);
+		ls->file = ls->curr_file;
+	}
+	if (ls->directory)
+		ft_lstdel(&ls->directory, *ft_lstfree);
+}
+
 int		main(int ac, char **av)
 {
 	int		options;
@@ -34,39 +47,20 @@ int		main(int ac, char **av)
 		return (EXIT_FAILURE);
 	ac -= options;
 	av += options;
-	if (!ac)
+	if (ac)
+		ls.flags |= LSO_ARGC;
+	if (!(create_directory(&ls)))
+		return (EXIT_FAILURE);
+	if (ac)
+		load_info_from_argument(&ls, ac, av);
+	else
+		load_info_from_directory(&ls);
+	readder(&ls);
+	while (ls.directory)
 	{
-		if (!(load_directory(&ls)))
-			return (EXIT_FAILURE);
 		load_info_from_directory(&ls);
 		readder(&ls);
-		while (ls.directory)
-		{
-			load_info_from_directory(&ls);
-			readder(&ls);
-		}
 	}
-	else
-	{
-		ls.flags |= LSO_ARGC;
-		if (!(load_directory(&ls)))
-			return (EXIT_FAILURE);
-		load_info_from_argument(&ls, ac, av);
-		readder(&ls);
-		while (ls.directory)
-		{
-			load_info_from_directory(&ls);
-			readder(&ls);
-		}
-	}
-	while (ls.file)
-	{
-		ls.curr_file = ls.file->next;
-		free(ls.file->name);
-		free(ls.file);
-		ls.file = ls.curr_file;
-	}
-	if (ls.directory)
-		ft_lstdel(&ls.directory, *ft_lstfree);
+	free_list(&ls);
 	return (EXIT_SUCCESS);
 }

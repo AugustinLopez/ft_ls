@@ -12,42 +12,45 @@
 
 #include <ft_ls.h>
 
-inline static int		first_call_no_argument_given(t_ls *ls)
+inline static int create_first_directory(t_ls *ls, int ac)
 {
 	char		*tmp;
 	t_list		*tmpdir;
 
-	if (!(tmpdir = ft_lstnew(".", sizeof(char) * 2)))
+	if (!(tmpdir = ft_lstnew(0, 0)))
 		return (ls_print_error(0, LSERR_MALLOC));
-	free(tmpdir->pv);
 	if (!(tmp = ft_strnew(2 + 256)))
 		return (ls_print_error(0, LSERR_MALLOC));
-	ft_strcat(tmp, "./");
-	tmp[2] = 0;
+	if (ac)
+		tmpdir->zu = 0;
+	else
+	{
+		ft_strcat(tmp, "./");
+		tmp[2] = 0;
+		tmpdir->zu = 2;
+	}
 	tmpdir->pv = tmp;
-	tmpdir->zu= 2;
 	ls->directory = tmpdir;
 	ls->curr_dir = tmpdir;
 	return (1);
 }
 
-inline static int		normal_call(t_ls *ls)
+inline static int		create_another_directory(t_ls *ls)
 {
-	char		*tmp;
 	size_t		i;
 	t_list		*tmpdir;
+	char		*tmpstr;
 	
-	if (!(tmpdir = ft_lstnew(".", sizeof(char) * 2)))
+	if (!(tmpdir = ft_lstnew(0, 0)))
 		return (ls_print_error(0, LSERR_MALLOC));
-	free(tmpdir->pv);
 	i = ft_strlen(ls->curr_file->name);
-	if (!(tmp = ft_strnew(i + 1 + 256 + ls->directory->zu)))
+	if (!(tmpstr = ft_strnew(i + 1 + 256 + ls->directory->zu)))
 		return (ls_print_error(0, LSERR_MALLOC));
-	ft_strcat(tmp, ls->directory->pv);
-	ft_strcat(tmp + ls->directory->zu, ls->curr_file->name);
-	ft_strcat(tmp + ls->directory->zu + i, "/");
-	tmp[i + 2 + ls->directory->zu] = 0;
-	tmpdir->pv = tmp;
+	ft_strcat(tmpstr, ls->directory->pv);
+	ft_strcat(tmpstr + ls->directory->zu, ls->curr_file->name);
+	tmpstr[i + ls->directory->zu] = 0;
+	ft_strcat(tmpstr + ls->directory->zu + i, "/");
+	tmpdir->pv = tmpstr;
 	tmpdir->zu = i + 1 + ls->directory->zu;
 	if (!ls->curr_dir)
 		ls->curr_dir = tmpdir;
@@ -59,55 +62,21 @@ inline static int		normal_call(t_ls *ls)
 	return (1);
 }
 
-inline static int first_call_argument_given(t_ls *ls)
-{
-	char		*tmp;
-	t_list		*tmpdir;
-
-	if (!(tmpdir = ft_lstnew(".", sizeof(char) * 2)))
-		return (ls_print_error(0, LSERR_MALLOC));
-	free(tmpdir->pv);
-	if (!(tmp = ft_strnew(2 + 256)))
-		return (ls_print_error(0, LSERR_MALLOC));
-	tmp[0] = 0;
-	tmpdir->pv = tmp;
-	tmpdir->zu= 0;
-	ls->directory = tmpdir;
-	ls->curr_dir = tmpdir;
-	return (1);
-}
-
-int		load_directory(t_ls *ls)
-{
-	if (!ls->directory && !ls->file) 
-	{
-		if (ls->flags & LSO_ARGC)
-			return (first_call_argument_given(ls));
-		return (first_call_no_argument_given(ls));
-	}
-	else
-		return (normal_call(ls));
-}
-
-int		create_directory_from_argument(t_ls *ls, char *argv)
+int						create_directory_from_arg(t_ls *ls, char *argv)
 {
 	char		*tmp;
 	size_t		i;
 	t_list		*tmpdir;
 	
-	if (!(tmpdir = ft_lstnew(".", sizeof(char) * 2)))
+	if (!(tmpdir = ft_lstnew(0, 0)))
 		return (ls_print_error(0, LSERR_MALLOC));
-	free(tmpdir->pv);
 	i = ft_strlen(argv);
-	if (!(tmp = ft_strnew(i + 1 + 256 + ls->directory->zu)))
+	if (!(tmp = ft_strnew(i + 1 + 256 + 2)))
 		return (ls_print_error(0, LSERR_MALLOC));
 	ft_strcat(tmp, ls->directory->pv);
 	ft_strcat(tmp + ls->directory->zu, argv);
 	if (argv[i  - 1] != '/')
-	{
-		ft_strcat(tmp + ls->directory->zu + i, "/");
-		i++;
-	}
+		ft_strcat(tmp + ls->directory->zu + i++, "/");
 	tmp[i + 1 + ls->directory->zu] = 0;
 	tmpdir->pv = tmp;
 	tmpdir->zu = i + ls->directory->zu;
@@ -119,4 +88,12 @@ int		create_directory_from_argument(t_ls *ls, char *argv)
 		ft_lstadd(&(ls->curr_dir->next), tmpdir);
 	ls->curr_dir = ls->curr_dir->next;
 	return (1);
+}
+
+int						create_directory(t_ls *ls)
+{
+	if (!ls->directory && !ls->file) 
+		return (create_first_directory(ls, (ls->flags & LSO_ARGC)));
+	else
+		return (create_another_directory(ls));
 }

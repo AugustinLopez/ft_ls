@@ -14,15 +14,15 @@
 
 void	print_ls(t_ls *liste1)
 {
-	t_stat	*tmp;
+	//t_stat	*tmp;
 	t_file	*tmp2;
 
-	tmp = &(liste1->curr_file->stat);
+	//tmp = &(liste1->curr_file->stat);
 	tmp2 = liste1->curr_file;
 	if (tmp2->name)
 	{
 		ft_printf("%s\n", tmp2->name);
-		if (tmp2->prev)
+		/*if (tmp2->prev)
 			ft_printf("Previous :%s\n", tmp2->prev->name);
 		ft_printf("NVL ELEMENT :\nSTAT:\n"
 		"inode = %lld\nmode = %ho\n"
@@ -36,6 +36,7 @@ void	print_ls(t_ls *liste1)
 		"previous = %p\n"
 		"----------------------------------------------------------------\n",
 		tmp->st_ino, tmp->st_mode, tmp->st_nlink, tmp->st_uid,
-		tmp->st_gid, tmp->st_blksize, tmp->st_size, tmp->st_blocks, tmp2->next, tmp2, tmp2->prev);
+		tmp->st_gid, tmp->st_blksize, tmp->st_size, tmp->st_blocks, tmp2->next, tmp2, tmp2->prev);*/
 	}
+	(void)liste1;
 }

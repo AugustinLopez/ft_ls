@@ -20,10 +20,12 @@ int			ls_print_error(char *str, int errflag)
 		dprintf(2, "usage: ft_ls [-lRart] [file ...]\n");
 	}
 	else if (errflag == LSERR_OPENDIR)
-		dprintf(2, "ft_ls: %s: %s\n", str, strerror(errno));
+		dprintf(2, "ft_ls: cannot open directory '%s': %s\n", str, strerror(errno));
+	else if (errflag == LSERR_OPENFILE)
+		dprintf(2, "ft_ls: cannot access '%s': %s\n", str, strerror(errno));
 	else if (errflag == LSERR_MALLOC)
-		dprintf(2, "ft_ls: %s\n", strerror(errno));
+		dprintf(2, "MALLOC: ft_ls: %s\n", strerror(errno));
 	else if (errflag == LSERR_OTHER)
-		dprintf(2, "ft_ls: %s: %s\n", str, strerror(errno));
+		dprintf(2, "OTHER: ft_ls: %s: %s\n", str, strerror(errno));
 	return (0);
 }
