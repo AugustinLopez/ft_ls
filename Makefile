@@ -34,7 +34,8 @@ INCLUDES=$(HDR:%=$(PATH_HDR)%)
 CC=gcc
 FLAGS=-Wall -Wextra -Werror -g3
 OPTION_O=$(CC) $(FLAGS) -c -I$(PATH_HDR)
-OPTION_C=$(CC) $(FLAGS) -o $(NAME) -I$(PATH_HDR) -L$(PATH_LIB) -lft
+OPTION_C1=$(CC) $(FLAGS) -o $(NAME) 
+OPTION_C2=-I$(PATH_HDR) -L$(PATH_LIB) -lft
 RED=\033[31m
 GREEN=\033[32m
 YELLOW=\033[33m
@@ -51,7 +52,7 @@ $(NAME): $(OBJ_LS)
 	@echo "$(YELLOW)Updating library... $(EOC)"
 	@make -C $(PATH_LIB) >> /dev/null
 	@echo "$(YELLOW)Compiling $(NAME)...$(EOC)"
-	@$(OPTION_C) $(OBJ_LS)
+	@$(OPTION_C1) $(OBJ_LS) $(OPTION_C2)
 	@echo "$(GREEN)Done$(EOC)"
 
 $(PATH_OBJ)%.o:$(PATH_SRC)%.c $(INCLUDES)

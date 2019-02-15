@@ -16,12 +16,13 @@
 */
 void	sort2(t_ls *lkd_list)
 {
-	t_file	*current;
-	t_file	*next;
+	(void)lkd_list;
+	/*t_file	*current;
+	//t_file	*next;
 
 	printf("Jusque la ca segault pas\n");
-	current = lkd_list->curr_file;
-	next = current->next;
+	current = lkd_list->curr_file;*/
+	//next = current->next;
 	//printf("cur = %s next = %s\n", current->name, next->name);
 	//while (current != NULL)
 	//{

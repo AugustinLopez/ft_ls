@@ -12,6 +12,18 @@
 
 #include <ft_ls.h>
 
+static inline void	readder(t_ls *ls)
+{
+	ls->curr_file = ls->file;
+	while (ls->curr_file)
+	{
+		if (ls->numfile-- == 0)
+			break;
+		print_ls(ls);
+		ls->curr_file = (ls->curr_file)->next;
+	}
+}
+
 int		main(int ac, char **av)
 {
 	int		options;
@@ -27,12 +39,25 @@ int		main(int ac, char **av)
 		if (!(load_directory(&ls)))
 			return (EXIT_FAILURE);
 		load_info_from_directory(&ls);
-}
-	ls.curr_file = ls.file;
-	while (ls.curr_file)
+		readder(&ls);
+		while (ls.directory)
+		{
+			load_info_from_directory(&ls);
+			readder(&ls);
+		}
+	}
+	else
 	{
-		print_ls(&ls);
-		ls.curr_file = (ls.curr_file)->next;
+		ls.flags |= LSO_ARGC;
+		if (!(load_directory(&ls)))
+			return (EXIT_FAILURE);
+		load_info_from_argument(&ls, ac, av);
+		readder(&ls);
+		while (ls.directory)
+		{
+			load_info_from_directory(&ls);
+			readder(&ls);
+		}
 	}
 	while (ls.file)
 	{
@@ -41,6 +66,7 @@ int		main(int ac, char **av)
 		free(ls.file);
 		ls.file = ls.curr_file;
 	}
-	ft_lstdel(&ls.directory, *ft_lstfree);
+	if (ls.directory)
+		ft_lstdel(&ls.directory, *ft_lstfree);
 	return (EXIT_SUCCESS);
 }

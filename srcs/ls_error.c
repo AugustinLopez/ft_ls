@@ -19,7 +19,7 @@ int			ls_print_error(char *str, int errflag)
 		dprintf(2, "ft_ls: invalid option -- \'%c\'\n", *str);
 		dprintf(2, "usage: ft_ls [-lRart] [file ...]\n");
 	}
-	else if (errflags = LSERR_OPENDIR)
+	else if (errflag == LSERR_OPENDIR)
 		dprintf(2, "ft_ls: %s: %s\n", str, strerror(errno));
 	else if (errflag == LSERR_MALLOC)
 		dprintf(2, "ft_ls: %s\n", strerror(errno));

@@ -27,10 +27,11 @@ inline static int		first_call_no_argument_given(t_ls *ls)
 	tmpdir->pv = tmp;
 	tmpdir->zu= 2;
 	ls->directory = tmpdir;
+	ls->curr_dir = tmpdir;
 	return (1);
 }
 
-inline static int		call_no_argument_given(t_ls *ls)
+inline static int		normal_call(t_ls *ls)
 {
 	char		*tmp;
 	size_t		i;
@@ -48,40 +49,74 @@ inline static int		call_no_argument_given(t_ls *ls)
 	tmp[i + 2 + ls->directory->zu] = 0;
 	tmpdir->pv = tmp;
 	tmpdir->zu = i + 1 + ls->directory->zu;
-	if (!ls->directory)
-		ls->directory = tmpdir;
-	else if (!ls->directory->next)
-		ls->directory->next = tmpdir;
+	if (!ls->curr_dir)
+		ls->curr_dir = tmpdir;
+	else if (!ls->curr_dir->next)
+		ls->curr_dir->next = tmpdir;
 	else
-		ft_lstadd(&(ls->directory->next), tmpdir);
+		ft_lstadd(&(ls->curr_dir->next), tmpdir);
+	ls->curr_dir = ls->curr_dir->next;
 	return (1);
 }
 
 inline static int first_call_argument_given(t_ls *ls)
 {
-	//need to handle : adding '/' at the end if necessary
-	//absolute path : /etc/, ~/goinfre ...
-	//it may be simpler to check here which argument is a directory or not
-	//Considering adding a "dummy" directory with an empty string
-	//maybe a variable in ls?
-	(void)ls;
-	return (1);
-}
+	char		*tmp;
+	t_list		*tmpdir;
 
-inline static int call_argument_given(t_ls *ls)
-{
-	(void)ls;
+	if (!(tmpdir = ft_lstnew(".", sizeof(char) * 2)))
+		return (ls_print_error(0, LSERR_MALLOC));
+	free(tmpdir->pv);
+	if (!(tmp = ft_strnew(2 + 256)))
+		return (ls_print_error(0, LSERR_MALLOC));
+	tmp[0] = 0;
+	tmpdir->pv = tmp;
+	tmpdir->zu= 0;
+	ls->directory = tmpdir;
+	ls->curr_dir = tmpdir;
 	return (1);
 }
 
 int		load_directory(t_ls *ls)
 {
 	if (!ls->directory && !ls->file) 
+	{
+		if (ls->flags & LSO_ARGC)
+			return (first_call_argument_given(ls));
 		return (first_call_no_argument_given(ls));
-	else if (!ls->directory)
-		return (first_call_argument_given(ls));
-	else if (!strncmp(ls->directory->pv, "./", 2))
-		return (call_no_argument_given(ls));
+	}
 	else
-		return (call_argument_given(ls));
+		return (normal_call(ls));
+}
+
+int		create_directory_from_argument(t_ls *ls, char *argv)
+{
+	char		*tmp;
+	size_t		i;
+	t_list		*tmpdir;
+	
+	if (!(tmpdir = ft_lstnew(".", sizeof(char) * 2)))
+		return (ls_print_error(0, LSERR_MALLOC));
+	free(tmpdir->pv);
+	i = ft_strlen(argv);
+	if (!(tmp = ft_strnew(i + 1 + 256 + ls->directory->zu)))
+		return (ls_print_error(0, LSERR_MALLOC));
+	ft_strcat(tmp, ls->directory->pv);
+	ft_strcat(tmp + ls->directory->zu, argv);
+	if (argv[i  - 1] != '/')
+	{
+		ft_strcat(tmp + ls->directory->zu + i, "/");
+		i++;
+	}
+	tmp[i + 1 + ls->directory->zu] = 0;
+	tmpdir->pv = tmp;
+	tmpdir->zu = i + ls->directory->zu;
+	if (!ls->curr_dir)
+		ls->curr_dir = tmpdir;
+	else if (!ls->curr_dir->next)
+		ls->curr_dir->next = tmpdir;
+	else
+		ft_lstadd(&(ls->curr_dir->next), tmpdir);
+	ls->curr_dir = ls->curr_dir->next;
+	return (1);
 }
