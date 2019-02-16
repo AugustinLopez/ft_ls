@@ -15,13 +15,16 @@
 # include <stdio.h> //To be removed
 
 enum {LSERR_USAGE, LSERR_MALLOC, LSERR_OTHER, LSERR_OPENFILE, LSERR_CLOSEDIR, LSERR_OPENDIR, LSERR_PATH, LSERR_LONG};
+# define LSO_1 1
 # define LSO_L 2
 # define LSO_RR 4
 # define LSO_A 8
 # define LSO_R 16
 # define LSO_T 32
-# define LSO_1STFILE 64
-# define LSO_ARGC 128
+# define LSO_S 64
+# define LSO_1STFILE 256
+# define LSO_ARGC 512
+
 
 typedef struct		stat 	t_stat;
 typedef struct		dirent	t_dirent;
@@ -60,7 +63,10 @@ int			create_directory_from_arg(t_ls *ls, char *argv);
 int			create_directory(t_ls *ls);
 void		sort2(t_ls *lkd_list);
 void		display_file(t_file *file);
+int			next_dir(t_ls *ls);
 
 void		print_ls(t_ls *liste1);
-
+void		print_basic(t_ls *ls);
+void		print_detailed(t_ls *ls);
+int			max_block_size(t_ls *ls);
 #endif

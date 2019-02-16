@@ -19,7 +19,7 @@ static inline void	readder(t_ls *ls)
 	{
 		if (ls->numfile-- == 0)
 			break;
-		print_ls(ls);
+		print_basic(ls);
 		ls->curr_file = (ls->curr_file)->next;
 	}
 }
@@ -55,11 +55,19 @@ int		main(int ac, char **av)
 		load_info_from_argument(&ls, ac, av);
 	else
 		load_info_from_directory(&ls);
-	readder(&ls);
+	if (ls.flags & LSO_L)
+		print_detailed(&ls);
+	else
+		print_basic(&ls);
+	next_dir(&ls);
 	while (ls.directory)
 	{
 		load_info_from_directory(&ls);
-		readder(&ls);
+		if (ls.flags & LSO_L)
+			print_detailed(&ls);
+		else
+			print_basic(&ls);
+		next_dir(&ls);
 	}
 	free_list(&ls);
 	return (EXIT_SUCCESS);

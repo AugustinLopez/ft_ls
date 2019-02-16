@@ -72,7 +72,7 @@ int						load_info_from_directory(t_ls *ls)
 {
 	DIR			*ddd;
 	t_dirent	*dir;
-	t_list		*tmp;
+
 
 	ls->numfile = 0;
 	if ((ddd = opendir((char*)(ls->directory->pv))))
@@ -87,6 +87,14 @@ int						load_info_from_directory(t_ls *ls)
 		ls_print_error((char*)(ls->directory->pv), LSERR_OPENDIR);
 	if (ddd)
 		closedir(ddd);
+	((char*)(ls->directory->pv))[ls->directory->zu] = 0;
+	return (0);
+}
+
+int						next_dir(t_ls *ls)
+{
+	t_list		*tmp;
+
 	tmp = ls->directory;
 	ls->directory = ls->directory->next;
 	ls->curr_dir = ls->directory;
@@ -114,9 +122,6 @@ int						load_info_from_argument(t_ls *ls, int argc, char **argv)
 			load_file_stats(ls, argv[i]);
 		i++;
 	}
-	ls->curr_dir = ls->directory;
-	ls->directory = ls->directory->next;
-	ft_lstdelone(&ls->curr_dir, *ft_lstfree);
-	ls->curr_dir = ls->directory;
+	((char*)(ls->directory->pv))[ls->directory->zu] = 0;
 	return (1);
 }

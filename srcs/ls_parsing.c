@@ -18,9 +18,9 @@ inline static int		ls_available_option(char *av, int *flags)
 
 	while (*(++av))
 	{
-		if (!(i = ft_strchri("lRart", av[0])))
+		if (!(i = ft_strchri("1lRarts", av[0])))
 			return (ls_print_error(av, LSERR_USAGE));
-		*flags |= (1 << i);
+		*flags |= (1 << (i - 1));
 	}
 	return (i);
 }

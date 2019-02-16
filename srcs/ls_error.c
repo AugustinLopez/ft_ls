@@ -17,7 +17,7 @@ int			ls_print_error(char *str, int errflag)
 	if (errflag == LSERR_USAGE)
 	{
 		dprintf(2, "ft_ls: invalid option -- \'%c\'\n", *str);
-		dprintf(2, "usage: ft_ls [-lRart] [file ...]\n");
+		dprintf(2, "usage: ft_ls [-1lRarts] [file ...]\n");
 	}
 	else if (errflag == LSERR_OPENDIR)
 		dprintf(2, "ft_ls: cannot open directory '%s': %s\n", str, strerror(errno));
