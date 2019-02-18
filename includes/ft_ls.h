@@ -6,12 +6,14 @@
 # include <stdlib.h>
 # include <dirent.h>
 # include <sys/stat.h>
+//# include <sys/sysmacros.h> //major/minor
 # include <pwd.h>
 # include <grp.h>
 # include <time.h>
 # include <sys/types.h>
 # include <sys/xattr.h>
 # include <sys/ioctl.h>
+# include <sys/acl.h>
 # include <limits.h> // PATH_MAX
 # include <unistd.h> // readlink
 # include <stdio.h> //To be removed
