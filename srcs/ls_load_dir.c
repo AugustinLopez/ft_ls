@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 20:43:00 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/14 12:04:32 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/18 16:51:26 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int						create_directory_from_arg(t_ls *ls, char *argv)
 		return (ls_print_error(0, LSERR_MALLOC));
 	ft_strcat(tmp, ls->directory->pv);
 	ft_strcat(tmp + ls->directory->zu, argv);
-	if (argv[i  - 1] != '/')
+	//if (argv[i  - 1] != '/')
 		ft_strcat(tmp + ls->directory->zu + i++, "/");
 	tmp[i + 1 + ls->directory->zu] = 0;
 	tmpdir->pv = tmp;
