@@ -12,6 +12,8 @@
 # include <sys/types.h>
 # include <sys/xattr.h>
 # include <sys/ioctl.h>
+# include <limits.h> // PATH_MAX
+# include <unistd.h> // readlink
 # include <stdio.h> //To be removed
 
 enum {LSERR_USAGE, LSERR_MALLOC, LSERR_OTHER, LSERR_OPENFILE, LSERR_CLOSEDIR, LSERR_OPENDIR, LSERR_PATH, LSERR_LONG};

@@ -6,13 +6,13 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:23:37 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/14 12:54:36 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/18 11:20:31 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-static inline void	readder(t_ls *ls)
+/*static inline void	readder(t_ls *ls)
 {
 	ls->curr_file = ls->file;
 	while (ls->curr_file)
@@ -22,7 +22,7 @@ static inline void	readder(t_ls *ls)
 		print_basic(ls);
 		ls->curr_file = (ls->curr_file)->next;
 	}
-}
+}*/
 
 static inline void	free_list(t_ls *ls)
 {
