@@ -6,13 +6,13 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 20:43:00 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/14 12:04:32 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/18 21:11:01 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-inline static int create_first_directory(t_ls *ls, int ac)
+inline static int		create_first_directory(t_ls *ls, int ac)
 {
 	char		*tmp;
 	t_list		*tmpdir;
@@ -40,7 +40,7 @@ inline static int		create_another_directory(t_ls *ls)
 	size_t		i;
 	t_list		*tmpdir;
 	char		*tmpstr;
-	
+
 	if (!(tmpdir = ft_lstnew(0, 0)))
 		return (ls_print_error(0, LSERR_MALLOC));
 	i = ft_strlen(ls->curr_file->name);
@@ -67,7 +67,7 @@ int						create_directory_from_arg(t_ls *ls, char *argv)
 	char		*tmp;
 	size_t		i;
 	t_list		*tmpdir;
-	
+
 	if (!(tmpdir = ft_lstnew(0, 0)))
 		return (ls_print_error(0, LSERR_MALLOC));
 	i = ft_strlen(argv);
@@ -75,7 +75,7 @@ int						create_directory_from_arg(t_ls *ls, char *argv)
 		return (ls_print_error(0, LSERR_MALLOC));
 	ft_strcat(tmp, ls->directory->pv);
 	ft_strcat(tmp + ls->directory->zu, argv);
-	if (argv[i  - 1] != '/')
+	if (argv[i - 1] != '/')
 		ft_strcat(tmp + ls->directory->zu + i++, "/");
 	tmp[i + 1 + ls->directory->zu] = 0;
 	tmpdir->pv = tmp;
@@ -92,7 +92,7 @@ int						create_directory_from_arg(t_ls *ls, char *argv)
 
 int						create_directory(t_ls *ls)
 {
-	if (!ls->directory && !ls->file) 
+	if (!ls->directory && !ls->file)
 		return (create_first_directory(ls, (ls->flags & LSO_ARGC)));
 	else
 		return (create_another_directory(ls));

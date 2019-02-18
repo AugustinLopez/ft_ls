@@ -26,6 +26,7 @@ enum {LSERR_USAGE, LSERR_MALLOC, LSERR_OTHER, LSERR_OPENFILE, LSERR_CLOSEDIR, LS
 # define LSO_R 16
 # define LSO_T 32
 # define LSO_S 64
+# define LSO_TT 128
 # define LSO_1STFILE 256
 # define LSO_ARGC 512
 

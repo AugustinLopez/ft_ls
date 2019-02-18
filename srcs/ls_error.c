@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:21:00 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/14 13:00:58 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/18 20:11:15 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ int			ls_print_error(char *str, int errflag)
 		dprintf(2, "usage: ft_ls [-1lRarts] [file ...]\n");
 	}
 	else if (errflag == LSERR_OPENDIR)
-		dprintf(2, "ft_ls: cannot open directory '%s': %s\n", str, strerror(errno));
+	{
+		dprintf(2, "ft_ls: cannot open directory ");
+		dprintf(2, "'%s': %s\n", str, strerror(errno));
+	}
 	else if (errflag == LSERR_OPENFILE)
 		dprintf(2, "ft_ls: cannot access '%s': %s\n", str, strerror(errno));
 	else if (errflag == LSERR_MALLOC)

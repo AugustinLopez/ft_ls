@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:23:37 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/18 14:34:04 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/18 19:29:48 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 	}
 }*/
 
-static inline void	free_list(t_ls *ls)
+static inline void		free_list(t_ls *ls)
 {
 	while (ls->file)
 	{
@@ -37,7 +37,7 @@ static inline void	free_list(t_ls *ls)
 		ft_lstdel(&ls->directory, *ft_lstfree);
 }
 
-int		main(int ac, char **av)
+int						main(int ac, char **av)
 {
 	int		options;
 	t_ls	ls;

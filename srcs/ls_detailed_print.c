@@ -6,13 +6,13 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:19:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/18 15:56:56 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/18 21:09:02 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-inline static char	file_type(int mode)
+inline static char			file_type(int mode)
 {
 	if (S_ISREG(mode))
 		return ('-');
@@ -32,7 +32,7 @@ inline static char	file_type(int mode)
 		return ('-');
 }
 
-inline static char	load_acl(t_ls *ls)
+inline static char			load_acl(t_ls *ls)
 {
 	acl_t	tmp;
 
@@ -46,7 +46,7 @@ inline static char	load_acl(t_ls *ls)
 	return (' ');
 }
 
-void	load_attribute(t_file *file, t_ls *ls, char (*attr)[12])
+void						load_attribute(t_file *file, t_ls *ls, char (*attr)[12])
 {
 	int	mode;
 
@@ -71,18 +71,18 @@ void	load_attribute(t_file *file, t_ls *ls, char (*attr)[12])
 	(*attr)[11] = 0;
 }
 
-void	print_detailed_loop(t_ls *ls, long long (*s)[10])
+void						print_detailed_loop(t_ls *ls, long long (*s)[10])
 {
 	t_file		*tmp;
 	char		attr[12];
-	char 		*t;
+	char		*t;
 	char		buf[PATH_MAX + 1];
 
 	tmp = ls->file;
 	while (tmp)
 	{
 		if (ls->numfile-- == 0)
-			break;
+			break ;
 		((char*)(ls->directory->pv))[ls->directory->zu] = 0;
 		ft_strcat(ls->directory->pv, tmp->name);
 		if (ls->flags & LSO_S)
@@ -98,10 +98,10 @@ void	print_detailed_loop(t_ls *ls, long long (*s)[10])
 		else
 			ft_printf("%-*lld  ", (*s)[3], tmp->stat.st_gid);
 		if ((*s)[8] && (attr[0] == 'b' || attr[0] == 'c'))
-		   ft_printf("%*lld, %*lld ", (*s)[5], major(tmp->stat.st_rdev), (*s)[6], minor(tmp->stat.st_rdev));
+			ft_printf("%*lld, %*lld ", (*s)[5], major(tmp->stat.st_rdev), (*s)[6], minor(tmp->stat.st_rdev));
 		else
 			ft_printf("%*lld ", (*s)[4], tmp->stat.st_size);
-		t =  ctime(&tmp->stat.st_mtime) + 4;
+		t = ctime(&tmp->stat.st_mtime) + 4;
 		if (time(NULL) > 60 * 60 * 24 * 30 * 6
 		&& tmp->stat.st_mtime > time(NULL) - 60 * 60 * 24 * 30 * 6)
 			ft_printf("%.12s %s", t, tmp->name);
@@ -120,12 +120,12 @@ void	print_detailed_loop(t_ls *ls, long long (*s)[10])
 	}
 }
 
-void		set_detailed_list_length(t_ls *ls, long long (*s)[10])
+void						set_detailed_list_length(t_ls *ls, long long (*s)[10])
 {
-	t_file *tmp;
-	t_stat stat;
-	size_t	numfile;
-	long long len;
+	t_file		*tmp;
+	t_stat		stat;
+	size_t		numfile;
+	long long	len;
 
 	tmp = ls->file;
 	numfile = ls->numfile;
@@ -133,7 +133,7 @@ void		set_detailed_list_length(t_ls *ls, long long (*s)[10])
 	while (tmp)
 	{
 		if (numfile-- == 0)
-			break;
+			break ;
 		stat = tmp->stat;
 		(*s)[7] += stat.st_blocks;
 		(*s)[0] = (*s)[0] < stat.st_blocks ? stat.st_blocks : (*s)[0];
@@ -162,11 +162,11 @@ void		set_detailed_list_length(t_ls *ls, long long (*s)[10])
 		(*s)[5] = ft_nprintf("%lld", (*s)[5]);
 		(*s)[6] = ft_nprintf("%lld", (*s)[6]);
 		(*s)[5] < (*s)[4] - (*s)[6] - 1 ? (*s)[5] = (*s)[4] - (*s)[6] - 1 : 0;
-		(*s)[4] < (*s)[5] + (*s)[6] + 2 ? (*s)[4] = (*s)[5] + (*s)[6] + 2 : 0; 
+		(*s)[4] < (*s)[5] + (*s)[6] + 2 ? (*s)[4] = (*s)[5] + (*s)[6] + 2 : 0;
 	}
 }
 
-void	print_detailed(t_ls *ls)
+void						print_detailed(t_ls *ls)
 {
 	int			block_size;
 	long long	size[10];
@@ -183,4 +183,3 @@ void	print_detailed(t_ls *ls)
 		if (ls->file && ls->directory->next)
 			ft_putchar('\n');
 }
-

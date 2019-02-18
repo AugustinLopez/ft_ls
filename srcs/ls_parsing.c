@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 13:55:15 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/12 17:23:17 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/18 19:05:09 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ inline static int		ls_available_option(char *av, int *flags)
 
 	while (*(++av))
 	{
-		if (!(i = ft_strchri("1lRarts", av[0])))
+		if (!(i = ft_strchri("1lRartsT", av[0])))
 			return (ls_print_error(av, LSERR_USAGE));
 		*flags |= (1 << (i - 1));
 	}

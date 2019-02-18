@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_ls.c                                         :+:      :+:    :+:   */
+/*   ls_basic_print.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/12 19:28:08 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/14 12:34:34 by aulopez          ###   ########.fr       */
+/*   Created: 2019/02/18 20:06:08 by lubenard          #+#    #+#             */
+/*   Updated: 2019/02/18 20:07:12 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-void	print_ls(t_ls *liste1)
+void			print_ls(t_ls *liste1)
 {
-	//t_stat	*tmp;
 	t_file	*tmp2;
 
+	//t_stat	*tmp;
 	//tmp = &(liste1->curr_file->stat);
 	tmp2 = liste1->curr_file;
 	if (tmp2->name)
@@ -41,8 +41,7 @@ void	print_ls(t_ls *liste1)
 	(void)liste1;
 }
 
-
-void	print_basic_loop(t_ls *ls, int block_size)
+void			print_basic_loop(t_ls *ls, int block_size)
 {
 	t_file		*tmp;
 
@@ -50,7 +49,7 @@ void	print_basic_loop(t_ls *ls, int block_size)
 	while (tmp)
 	{
 		if (ls->numfile-- == 0)
-			break;
+			break ;
 		else if (ls->flags & LSO_S)
 			ft_printf("%*lld %s\n", block_size, tmp->stat.st_blocks, tmp->name);
 		else
@@ -73,7 +72,7 @@ int				max_block_size(t_ls *ls)
 	while (tmp)
 	{
 		if (numfile-- == 0)
-			break;
+			break ;
 		total += tmp->stat.st_blocks;
 		if (highest < tmp->stat.st_blocks)
 			highest = tmp->stat.st_blocks;
@@ -84,7 +83,7 @@ int				max_block_size(t_ls *ls)
 	return (ft_nprintf("%lld", highest));
 }
 
-void	print_basic(t_ls *ls)
+void			print_basic(t_ls *ls)
 {
 	int	block_size;
 
@@ -98,4 +97,3 @@ void	print_basic(t_ls *ls)
 		if (ls->file && ls->directory->next)
 			ft_putchar('\n');
 }
-

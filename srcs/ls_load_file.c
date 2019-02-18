@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/14 12:09:32 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/14 13:00:39 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/18 21:04:01 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 inline static int		load_file_link(t_ls *ls)
 {
-	ls->flags &= ~ LSO_1STFILE;
+	ls->flags &= ~LSO_1STFILE;
 	if (ls->directory) //every case except first call argument given
 	{
 		if (!(ls->file)) //we need to create a link
@@ -55,7 +55,7 @@ inline static int		load_file_stats(t_ls *ls, char *filename)
 	if (!(ls->curr_file->name = ft_strdup(filename)))
 		return (ls_print_error(0, LSERR_MALLOC));
 	tmp[ls->directory->zu] = 0;
-	if (lstat(ft_strcat(tmp, filename), &(ls->curr_file->stat)) < 0) 
+	if (lstat(ft_strcat(tmp, filename), &(ls->curr_file->stat)) < 0)
 		return (ls_print_error(filename, LSERR_OPENFILE));
 	if ((ls->flags & LSO_RR)
 	&& S_ISDIR(ls->curr_file->stat.st_mode)
@@ -72,7 +72,6 @@ int						load_info_from_directory(t_ls *ls)
 {
 	DIR			*ddd;
 	t_dirent	*dir;
-
 
 	ls->numfile = 0;
 	if ((ddd = opendir((char*)(ls->directory->pv))))
@@ -114,7 +113,7 @@ int						load_info_from_argument(t_ls *ls, int argc, char **argv)
 			ft_bzero(ls->directory->pv, 3);
 		else
 			ft_strcpy("./", ls->directory->pv);
-		if (lstat(argv[i], &stat) < 0) 
+		if (lstat(argv[i], &stat) < 0)
 			ls_print_error(argv[i], LSERR_OPENFILE);
 		else if (S_ISDIR(stat.st_mode))
 			create_directory_from_arg(ls, argv[i]);
