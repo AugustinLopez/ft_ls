@@ -93,14 +93,19 @@ inline static void		create_directory_from_arg_loop(t_ls *ls)
 {
 	unsigned int	i;
 	t_file			*tmp;
+	t_file			*tmp2;
 
 	i = 0;
+	tmp2 = NULL;
 	tmp = ls->curr_file;
 	ls->curr_file = (ls->flags & LSO_R) ? ls->curr_file : ls->file;
+	//This function is not ok
+	//would probably be simpler to have a flag in order not to print
 	while (ls->curr_file && i++ < ls->numfile)
 	{
 		if (S_ISDIR(ls->curr_file->stat.st_mode))
 		{
+			tmp2 = ls->curr_file;
 			create_directory_from_arg_unit(ls);
 			if (ls->curr_file->next)
 				ls->curr_file->next->prev = ls->curr_file->prev;
@@ -108,9 +113,10 @@ inline static void		create_directory_from_arg_loop(t_ls *ls)
 				ls->curr_file->prev->next = ls->curr_file->next;
 			else
 				ls->file = ls->curr_file->next;
-			free(ls->curr_file);
 		}
-		ls->curr_file = (ls->flags & LSO_R) ? ls->curr_file->prev : ls->curr_file->next;		}
+		ls->curr_file = (ls->flags & LSO_R) ? ls->curr_file->prev : ls->curr_file->next;
+		tmp2 ? free(tmp2) : 0;
+	}
 	ls->curr_file = tmp;
 }
 

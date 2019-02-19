@@ -53,14 +53,13 @@ void	sort_ascii(t_file *current, t_file *last)
 		current = current->next;
 	}
 	current->next = other;
-	last = current;
 	if (other)
 		other->prev = current;
 }
 
 void	switch_name_date(t_file *first, t_file *next)
 {
-	while (first->next && first->stat.st_mtime < next->stat.st_mtime)
+	while (first->next && first->stat.st_mtime > next->stat.st_mtime)
 		first = first->next;
 	if (next->prev != NULL)
 		next->prev->next = next->next;
@@ -78,14 +77,14 @@ void	sort_time(t_file *current, t_file *last)
 	t_file	*next;
 	t_file	*first;
 	t_file	*other;
-	
+
 	other = last->next;
 	last->next = NULL;
 	first = current;
 	while (current->next)
 	{
 		next = current->next;
-		if (current->stat.st_mtime > next->stat.st_mtime)
+		if (current->stat.st_mtime < next->stat.st_mtime)
 		{
 			switch_name_date(first, next);
 			current = current->prev;
@@ -95,7 +94,6 @@ void	sort_time(t_file *current, t_file *last)
 		current = current->next;
 	}
 	current->next = other;
-	last = current;
 	if (other)
 		other->prev = current;
 }

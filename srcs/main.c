@@ -28,16 +28,25 @@ inline static void		free_list(t_ls *ls)
 
 inline static void		call_sorting_option(t_ls *ls)
 {
+	unsigned int i;
+
 	sort_ascii(ls->file, ls->curr_file);
 	while (ls->file->prev)
 		ls->file = ls->file->prev;
+	ls->curr_file = ls->file;
+	i = 0;
+	while (++i <ls->numfile)
+		ls->curr_file = ls->curr_file->next;
 	if (ls->flags & LSO_T)
 	{
 		sort_time(ls->file, ls->curr_file);
 		while (ls->file->prev)
 			ls->file = ls->file->prev;
+		i = 0;
+		ls->curr_file = ls->file;
+		while (++i <ls->numfile)
+			ls->curr_file = ls->curr_file->next;
 	}
-
 }
 
 inline static void		next_dir(t_ls *ls)
@@ -53,7 +62,7 @@ inline static void		next_dir(t_ls *ls)
 inline static void		test(t_ls *ls)
 {
 	ft_printf("a: %s\n", ls->file->name);
-	ft_printf("b:%s\n", ls->curr_file->name);
+	ft_printf("b: %s\n", ls->curr_file->name);
 }
 
 int						main(int ac, char **av)

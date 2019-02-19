@@ -178,7 +178,7 @@ void						print_detailed(t_ls *ls)
 	long long	size[10];
 
 	ft_bzero(size, 10 * (sizeof(long long)));
-	if(ls->flags & (LSO_RR | LSO_ARGC ) && ls->file && ls->directory->zu && !(ls->flags & LSO_ERROPEN))
+	if(ls->flags & (LSO_RR | LSO_ARGC) && ls->file && ls->directory->zu && !(ls->flags & LSO_ERROPEN))
 		ft_printf("%s:\n", ls->directory->pv);
 	set_detailed_list_length(ls, &size);
 	if (ls->numfile && ls->file)
