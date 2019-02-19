@@ -37,8 +37,7 @@ inline static void		call_sorting_option(t_ls *ls)
 		while (ls->file->prev)
 			ls->file = ls->file->prev;
 	}
-	while (ls->curr_file->next)
-		ls->curr_file = ls->curr_file->next;
+
 }
 
 inline static void		next_dir(t_ls *ls)
@@ -53,8 +52,8 @@ inline static void		next_dir(t_ls *ls)
 
 inline static void		test(t_ls *ls)
 {
-	ft_printf("%s\n", ls->file->name);
-	ft_printf("%s\n", ls->curr_file->name);
+	ft_printf("a: %s\n", ls->file->name);
+	ft_printf("b:%s\n", ls->curr_file->name);
 }
 
 int						main(int ac, char **av)
@@ -76,6 +75,7 @@ int						main(int ac, char **av)
 	(ls.flags & LSO_RR || ac) ? create_directory(&ls, &ac) : 0;
 	ac < 2 ? ls.flags &= ~LSO_ARGC : 0;
 	ls.flags & LSO_L ? print_detailed(&ls) : print_basic(&ls);
+	ls.curr_file = ls.file;
 	ac = 0;
 	next_dir(&ls);
 	while (ls.directory)
@@ -85,6 +85,7 @@ int						main(int ac, char **av)
 			call_sorting_option(&ls);
 		create_directory(&ls, &ac);
 		(ls.flags & LSO_L) ? print_detailed(&ls) : print_basic(&ls);
+		ls.curr_file = ls.file;
 		next_dir(&ls);
 	}
 	free_list(&ls);

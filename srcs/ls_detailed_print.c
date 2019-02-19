@@ -80,7 +80,7 @@ void						print_detailed_loop(t_ls *ls, long long (*s)[10])
 	char		*t;
 	char		buf[PATH_MAX + 1];
 
-	tmp = ls->file;
+	tmp = (ls->flags & LSO_R) ? ls->curr_file : ls->file;
 	while (tmp)
 	{
 		if (ls->numfile-- == 0)
@@ -123,7 +123,7 @@ void						print_detailed_loop(t_ls *ls, long long (*s)[10])
 		else
 			ft_putchar('\n');
 		((char*)(ls->directory->pv))[ls->directory->zu] = 0;
-		tmp = tmp->next;
+		tmp = (ls->flags & LSO_R) ? tmp->prev : tmp->next;
 	}
 }
 

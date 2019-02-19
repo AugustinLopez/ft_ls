@@ -96,10 +96,9 @@ inline static void		create_directory_from_arg_loop(t_ls *ls)
 
 	i = 0;
 	tmp = ls->curr_file;
-	ls->curr_file = ls->file;
+	ls->curr_file = (ls->flags & LSO_R) ? ls->curr_file : ls->file;
 	while (ls->curr_file && i++ < ls->numfile)
 	{
-		ls->curr_file = ls->file;
 		if (S_ISDIR(ls->curr_file->stat.st_mode))
 		{
 			create_directory_from_arg_unit(ls);
@@ -111,8 +110,7 @@ inline static void		create_directory_from_arg_loop(t_ls *ls)
 				ls->file = ls->curr_file->next;
 			free(ls->curr_file);
 		}
-		ls->curr_file = ls->curr_file->next;
-	}
+		ls->curr_file = (ls->flags & LSO_R) ? ls->curr_file->prev : ls->curr_file->next;		}
 	ls->curr_file = tmp;
 }
 
@@ -127,15 +125,14 @@ int						create_directory(t_ls *ls, int *argc)
 	else if (ls->flags & LSO_RR)
 	{
 		tmp = ls->curr_file;
-		ls->curr_file = ls->file;
+		ls->curr_file = (ls->flags & LSO_R) ? ls->curr_file : ls->file;
 		while (ls->curr_file && i++ < ls->numfile)
 		{
-			tmp = ls->curr_file;
 			if (S_ISDIR(ls->curr_file->stat.st_mode)
 			&& ft_strcmp(ls->curr_file->name, ".")
 			&& ft_strcmp(ls->curr_file->name, ".."))
 				create_another_directory(ls);
-			ls->curr_file = ls->curr_file->next;
+			ls->curr_file = (ls->flags & LSO_R) ? ls->curr_file->prev : ls->curr_file->next;
 		}
 		ls->curr_file = tmp;
 	}
