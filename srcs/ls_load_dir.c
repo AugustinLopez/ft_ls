@@ -62,7 +62,7 @@ inline static int		create_another_directory(t_ls *ls)
 	return (1);
 }
 
-int						create_directory_from_arg(t_ls *ls, char *argv)
+int						create_directory_from_arg(t_ls *ls)
 {
 	char		*tmp;
 	size_t		i;
@@ -70,13 +70,12 @@ int						create_directory_from_arg(t_ls *ls, char *argv)
 
 	if (!(tmpdir = ft_lstnew(0, 0)))
 		return (ls_print_error(0, LSERR_MALLOC));
-	i = ft_strlen(argv);
+	i = ft_strlen(ls->curr_file->name);
 	if (!(tmp = ft_strnew(i + 1 + 256 + 2)))
 		return (ls_print_error(0, LSERR_MALLOC));
 	ft_strcat(tmp, ls->directory->pv);
-	ft_strcat(tmp + ls->directory->zu, argv);
-	//if (argv[i  - 1] != '/')
-		ft_strcat(tmp + ls->directory->zu + i++, "/");
+	ft_strcat(tmp + ls->directory->zu, ls->curr_file->name);
+	ft_strcat(tmp + ls->directory->zu + i++, "/");
 	tmp[i + 1 + ls->directory->zu] = 0;
 	tmpdir->pv = tmp;
 	tmpdir->zu = i + ls->directory->zu;
@@ -90,10 +89,47 @@ int						create_directory_from_arg(t_ls *ls, char *argv)
 	return (1);
 }
 
-int						create_directory(t_ls *ls)
+int						create_directory(t_ls *ls, int *argc)
 {
+	unsigned int	i;
+	t_file			*tmp;
+
+	tmp = NULL;
+	i = 0;
 	if (!ls->directory && !ls->file)
 		return (create_first_directory(ls, (ls->flags & LSO_ARGC)));
-	else
-		return (create_another_directory(ls));
+	else if (*argc)
+	{
+		ls->curr_file = ls->file;
+		while (ls->curr_file && i++ < ls->numfile)
+		{
+			tmp = ls->curr_file->next;
+			if (S_ISDIR(ls->curr_file->stat.st_mode))
+			{
+				create_directory_from_arg(ls);
+				if (ls->curr_file->next)
+					ls->curr_file->next->prev = ls->curr_file->prev;
+				if (ls->curr_file->prev)
+					ls->curr_file->prev->next = ls->curr_file->next;
+				else
+					ls->file = ls->curr_file->next;
+				free(ls->curr_file->name);
+				free(ls->curr_file);
+			}
+			ls->curr_file = tmp;
+		}
+	}
+	else if (ls->flags & LSO_RR)
+	{
+		ls->curr_file = ls->file;
+		while (ls->curr_file && i++ < ls->numfile)
+		{
+			if (S_ISDIR(ls->curr_file->stat.st_mode)
+			&& ft_strcmp(ls->curr_file->name, ".")
+			&& ft_strcmp(ls->curr_file->name, ".."))
+				create_another_directory(ls);
+			ls->curr_file = ls->curr_file->next;
+		}
+	}
+	return (1);
 }

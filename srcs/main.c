@@ -49,20 +49,46 @@ int						main(int ac, char **av)
 	av += options;
 	if (ac)
 		ls.flags |= LSO_ARGC;
-	if (!(create_directory(&ls)))
+	if (!(create_directory(&ls, &ac)))
 		return (EXIT_FAILURE);
 	if (ac)
 		load_info_from_argument(&ls, ac, av);
 	else
 		load_info_from_directory(&ls);
+	sort_ascii(ls.file, ls.curr_file);
+	while (ls.file->prev)
+		ls.file = ls.file->prev;
+	if (ls.flags & LSO_T)
+	{
+		sort_time(ls.file, ls.curr_file);
+		while (ls.file->prev)
+			ls.file = ls.file->prev;
+	}
+	ls.curr_file = ls.file;
+	if (ls.flags & LSO_RR || ac)
+		create_directory(&ls, &ac);
+	if (ac < 2)
+		ls.flags &= ~LSO_ARGC;
 	if (ls.flags & LSO_L)
 		print_detailed(&ls);
 	else
 		print_basic(&ls);
+	ac = 0;
 	next_dir(&ls);
 	while (ls.directory)
 	{
 		load_info_from_directory(&ls);
+		sort_ascii(ls.file, ls.curr_file);
+		while (ls.file->prev)
+			ls.file = ls.file->prev;
+		if (ls.flags & LSO_T)
+		{
+			sort_time(ls.file, ls.curr_file);
+			while (ls.file->prev)
+				ls.file = ls.file->prev;
+		}
+		ls.curr_file = ls.file;
+		create_directory(&ls, &ac);
 		if (ls.flags & LSO_L)
 			print_detailed(&ls);
 		else

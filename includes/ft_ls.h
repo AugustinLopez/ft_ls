@@ -64,12 +64,13 @@ int			ls_parsing(int ac, char **av, int *flags);
 int			ls_print_error(char *str, int errflag);
 int			load_info_from_directory(t_ls *ls);
 int			load_info_from_argument(t_ls *ls, int argc, char **argv);
-int			create_directory_from_arg(t_ls *ls, char *argv);
-int			create_directory(t_ls *ls);
+int			create_directory_from_arg(t_ls *ls);
+int			create_directory(t_ls *ls, int *argc);
 void		sort2(t_ls *lkd_list);
 void		display_file(t_file *file);
 int			next_dir(t_ls *ls);
-
+void	sort_ascii(t_file *current, t_file *last);
+void	sort_time(t_file *current, t_file *last);
 void		print_ls(t_ls *liste1);
 void		print_basic(t_ls *ls);
 void		print_detailed(t_ls *ls);

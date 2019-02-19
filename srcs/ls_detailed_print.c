@@ -107,7 +107,7 @@ void						print_detailed_loop(t_ls *ls, long long (*s)[10])
 		if (time(NULL) > 60 * 60 * 24 * 30 * 6
 		&& tmp->stat.st_mtime > time(NULL) - 60 * 60 * 24 * 30 * 6)
 		{
-			if (LSO_TT) //A fix, car toujours vraie
+			if (ls->flags & LSO_TT) //A fix, car toujours vraie
 				ft_printf("%.15s %s", t, tmp->name);
 			else
 				ft_printf("%.12s %s", t, tmp->name);
@@ -178,10 +178,10 @@ void						print_detailed(t_ls *ls)
 	long long	size[10];
 
 	ft_bzero(size, 10 * (sizeof(long long)));
-	if (ls->flags & (LSO_ARGC | LSO_RR) && ls->directory->zu)
+	if ((ls->flags & (LSO_RR | LSO_ARGC ) && ls->file && ls->directory->zu))
 		ft_printf("%s:\n", ls->directory->pv);
 	set_detailed_list_length(ls, &size);
-	if (ls->numfile)
+	if (ls->numfile && ls->file)
 		ft_printf("total %d\n", (int)size[7]);
 	print_detailed_loop(ls, &size);
 	if (ls->flags & (LSO_ARGC | LSO_RR))

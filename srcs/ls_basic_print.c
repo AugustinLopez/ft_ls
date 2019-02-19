@@ -12,35 +12,6 @@
 
 #include <ft_ls.h>
 
-void			print_ls(t_ls *liste1)
-{
-	t_file	*tmp2;
-
-	//t_stat	*tmp;
-	//tmp = &(liste1->curr_file->stat);
-	tmp2 = liste1->curr_file;
-	if (tmp2->name)
-	{
-		ft_printf("%s\n", tmp2->name);
-		/*if (tmp2->prev)
-			ft_printf("Previous :%s\n", tmp2->prev->name);
-		ft_printf("NVL ELEMENT :\nSTAT:\n"
-		"inode = %lld\nmode = %ho\n"
-		"nbr de liens = %hu\n"
-		"proprio = %u %u\n"
-		"taille de blocs = %i\n"
-		"taille de fichier = %lld\n"
-		"blocks alloues = %lld\n"
-		"next = %p\n"
-		"actual = %p\n"
-		"previous = %p\n"
-		"----------------------------------------------------------------\n",
-		tmp->st_ino, tmp->st_mode, tmp->st_nlink, tmp->st_uid,
-		tmp->st_gid, tmp->st_blksize, tmp->st_size, tmp->st_blocks, tmp2->next, tmp2, tmp2->prev);*/
-	}
-	(void)liste1;
-}
-
 void			print_basic_loop(t_ls *ls, int block_size)
 {
 	t_file		*tmp;
@@ -88,7 +59,7 @@ void			print_basic(t_ls *ls)
 	int	block_size;
 
 	block_size = 0;
-	if (ls->flags & (LSO_ARGC | LSO_RR) && ls->directory->zu)
+	if ((ls->flags & (LSO_RR | LSO_ARGC)) && ls->directory->zu)
 		ft_printf("%s:\n", ls->directory->pv);
 	if ((ls->flags & LSO_S) && ls->numfile)
 		block_size = max_block_size(ls);
