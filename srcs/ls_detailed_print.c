@@ -32,7 +32,7 @@ inline static char			file_type(int mode)
 		return ('-');
 }
 
-inline static char			load_acl(t_ls *ls)
+/*inline static char			load_acl(t_ls *ls)
 {
 	acl_t	tmp;
 
@@ -44,7 +44,7 @@ inline static char			load_acl(t_ls *ls)
 		return ('+');
 	}
 	return (' ');
-}
+}*/
 
 void						load_attribute(t_file *file, t_ls *ls, char (*attr)[12])
 {
@@ -67,7 +67,9 @@ void						load_attribute(t_file *file, t_ls *ls, char (*attr)[12])
 		(*attr)[6] = (*attr)[6] == 'x' ? 's' : 'S';
 	if (S_ISVTX & mode)
 		(*attr)[9] = (*attr)[9] == 'x' ? 't' : 'T';
-	(*attr)[10] = load_acl(ls);
+	//(*attr)[10] = load_acl(ls);
+	(*attr)[10] = ' ';
+	(void)ls;
 	(*attr)[11] = 0;
 }
 
@@ -142,7 +144,7 @@ void						set_detailed_list_length(t_ls *ls, long long (*s)[10])
 		stat = tmp->stat;
 		(*s)[7] += stat.st_blocks;
 		(*s)[0] = (*s)[0] < stat.st_blocks ? stat.st_blocks : (*s)[0];
-		(*s)[1] = (*s)[1] < stat.st_nlink ? stat.st_nlink : (*s)[1];
+		(*s)[1] = (*s)[1] < (signed long long)stat.st_nlink ? (signed long long)stat.st_nlink : (*s)[1];
 		if (getpwuid(stat.st_uid))
 			len = ft_strlen(getpwuid(stat.st_uid)->pw_name);
 		(*s)[2] = (*s)[2] < len ? len : (*s)[2];
@@ -173,11 +175,9 @@ void						set_detailed_list_length(t_ls *ls, long long (*s)[10])
 
 void						print_detailed(t_ls *ls)
 {
-	int			block_size;
 	long long	size[10];
 
 	ft_bzero(size, 10 * (sizeof(long long)));
-	block_size = 0;
 	if (ls->flags & (LSO_ARGC | LSO_RR) && ls->directory->zu)
 		ft_printf("%s:\n", ls->directory->pv);
 	set_detailed_list_length(ls, &size);
