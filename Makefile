@@ -14,7 +14,7 @@ NAME=ft_ls
 
 # --- 1.Source/Header ----------------------------------------------------------
 
-SRC=main ls_parsing ls_error ls_load_file ls_basic_print ls_detailed_print ls_load_dir sort file_about
+SRC=main ls_parsing ls_error ls_load_info ls_basic_print ls_detailed_print ls_directory sort
 HDR=libft.h ft_ls.h
 
 # --- 2.Path -------------------------------------------------------------------

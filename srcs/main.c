@@ -12,29 +12,49 @@
 
 #include <ft_ls.h>
 
-/*static inline void	readder(t_ls *ls)
-{
-	ls->curr_file = ls->file;
-	while (ls->curr_file)
-	{
-		if (ls->numfile-- == 0)
-			break;
-		print_basic(ls);
-		ls->curr_file = (ls->curr_file)->next;
-	}
-}*/
 
-static inline void		free_list(t_ls *ls)
+
+inline static void		free_list(t_ls *ls)
 {
 	while (ls->file)
 	{
 		ls->curr_file = ls->file->next;
-		free(ls->file->name);
 		free(ls->file);
 		ls->file = ls->curr_file;
 	}
 	if (ls->directory)
 		ft_lstdel(&ls->directory, *ft_lstfree);
+}
+
+inline static void		call_sorting_option(t_ls *ls)
+{
+	sort_ascii(ls->file, ls->curr_file);
+	while (ls->file->prev)
+		ls->file = ls->file->prev;
+	if (ls->flags & LSO_T)
+	{
+		sort_time(ls->file, ls->curr_file);
+		while (ls->file->prev)
+			ls->file = ls->file->prev;
+	}
+	while (ls->curr_file->next)
+		ls->curr_file = ls->curr_file->next;
+}
+
+inline static void		next_dir(t_ls *ls)
+{
+	t_list		*tmp;
+
+	tmp = ls->directory;
+	ls->directory = ls->directory->next;
+	ls->curr_dir = ls->directory;
+	ft_lstdelone(&tmp, *ft_lstfree);
+}
+
+inline static void		test(t_ls *ls)
+{
+	ft_printf("%s\n", ls->file->name);
+	ft_printf("%s\n", ls->curr_file->name);
 }
 
 int						main(int ac, char **av)
@@ -47,52 +67,24 @@ int						main(int ac, char **av)
 		return (EXIT_FAILURE);
 	ac -= options;
 	av += options;
-	if (ac)
-		ls.flags |= LSO_ARGC;
-	if (!(create_directory(&ls, &ac)))
+	ac ? ls.flags |= LSO_ARGC : 0;
+	if (!(create_first_directory(&ls, ac)))
 		return (EXIT_FAILURE);
-	if (ac)
-		load_info_from_argument(&ls, ac, av);
-	else
-		load_info_from_directory(&ls);
-	sort_ascii(ls.file, ls.curr_file);
-	while (ls.file->prev)
-		ls.file = ls.file->prev;
-	if (ls.flags & LSO_T)
-	{
-		sort_time(ls.file, ls.curr_file);
-		while (ls.file->prev)
-			ls.file = ls.file->prev;
-	}
-	ls.curr_file = ls.file;
-	if (ls.flags & LSO_RR || ac)
-		create_directory(&ls, &ac);
-	if (ac < 2)
-		ls.flags &= ~LSO_ARGC;
-	if (ls.flags & LSO_L)
-		print_detailed(&ls);
-	else
-		print_basic(&ls);
+	ac ? load_info_from_argument(&ls, ac, av) : load_info_from_directory(&ls);
+	if (ls.file && ls.curr_file)
+		call_sorting_option(&ls);
+	(ls.flags & LSO_RR || ac) ? create_directory(&ls, &ac) : 0;
+	ac < 2 ? ls.flags &= ~LSO_ARGC : 0;
+	ls.flags & LSO_L ? print_detailed(&ls) : print_basic(&ls);
 	ac = 0;
 	next_dir(&ls);
 	while (ls.directory)
 	{
 		load_info_from_directory(&ls);
-		sort_ascii(ls.file, ls.curr_file);
-		while (ls.file->prev)
-			ls.file = ls.file->prev;
-		if (ls.flags & LSO_T)
-		{
-			sort_time(ls.file, ls.curr_file);
-			while (ls.file->prev)
-				ls.file = ls.file->prev;
-		}
-		ls.curr_file = ls.file;
+		if (ls.file && ls.curr_file)
+			call_sorting_option(&ls);
 		create_directory(&ls, &ac);
-		if (ls.flags & LSO_L)
-			print_detailed(&ls);
-		else
-			print_basic(&ls);
+		(ls.flags & LSO_L) ? print_detailed(&ls) : print_basic(&ls);
 		next_dir(&ls);
 	}
 	free_list(&ls);

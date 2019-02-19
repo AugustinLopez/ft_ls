@@ -16,7 +16,7 @@ void			print_basic_loop(t_ls *ls, int block_size)
 {
 	t_file		*tmp;
 
-	tmp = ls->file;
+	tmp = (ls->flags & LSO_R) ? ls->curr_file : ls->file ;
 	while (tmp)
 	{
 		if (ls->numfile-- == 0)
@@ -25,7 +25,7 @@ void			print_basic_loop(t_ls *ls, int block_size)
 			ft_printf("%*lld %s\n", block_size, tmp->stat.st_blocks, tmp->name);
 		else
 			ft_printf("%s\n", tmp->name);
-		tmp = tmp->next;
+		tmp = (ls->flags & LSO_R) ? tmp->prev : tmp->next;
 	}
 }
 
@@ -59,7 +59,8 @@ void			print_basic(t_ls *ls)
 	int	block_size;
 
 	block_size = 0;
-	if ((ls->flags & (LSO_RR | LSO_ARGC)) && ls->directory->zu)
+	if (ls->flags & (LSO_RR | LSO_ARGC)
+	&& ls->directory->zu && !(ls->flags & LSO_ERROPEN))
 		ft_printf("%s:\n", ls->directory->pv);
 	if ((ls->flags & LSO_S) && ls->numfile)
 		block_size = max_block_size(ls);

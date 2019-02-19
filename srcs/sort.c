@@ -60,7 +60,7 @@ void	sort_ascii(t_file *current, t_file *last)
 
 void	switch_name_date(t_file *first, t_file *next)
 {
-	while (first->next && first->stat.st_mtime > next->stat.st_mtime)
+	while (first->next && first->stat.st_mtime < next->stat.st_mtime)
 		first = first->next;
 	if (next->prev != NULL)
 		next->prev->next = next->next;
@@ -85,7 +85,7 @@ void	sort_time(t_file *current, t_file *last)
 	while (current->next)
 	{
 		next = current->next;
-		if (current->stat.st_mtime < next->stat.st_mtime)
+		if (current->stat.st_mtime > next->stat.st_mtime)
 		{
 			switch_name_date(first, next);
 			current = current->prev;

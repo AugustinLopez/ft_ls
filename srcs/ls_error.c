@@ -16,19 +16,14 @@ int			ls_print_error(char *str, int errflag)
 {
 	if (errflag == LSERR_USAGE)
 	{
-		dprintf(2, "ft_ls: invalid option -- \'%c\'\n", *str);
-		dprintf(2, "usage: ft_ls [-1lRarts] [file ...]\n");
+		ft_dprintf(2, "ft_ls: invalid option -- \'%c\'\n", *str);
+		ft_dprintf(2, "usage: ft_ls [-1lRarts] [file ...]\n");
 	}
-	else if (errflag == LSERR_OPENDIR)
-	{
-		dprintf(2, "ft_ls: cannot open directory ");
-		dprintf(2, "'%s': %s\n", str, strerror(errno));
-	}
-	else if (errflag == LSERR_OPENFILE)
-		dprintf(2, "ft_ls: cannot access '%s': %s\n", str, strerror(errno));
+	else if (errflag == LSERR_OPENFILE || errflag == LSERR_OPENDIR)
+		ft_dprintf(2, "ft_ls: cannot access '%s': %s\n", str, strerror(errno));
 	else if (errflag == LSERR_MALLOC)
-		dprintf(2, "MALLOC: ft_ls: %s\n", strerror(errno));
+		ft_dprintf(2, "ft_ls: %s\n", strerror(errno));
 	else if (errflag == LSERR_OTHER)
-		dprintf(2, "OTHER: ft_ls: %s: %s\n", str, strerror(errno));
+		ft_dprintf(2, "ft_ls: %s: %s\n", str, strerror(errno));
 	return (0);
 }

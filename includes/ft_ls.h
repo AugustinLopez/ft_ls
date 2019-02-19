@@ -29,6 +29,7 @@ enum {LSERR_USAGE, LSERR_MALLOC, LSERR_OTHER, LSERR_OPENFILE, LSERR_CLOSEDIR, LS
 # define LSO_TT 128
 # define LSO_1STFILE 256
 # define LSO_ARGC 512
+# define LSO_ERROPEN 1024
 
 
 typedef struct		stat 	t_stat;
@@ -44,7 +45,7 @@ typedef struct		s_file
 	time_t			lastmod;
 	blkcnt_t		block;*/
 	t_stat			stat;
-	char			*name;
+	char			name[NAME_MAX];
 	struct s_file	*prev;
 	struct s_file	*next;
 }					t_file;
@@ -65,10 +66,10 @@ int			ls_print_error(char *str, int errflag);
 int			load_info_from_directory(t_ls *ls);
 int			load_info_from_argument(t_ls *ls, int argc, char **argv);
 int			create_directory_from_arg(t_ls *ls);
+int			create_first_directory(t_ls *ls, int argc);
 int			create_directory(t_ls *ls, int *argc);
 void		sort2(t_ls *lkd_list);
 void		display_file(t_file *file);
-int			next_dir(t_ls *ls);
 void	sort_ascii(t_file *current, t_file *last);
 void	sort_time(t_file *current, t_file *last);
 void		print_ls(t_ls *liste1);
