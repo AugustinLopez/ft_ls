@@ -6,7 +6,7 @@
 #    By: aulopez <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/12 11:06:27 by aulopez           #+#    #+#              #
-#    Updated: 2019/02/14 12:20:25 by aulopez          ###   ########.fr        #
+#    Updated: 2019/02/20 10:48:32 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME=ft_ls
 
 # --- 1.Source/Header ----------------------------------------------------------
 
-SRC=main ls_parsing ls_error ls_load_info ls_basic_print ls_detailed_print ls_directory sort
+SRC=ls_main ls_parsing ls_error ls_load_info ls_basic_print ls_detailed_print ls_directory sort
 HDR=libft.h ft_ls.h
 
 # --- 2.Path -------------------------------------------------------------------

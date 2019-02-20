@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:19:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/20 10:00:14 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/20 12:14:24 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,14 +104,11 @@ void						print_detailed_loop(t_ls *ls, long long (*s)[10])
 		else
 			ft_printf("%*lld ", (*s)[4], tmp->stat.st_size);
 		t = ctime(&tmp->stat.st_mtime) + 4;
-		if (time(NULL) > 60 * 60 * 24 * 30 * 6
+		if (ls->flags & LSO_TT)
+			ft_printf("%.20s %s", t, tmp->name);
+		else if (time(NULL) > 60 * 60 * 24 * 30 * 6
 		&& tmp->stat.st_mtime > time(NULL) - 60 * 60 * 24 * 30 * 6)
-		{
-			if (ls->flags & LSO_TT)
-				ft_printf("%.15s %s", t, tmp->name);
-			else
-				ft_printf("%.12s %s", t, tmp->name);
-		}
+			ft_printf("%.12s %s", t, tmp->name);
 		else
 			ft_printf("%.6s  %.4s %s", t, t + 16, tmp->name);
 		if (attr[0] == 'l')
@@ -159,6 +156,10 @@ void						set_detailed_list_length(t_ls *ls, long long (*s)[10])
 			(*s)[6] = (*s)[6] < minor(stat.st_rdev) ? minor(stat.st_rdev) : (*s)[6];
 			(*s)[8] = 1;
 		}
+		if (S_ISDIR(stat.st_mode)
+		&& !ft_strcmp(tmp->name, ".")
+		&& !ft_strcmp(tmp->name, ".."))
+			(*s)[9] = 1;
 		tmp = tmp->next;
 	}
 	(*s)[0] = ft_nprintf("%lld", (*s)[0]);
@@ -178,9 +179,9 @@ void						print_detailed(t_ls *ls)
 	long long	size[10];
 
 	ft_bzero(size, 10 * (sizeof(long long)));
-	if(ls->flags & (LSO_RR | LSO_ARGC) && ls->file && ls->directory->zu && !(ls->flags & LSO_ERROPEN))
-		ft_printf("%s:\n", ls->directory->pv);
 	set_detailed_list_length(ls, &size);
+	if(ls->flags & (LSO_RR | LSO_ARGC) && ls->file && ls->directory->zu && !(ls->flags & LSO_ERROPEN) && size[9])
+		ft_printf("%s:\n", ls->directory->pv);
 	if (ls->numfile && ls->file)
 		ft_printf("total %d\n", (int)size[7]);
 	print_detailed_loop(ls, &size);

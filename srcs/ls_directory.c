@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 20:43:00 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/18 21:27:56 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/20 11:19:30 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,6 @@ inline static void		create_directory_from_arg_loop(t_ls *ls)
 	tmp2 = NULL;
 	tmp = ls->curr_file;
 	ls->curr_file = (ls->flags & LSO_R) ? ls->curr_file : ls->file;
-	//This function is not ok
-	//would probably be simpler to have a flag in order not to print
 	while (ls->curr_file && i++ < ls->numfile)
 	{
 		if (S_ISDIR(ls->curr_file->stat.st_mode))
@@ -112,7 +110,8 @@ inline static void		create_directory_from_arg_loop(t_ls *ls)
 			if (ls->curr_file->prev)
 				ls->curr_file->prev->next = ls->curr_file->next;
 			else
-				ls->file = ls->curr_file->next;
+				ls->file = ls->file->next;
+			ls->numfile--;
 		}
 		ls->curr_file = (ls->flags & LSO_R) ? ls->curr_file->prev : ls->curr_file->next;
 		tmp2 ? free(tmp2) : 0;

@@ -75,5 +75,5 @@ void	sort_time(t_file *current, t_file *last);
 void		print_ls(t_ls *liste1);
 void		print_basic(t_ls *ls);
 void		print_detailed(t_ls *ls);
-int			max_block_size(t_ls *ls);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:23:37 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/20 10:00:27 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/20 11:00:04 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int						main(int ac, char **av)
 		call_sorting_option(&ls);
 	(ls.flags & LSO_RR || ac) ? create_directory(&ls, &ac) : 0;
 	ac < 2 ? ls.flags &= ~LSO_ARGC : 0;
+	!ac && !ls.directory->next ? ls.flags &= ~LSO_RR : 0;
 	ls.flags & LSO_L ? print_detailed(&ls) : print_basic(&ls);
 	ls.curr_file = ls.file;
 	ac = 0;
