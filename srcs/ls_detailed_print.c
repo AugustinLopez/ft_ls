@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:19:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/20 16:18:34 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/20 16:33:17 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ inline static void			print_detailed_loop_2(t_ls *ls, t_file *tmp, long long (*s)
 	six_month = 60 * 60 * 24 * 30 * 6;
 	ls->flags & LSO_S ? ft_printf("%*lld ", (*s)[0], tmp->stat.st_blocks) : 0;
 	ft_printf("%s %*lld ", *attr, (*s)[1], tmp->stat.st_nlink);
-	!(*s)[10] ?
+	!(*s)[10] || getpwuid(tmp->stat.st_uid) ?
 		ft_printf("%-*s  ", (*s)[2], getpwuid(tmp->stat.st_uid)->pw_name) :
 		ft_printf("%-*lld  ", (*s)[2], tmp->stat.st_uid);
-	!(*s)[11] ?
+	!(*s)[11] || getgrgid(tmp->stat.st_gid) ?
 		ft_printf("%-*s  ", (*s)[3], getgrgid(tmp->stat.st_gid)->gr_name) :
 		ft_printf("%-*lld  ", (*s)[3], tmp->stat.st_gid);
 	((*s)[8] && ((*attr)[0] == 'b' || (*attr)[0] == 'c')) ?
