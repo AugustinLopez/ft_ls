@@ -67,6 +67,6 @@ void		sort_ascii(t_file *current, t_file *last);
 void		sort_time(t_file *current, t_file *last);
 void		print_ls(t_ls *liste1);
 void		print_basic(t_ls *ls, int first);
-void		print_detailed(t_ls *ls, int first);
+void		print_detailed(t_ls *ls, int non_first);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:19:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/20 12:31:28 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/20 15:57:22 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,41 @@ void						load_attribute(t_file *file, t_ls *ls, char (*attr)[12])
 	if (S_ISVTX & mode)
 		(*attr)[9] = (*attr)[9] == 'x' ? 't' : 'T';
 	(*attr)[10] = load_acl(ls);
-	//(*attr)[10] = ' ';
-	//(void)ls;
 	(*attr)[11] = 0;
 }
 
-void						print_detailed_loop(t_ls *ls, long long (*s)[10])
+inline static void			print_detailed_loop_2(t_ls *ls, t_file *tmp, long long (*s)[12], char (*attr)[12])
+{
+	char		*t;
+	int			six_month;
+
+	six_month = 60 * 60 * 24 * 30 * 6;
+	ls->flags & LSO_S ? ft_printf("%*lld ", (*s)[0], tmp->stat.st_blocks) : 0;
+	ft_printf("%s %*lld ", *attr, (*s)[1], tmp->stat.st_nlink);
+	!(*s)[10] ?
+		ft_printf("%-*s  ", (*s)[2], getpwuid(tmp->stat.st_uid)->pw_name) :
+		ft_printf("%-*lld  ", (*s)[2], tmp->stat.st_uid);
+	!(*s)[11] ?
+		ft_printf("%-*s  ", (*s)[3], getgrgid(tmp->stat.st_gid)->gr_name) :
+		ft_printf("%-*lld  ", (*s)[3], tmp->stat.st_gid);
+	((*s)[8] && ((*attr)[0] == 'b' || (*attr)[0] == 'c')) ?
+		ft_printf("%*lld, %*lld ", (*s)[5], major(tmp->stat.st_rdev),
+		(*s)[6], minor(tmp->stat.st_rdev)) :
+		ft_printf("%*lld ", (*s)[4], tmp->stat.st_size);
+	t = ctime(&tmp->stat.st_mtime) + 4;
+	if (ls->flags & LSO_TT)
+		ft_printf("%.20s %s", t, tmp->name);
+	else if (time(NULL) > six_month
+	&& tmp->stat.st_mtime > time(NULL) - six_month)
+		ft_printf("%.12s %s", t, tmp->name);
+	else
+		ft_printf("%.6s  %.4s %s", t, t + 16, tmp->name);
+}
+
+void						print_detailed_loop(t_ls *ls, long long (*s)[12])
 {
 	t_file		*tmp;
 	char		attr[12];
-	char		*t;
 	char		buf[PATH_MAX + 1];
 
 	tmp = (ls->flags & LSO_R) ? ls->curr_file : ls->file;
@@ -87,30 +112,8 @@ void						print_detailed_loop(t_ls *ls, long long (*s)[10])
 			break ;
 		((char*)(ls->directory->pv))[ls->directory->zu] = 0;
 		ft_strcat(ls->directory->pv, tmp->name);
-		if (ls->flags & LSO_S)
-			ft_printf("%*lld ", (*s)[0], tmp->stat.st_blocks);
 		load_attribute(tmp, ls, &attr);
-		ft_printf("%s %*lld ", attr, (*s)[1], tmp->stat.st_nlink);
-		if (getpwuid(tmp->stat.st_uid))
-			ft_printf("%-*s  ", (*s)[2], getpwuid(tmp->stat.st_uid)->pw_name);
-		else
-			ft_printf("%-*lld  ", (*s)[2], tmp->stat.st_uid);
-		if (getgrgid(tmp->stat.st_gid))
-			ft_printf("%-*s  ", (*s)[3], getgrgid(tmp->stat.st_gid)->gr_name);
-		else
-			ft_printf("%-*lld  ", (*s)[3], tmp->stat.st_gid);
-		if ((*s)[8] && (attr[0] == 'b' || attr[0] == 'c'))
-			ft_printf("%*lld, %*lld ", (*s)[5], major(tmp->stat.st_rdev), (*s)[6], minor(tmp->stat.st_rdev));
-		else
-			ft_printf("%*lld ", (*s)[4], tmp->stat.st_size);
-		t = ctime(&tmp->stat.st_mtime) + 4;
-		if (ls->flags & LSO_TT)
-			ft_printf("%.20s %s", t, tmp->name);
-		else if (time(NULL) > 60 * 60 * 24 * 30 * 6
-		&& tmp->stat.st_mtime > time(NULL) - 60 * 60 * 24 * 30 * 6)
-			ft_printf("%.12s %s", t, tmp->name);
-		else
-			ft_printf("%.6s  %.4s %s", t, t + 16, tmp->name);
+		print_detailed_loop_2(ls, tmp, s, &attr);
 		if (attr[0] == 'l')
 		{
 			ft_bzero(buf, PATH_MAX + 1);
@@ -124,42 +127,47 @@ void						print_detailed_loop(t_ls *ls, long long (*s)[10])
 	}
 }
 
-void						set_detailed_list_length(t_ls *ls, long long (*s)[10])
+inline static void			length_loop(long long (*s)[12], t_file *tmp)
+{
+	t_stat	stat;
+
+	stat = tmp->stat;
+	(*s)[7] += stat.st_blocks;
+	(*s)[0] = (*s)[0] < stat.st_blocks ? stat.st_blocks : (*s)[0];
+	if ((*s)[1] < (signed long long)stat.st_nlink)
+		(*s)[1] = (signed long long)stat.st_nlink;
+	(*s)[9] = (getpwuid(stat.st_uid)) ?
+		ft_strlen(getpwuid(stat.st_uid)->pw_name) :
+		ft_nprintf("%lld%n", stat.st_uid, &((*s)[10]));
+	(*s)[2] = (*s)[2] < (*s)[9] ? (*s)[9] : (*s)[2];
+	(*s)[9] = (getgrgid(stat.st_gid)) ?
+		ft_strlen(getgrgid(stat.st_gid)->gr_name) :
+		ft_nprintf("%lld%n", stat.st_gid, &((*s)[11]));
+	(*s)[3] = (*s)[3] < (*s)[9] ? (*s)[9] : (*s)[3];
+	if (!S_ISCHR(stat.st_mode))
+		(*s)[4] = (*s)[4] < stat.st_size ? stat.st_size : (*s)[4];
+	else
+	{
+		(*s)[9] = major(stat.st_rdev);
+		(*s)[5] = (*s)[5] < (*s)[9] ? (*s)[9]: (*s)[5];
+		(*s)[9] = minor(stat.st_rdev);
+		(*s)[6] = (*s)[6] < (*s)[9] ? (*s)[9] : (*s)[6];
+		(*s)[8] = 1;
+	}
+}
+
+void						set_detailed_list_length(t_ls *ls, long long (*s)[12])
 {
 	t_file		*tmp;
-	t_stat		stat;
 	size_t		numfile;
-	long long	len;
 
 	tmp = ls->file;
 	numfile = ls->numfile;
-	len = 0;
 	while (tmp)
 	{
 		if (numfile-- == 0)
 			break ;
-		stat = tmp->stat;
-		(*s)[7] += stat.st_blocks;
-		(*s)[0] = (*s)[0] < stat.st_blocks ? stat.st_blocks : (*s)[0];
-		(*s)[1] = (*s)[1] < (signed long long)stat.st_nlink ? (signed long long)stat.st_nlink : (*s)[1];
-		if (getpwuid(stat.st_uid))
-			len = ft_strlen(getpwuid(stat.st_uid)->pw_name);
-		(*s)[2] = (*s)[2] < len ? len : (*s)[2];
-		if (getgrgid(stat.st_gid))
-			len = ft_strlen(getgrgid(stat.st_gid)->gr_name);
-		(*s)[3] = (*s)[3] < len ? len : (*s)[3];
-		if (!S_ISCHR(stat.st_mode))
-			(*s)[4] = (*s)[4] < stat.st_size ? stat.st_size : (*s)[4];
-		else
-		{
-			(*s)[5] = (*s)[5] < major(stat.st_rdev) ? major(stat.st_rdev) : (*s)[5];
-			(*s)[6] = (*s)[6] < minor(stat.st_rdev) ? minor(stat.st_rdev) : (*s)[6];
-			(*s)[8] = 1;
-		}
-		if (S_ISDIR(stat.st_mode)
-		&& !ft_strcmp(tmp->name, ".")
-		&& !ft_strcmp(tmp->name, ".."))
-			(*s)[9] = 1;
+		length_loop(s, tmp);
 		tmp = tmp->next;
 	}
 	(*s)[0] = ft_nprintf("%lld", (*s)[0]);
@@ -174,19 +182,26 @@ void						set_detailed_list_length(t_ls *ls, long long (*s)[10])
 	}
 }
 
-void						print_detailed(t_ls *ls, int first)
-{
-	long long	size[10];
+/*
+** 0-4 are block/link/user/group/size length
+** 5-6 are major/minor
+** 7 is total block
+** 8 is used to know if there are major/minor
+** 9 is a temp variable
+** if 10/11,no name associated to a uid/gid : we use the ID instead
+*/
 
-	ft_bzero(size, 10 * (sizeof(long long)));
-	size[9] = first;
+void						print_detailed(t_ls *ls, int non_first)
+{
+	long long	size[12];
+
+	ft_bzero(size, 12 * (sizeof(long long)));
 	set_detailed_list_length(ls, &size);
-	if(ls->flags & (LSO_RR | LSO_ARGC) && ls->file && ls->directory->zu && !(ls->flags & LSO_ERROPEN) && size[9])
+	if (non_first && !(ls->flags & LSO_ERROPEN))
 		ft_printf("%s:\n", ls->directory->pv);
 	if (ls->numfile && ls->file)
 		ft_printf("total %d\n", (int)size[7]);
 	print_detailed_loop(ls, &size);
-	if (ls->flags & (LSO_ARGC | LSO_RR))
-		if (ls->file && ls->directory->next)
-			ft_putchar('\n');
+	if (ls->flags & (LSO_ARGC | LSO_RR) && (ls->file && ls->directory->next))
+		ft_putchar('\n');
 }
