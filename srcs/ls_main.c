@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:23:37 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/20 14:50:32 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/20 14:52:57 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ inline static void		next_dir(t_ls *ls)
 	ls->directory = ls->directory->next;
 	ls->curr_dir = ls->directory;
 	ft_lstdelone(&tmp, *ft_lstfree);
-	ls.curr_file = ls.file;
+	ls->curr_file = ls->file;
 }
 
 inline static int		initialisation(t_ls *ls, int *ac, char ***av)
