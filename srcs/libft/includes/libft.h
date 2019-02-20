@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 08:40:39 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/01 12:50:13 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/20 14:47:57 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,18 @@ typedef struct		s_list
 	size_t			zu;
 	struct s_list	*next;
 }					t_list;
+
+/*
+** --- Colors ------------------------------------------------------------------
+*/
+
+# define PF_RED			"\033[31m"
+# define PF_GREEN		"\033[32m"
+# define PF_YELLOW		"\033[33m"
+# define PF_BLUE		"\033[34m"
+# define PF_PURPLE		"\033[35m"
+# define PF_CYAN		"\033[36m"
+# define PF_EOC			"\033[0m"
 
 /*
 ** --- Put Functions -----------------------------------------------------------
