@@ -23,5 +23,5 @@ There is also many options whitch are: -1 -t -T -R -r -a -l -t.
 
 They can be combined like this:
  ```
- ./ft_ls -TLaR
+ ./ft_ls -1lRartsTuofGAp
  ```
