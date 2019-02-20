@@ -6,13 +6,13 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 20:43:00 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/20 11:19:30 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/20 14:45:35 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-int		create_first_directory(t_ls *ls, int argc)
+int		create_first_directory(t_ls *ls, int option_ac)
 {
 	char		*tmp;
 	t_list		*tmpdir;
@@ -21,7 +21,7 @@ int		create_first_directory(t_ls *ls, int argc)
 		return (ls_print_error(0, LSERR_MALLOC));
 	if (!(tmp = ft_strnew(2 + 256)))
 		return (ls_print_error(0, LSERR_MALLOC));
-	if (argc)
+	if (option_ac)
 		tmpdir->zu = 0;
 	else
 	{
@@ -96,11 +96,11 @@ inline static void		create_directory_from_arg_loop(t_ls *ls)
 	t_file			*tmp2;
 
 	i = 0;
-	tmp2 = NULL;
 	tmp = ls->curr_file;
 	ls->curr_file = (ls->flags & LSO_R) ? ls->curr_file : ls->file;
 	while (ls->curr_file && i++ < ls->numfile)
 	{
+		tmp2 = NULL;
 		if (S_ISDIR(ls->curr_file->stat.st_mode))
 		{
 			tmp2 = ls->curr_file;
@@ -112,6 +112,7 @@ inline static void		create_directory_from_arg_loop(t_ls *ls)
 			else
 				ls->file = ls->file->next;
 			ls->numfile--;
+			i--;
 		}
 		ls->curr_file = (ls->flags & LSO_R) ? ls->curr_file->prev : ls->curr_file->next;
 		tmp2 ? free(tmp2) : 0;
@@ -119,13 +120,13 @@ inline static void		create_directory_from_arg_loop(t_ls *ls)
 	ls->curr_file = tmp;
 }
 
-int						create_directory(t_ls *ls, int *argc)
+int						create_directory(t_ls *ls, int option_ac)
 {
 	unsigned int	i;
 	t_file			*tmp;
 
 	i = 0;
-	if (*argc)
+	if (option_ac)
 		create_directory_from_arg_loop(ls);
 	else if (ls->flags & LSO_RR)
 	{

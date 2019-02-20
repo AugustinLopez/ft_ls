@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:06:08 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/20 11:55:13 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/20 13:56:46 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ int				max_block_size(t_ls *ls, long long *total, int *onedir)
 	return (ft_nprintf("%lld", highest));
 }
 
-void			print_basic(t_ls *ls)
+void			print_basic(t_ls *ls, int first)
 {
 	int			block_size;
 	long long	total_size;
 	int			onedir;
 
-	onedir = 0;
+	onedir = first;
 	block_size = 0;
 	total_size = 0;
 	if ((ls->flags & LSO_S) && ls->numfile)
@@ -70,6 +70,6 @@ void			print_basic(t_ls *ls)
 		ft_printf("total %d\n", total_size);
 	print_basic_loop(ls, block_size);
 	if (ls->flags & (LSO_ARGC | LSO_RR))
-		if (ls->file && ls->directory->next)
+		if (ls->directory->next && !(!ls->directory->zu && !ls->file))
 			ft_putchar('\n');
 }

@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:19:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/20 12:14:24 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/20 12:31:28 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,11 +174,12 @@ void						set_detailed_list_length(t_ls *ls, long long (*s)[10])
 	}
 }
 
-void						print_detailed(t_ls *ls)
+void						print_detailed(t_ls *ls, int first)
 {
 	long long	size[10];
 
 	ft_bzero(size, 10 * (sizeof(long long)));
+	size[9] = first;
 	set_detailed_list_length(ls, &size);
 	if(ls->flags & (LSO_RR | LSO_ARGC) && ls->file && ls->directory->zu && !(ls->flags & LSO_ERROPEN) && size[9])
 		ft_printf("%s:\n", ls->directory->pv);

@@ -37,13 +37,6 @@ typedef struct		dirent	t_dirent;
 
 typedef struct		s_file
 {
-	/*mode_t			mode;
-	nlink_t			link;
-	uid_t			user;
-	gid_t			group;
-	off_t			size;
-	time_t			lastmod;
-	blkcnt_t		block;*/
 	t_stat			stat;
 	char			name[NAME_MAX];
 	struct s_file	*prev;
@@ -66,14 +59,14 @@ int			ls_print_error(char *str, int errflag);
 int			load_info_from_directory(t_ls *ls);
 int			load_info_from_argument(t_ls *ls, int argc, char **argv);
 int			create_directory_from_arg(t_ls *ls);
-int			create_first_directory(t_ls *ls, int argc);
-int			create_directory(t_ls *ls, int *argc);
+int			create_first_directory(t_ls *ls, int option_ac);
+int			create_directory(t_ls *ls, int option_ac);
 void		sort2(t_ls *lkd_list);
 void		display_file(t_file *file);
-void	sort_ascii(t_file *current, t_file *last);
-void	sort_time(t_file *current, t_file *last);
+void		sort_ascii(t_file *current, t_file *last);
+void		sort_time(t_file *current, t_file *last);
 void		print_ls(t_ls *liste1);
-void		print_basic(t_ls *ls);
-void		print_detailed(t_ls *ls);
+void		print_basic(t_ls *ls, int first);
+void		print_detailed(t_ls *ls, int first);
 
 #endif
