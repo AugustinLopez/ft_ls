@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:23:37 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/18 19:29:48 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/20 10:00:27 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ inline static void		next_dir(t_ls *ls)
 	ft_lstdelone(&tmp, *ft_lstfree);
 }
 
-inline static void		test(t_ls *ls)
+/*inline static void		test(t_ls *ls)
 {
 	ft_printf("a: %s\n", ls->file->name);
 	ft_printf("b: %s\n", ls->curr_file->name);
-}
+}*/
 
 int						main(int ac, char **av)
 {

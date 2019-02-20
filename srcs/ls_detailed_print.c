@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:19:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/18 21:52:46 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/20 10:00:14 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ inline static char			file_type(int mode)
 		return ('-');
 }
 
-/*inline static char			load_acl(t_ls *ls)
+inline static char			load_acl(t_ls *ls)
 {
 	acl_t	tmp;
 
@@ -44,7 +44,7 @@ inline static char			file_type(int mode)
 		return ('+');
 	}
 	return (' ');
-}*/
+}
 
 void						load_attribute(t_file *file, t_ls *ls, char (*attr)[12])
 {
@@ -67,9 +67,9 @@ void						load_attribute(t_file *file, t_ls *ls, char (*attr)[12])
 		(*attr)[6] = (*attr)[6] == 'x' ? 's' : 'S';
 	if (S_ISVTX & mode)
 		(*attr)[9] = (*attr)[9] == 'x' ? 't' : 'T';
-	//(*attr)[10] = load_acl(ls);
-	(*attr)[10] = ' ';
-	(void)ls;
+	(*attr)[10] = load_acl(ls);
+	//(*attr)[10] = ' ';
+	//(void)ls;
 	(*attr)[11] = 0;
 }
 

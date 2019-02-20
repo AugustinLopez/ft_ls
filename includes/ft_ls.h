@@ -6,7 +6,7 @@
 # include <stdlib.h>
 # include <dirent.h>
 # include <sys/stat.h>
-# include <sys/sysmacros.h> //major/minor
+//# include <sys/sysmacros.h> //major/minor
 # include <pwd.h>
 # include <grp.h>
 # include <time.h>
