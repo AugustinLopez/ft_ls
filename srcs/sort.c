@@ -6,7 +6,7 @@
 /*   By: lubenard <lubenard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 22:51:42 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/20 10:10:44 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/20 12:13:53 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ void	sort_ascii(t_file *current, t_file *last)
 
 void	switch_name_date(t_file *first, t_file *next)
 {
-	while (first->next && first->stat.st_mtime > next->stat.st_mtime)
+	while (first->next// && (first->stat.st_mtimespec.tv_nsec > next->stat.st_mtimespec.tv_nsec)
+	&& (first->stat.st_mtime > next->stat.st_mtime))
 		first = first->next;
 	if (next->prev != NULL)
 		next->prev->next = next->next;
@@ -81,11 +82,15 @@ void	sort_time(t_file *current, t_file *last)
 	other = last->next;
 	last->next = NULL;
 	first = current;
+	printf("Its rewind time !\n");
 	while (current->next)
 	{
 		next = current->next;
-		if (current->stat.st_mtime < next->stat.st_mtime)
+		if (//(current->stat.st_mtimespec.tv_nsec < next->stat.st_mtimespec.tv_nsec)
+		//&&
+		(current->stat.st_mtime > next->stat.st_mtime))
 		{
+			printf("%s - petit que %s\n", current->name, next->name);
 			switch_name_date(first, next);
 			current = current->prev;
 			while (first->prev)
