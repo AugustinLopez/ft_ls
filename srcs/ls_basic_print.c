@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:06:08 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/20 17:57:11 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/20 22:33:51 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void			print_basic_loop(t_ls *ls, int block_size)
 	tmp = (ls->flags & LSO_R) ? ls->curr_file : ls->file;
 	while (tmp)
 	{
+		if (ft_strcmp(tmp->name, ".") == 0 || ft_strcmp(tmp->name, ".."))
+			tmp = (ls->flags & LSO_R) ? tmp->prev : tmp->next;
 		if (ls->numfile-- == 0)
 			break ;
 		else if (ls->flags & LSO_S)

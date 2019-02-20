@@ -6,7 +6,7 @@
 #    By: aulopez <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/12 11:06:27 by aulopez           #+#    #+#              #
-#    Updated: 2019/02/20 10:48:32 by aulopez          ###   ########.fr        #
+#    Updated: 2019/02/20 22:46:20 by lubenard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,11 @@ $(PATH_OBJ)%.o:$(PATH_SRC)%.c $(INCLUDES)
 	@echo "$(CYAN)Creating $@$(EOC)"
 	@$(OPTION_O) $< -o $@
 
+onlylib:
+	@echo "$(YELLOW)Updating library... $(EOC)"
+	@make -C $(PATH_LIB) >> /dev/null
+	@echo "$(GREEN)Done$(EOC)"
+
 fcleanlib:
 	@echo "$(PURPLE)Removing library... $(EOC)"
 	@make -C $(PATH_LIB) fclean > /dev/null
@@ -78,4 +83,4 @@ fclean: clean fcleanlib
 
 re: fclean all
 
-.PHONY: all clean fclean re fcleanlib cleanlib
+.PHONY: all clean fclean re fcleanlib cleanlib onlylib
