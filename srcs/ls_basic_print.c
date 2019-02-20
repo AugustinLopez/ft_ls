@@ -6,25 +6,40 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:06:08 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/20 13:56:46 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/20 16:02:08 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
+void			set_colors(t_file *file)
+{
+	if (S_ISDIR(file->stat.st_mode))
+		printf("%s%s%s\n", PF_BLUE, file->name, PF_EOC);
+	else if (S_ISLNK(file->stat.st_mode))
+		printf("%s%s%s\n", PF_CYAN, file->name, PF_EOC);
+	else if (S_ISREG(file->stat.st_mode) && (S_IXUSR & file->stat.st_mode))
+		printf("%s%s%s\n", PF_RED, file->name, PF_EOC);
+	else
+		printf("%s\n", file->name);
+}
+
 void			print_basic_loop(t_ls *ls, int block_size)
 {
 	t_file		*tmp;
 
-	tmp = (ls->flags & LSO_R) ? ls->curr_file : ls->file ;
+	tmp = (ls->flags & LSO_R) ? ls->curr_file : ls->file;
 	while (tmp)
 	{
 		if (ls->numfile-- == 0)
 			break ;
 		else if (ls->flags & LSO_S)
-			ft_printf("%*lld %s\n", block_size, tmp->stat.st_blocks, tmp->name);
+		{
+			ft_printf("%*lld ", block_size, tmp->stat.st_blocks);
+			set_colors(tmp);
+		}
 		else
-			ft_printf("%s\n", tmp->name);
+			set_colors(tmp);
 		tmp = (ls->flags & LSO_R) ? tmp->prev : tmp->next;
 	}
 }
