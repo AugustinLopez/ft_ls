@@ -6,13 +6,13 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:19:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/20 16:33:17 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/20 18:25:05 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-inline static char			file_type(int mode)
+inline static char	file_type(int mode)
 {
 	if (S_ISREG(mode))
 		return ('-');
@@ -32,7 +32,7 @@ inline static char			file_type(int mode)
 		return ('-');
 }
 
-inline static char			load_acl(t_ls *ls)
+inline static char	load_acl(t_ls *ls)
 {
 	acl_t	tmp;
 
@@ -46,7 +46,7 @@ inline static char			load_acl(t_ls *ls)
 	return (' ');
 }
 
-void						load_attribute(t_file *file, t_ls *ls, char (*attr)[12])
+void				load_attribute(t_file *file, t_ls *ls, char (*attr)[12])
 {
 	int	mode;
 
@@ -71,7 +71,8 @@ void						load_attribute(t_file *file, t_ls *ls, char (*attr)[12])
 	(*attr)[11] = 0;
 }
 
-inline static void			print_detailed_loop_2(t_ls *ls, t_file *tmp, long long (*s)[12], char (*attr)[12])
+inline static void	print_detailed_loop_2(t_ls *ls, t_file *tmp,
+		long long (*s)[12], char (*attr)[12])
 {
 	char		*t;
 	int			six_month;
@@ -82,7 +83,8 @@ inline static void			print_detailed_loop_2(t_ls *ls, t_file *tmp, long long (*s)
 	!(*s)[10] || getpwuid(tmp->stat.st_uid) ?
 		ft_printf("%-*s  ", (*s)[2], getpwuid(tmp->stat.st_uid)->pw_name) :
 		ft_printf("%-*lld  ", (*s)[2], tmp->stat.st_uid);
-	!(*s)[11] || getgrgid(tmp->stat.st_gid) ?
+	if (ls->flags & !LSO_O)
+		!(*s)[11] || getgrgid(tmp->stat.st_gid) ?
 		ft_printf("%-*s  ", (*s)[3], getgrgid(tmp->stat.st_gid)->gr_name) :
 		ft_printf("%-*lld  ", (*s)[3], tmp->stat.st_gid);
 	((*s)[8] && ((*attr)[0] == 'b' || (*attr)[0] == 'c')) ?
@@ -91,15 +93,15 @@ inline static void			print_detailed_loop_2(t_ls *ls, t_file *tmp, long long (*s)
 		ft_printf("%*lld ", (*s)[4], tmp->stat.st_size);
 	t = ctime(&tmp->stat.st_mtime) + 4;
 	if (ls->flags & LSO_TT)
-		ft_printf("%.20s %s", t, tmp->name);
+		ft_printf("%.20s ", t);
 	else if (time(NULL) > six_month
 	&& tmp->stat.st_mtime > time(NULL) - six_month)
-		ft_printf("%.12s %s", t, tmp->name);
+		ft_printf("%.12s ", t);
 	else
-		ft_printf("%.6s  %.4s %s", t, t + 16, tmp->name);
+		ft_printf("%.6s  %.4s ", t, t + 16);
 }
 
-void						print_detailed_loop(t_ls *ls, long long (*s)[12])
+void				print_detailed_loop(t_ls *ls, long long (*s)[12])
 {
 	t_file		*tmp;
 	char		attr[12];
@@ -114,6 +116,7 @@ void						print_detailed_loop(t_ls *ls, long long (*s)[12])
 		ft_strcat(ls->directory->pv, tmp->name);
 		load_attribute(tmp, ls, &attr);
 		print_detailed_loop_2(ls, tmp, s, &attr);
+		set_colors(tmp, ls);
 		if (attr[0] == 'l')
 		{
 			ft_bzero(buf, PATH_MAX + 1);
@@ -127,7 +130,7 @@ void						print_detailed_loop(t_ls *ls, long long (*s)[12])
 	}
 }
 
-inline static void			length_loop(long long (*s)[12], t_file *tmp)
+inline static void	length_loop(long long (*s)[12], t_file *tmp)
 {
 	t_stat	stat;
 
@@ -149,14 +152,14 @@ inline static void			length_loop(long long (*s)[12], t_file *tmp)
 	else
 	{
 		(*s)[9] = major(stat.st_rdev);
-		(*s)[5] = (*s)[5] < (*s)[9] ? (*s)[9]: (*s)[5];
+		(*s)[5] = (*s)[5] < (*s)[9] ? (*s)[9] : (*s)[5];
 		(*s)[9] = minor(stat.st_rdev);
 		(*s)[6] = (*s)[6] < (*s)[9] ? (*s)[9] : (*s)[6];
 		(*s)[8] = 1;
 	}
 }
 
-void						set_detailed_list_length(t_ls *ls, long long (*s)[12])
+void				set_detailed_list_length(t_ls *ls, long long (*s)[12])
 {
 	t_file		*tmp;
 	size_t		numfile;
@@ -191,7 +194,7 @@ void						set_detailed_list_length(t_ls *ls, long long (*s)[12])
 ** if 10/11,no name associated to a uid/gid : we use the ID instead
 */
 
-void						print_detailed(t_ls *ls, int non_first)
+void				print_detailed(t_ls *ls, int non_first)
 {
 	long long	size[12];
 

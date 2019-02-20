@@ -6,13 +6,13 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 20:43:00 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/20 14:45:35 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/20 18:22:10 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-int		create_first_directory(t_ls *ls, int option_ac)
+int							create_first_directory(t_ls *ls, int option_ac)
 {
 	char		*tmp;
 	t_list		*tmpdir;
@@ -35,7 +35,7 @@ int		create_first_directory(t_ls *ls, int option_ac)
 	return (1);
 }
 
-inline static int		create_another_directory(t_ls *ls)
+inline static int			create_another_directory(t_ls *ls)
 {
 	size_t		i;
 	t_list		*tmpdir;
@@ -62,7 +62,7 @@ inline static int		create_another_directory(t_ls *ls)
 	return (1);
 }
 
-inline static int		create_directory_from_arg_unit(t_ls *ls)
+inline static int			create_directory_from_arg_unit(t_ls *ls)
 {
 	char		*tmp;
 	size_t		i;
@@ -89,7 +89,7 @@ inline static int		create_directory_from_arg_unit(t_ls *ls)
 	return (1);
 }
 
-inline static void		create_directory_from_arg_loop(t_ls *ls)
+inline static void			create_directory_from_arg_loop(t_ls *ls)
 {
 	unsigned int	i;
 	t_file			*tmp;
@@ -114,13 +114,14 @@ inline static void		create_directory_from_arg_loop(t_ls *ls)
 			ls->numfile--;
 			i--;
 		}
-		ls->curr_file = (ls->flags & LSO_R) ? ls->curr_file->prev : ls->curr_file->next;
+		ls->curr_file = (ls->flags & LSO_R) ?
+			ls->curr_file->prev : ls->curr_file->next;
 		tmp2 ? free(tmp2) : 0;
 	}
 	ls->curr_file = tmp;
 }
 
-int						create_directory(t_ls *ls, int option_ac)
+int							create_directory(t_ls *ls, int option_ac)
 {
 	unsigned int	i;
 	t_file			*tmp;
@@ -138,7 +139,8 @@ int						create_directory(t_ls *ls, int option_ac)
 			&& ft_strcmp(ls->curr_file->name, ".")
 			&& ft_strcmp(ls->curr_file->name, ".."))
 				create_another_directory(ls);
-			ls->curr_file = (ls->flags & LSO_R) ? ls->curr_file->prev : ls->curr_file->next;
+			ls->curr_file = (ls->flags & LSO_R) ?
+				ls->curr_file->prev : ls->curr_file->next;
 		}
 		ls->curr_file = tmp;
 	}

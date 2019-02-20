@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/14 12:09:32 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/20 10:04:05 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/20 18:26:29 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int						load_info_from_directory(t_ls *ls)
 	((char*)(ls->directory->pv))[ls->directory->zu] = 0;
 	return (0);
 }
-
 
 int						load_info_from_argument(t_ls *ls, int argc, char **argv)
 {

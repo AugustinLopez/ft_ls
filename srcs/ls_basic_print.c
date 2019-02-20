@@ -6,22 +6,24 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:06:08 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/20 16:02:08 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/20 17:57:11 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-void			set_colors(t_file *file)
+void			set_colors(t_file *file, t_ls *ls)
 {
-	if (S_ISDIR(file->stat.st_mode))
-		printf("%s%s%s\n", PF_BLUE, file->name, PF_EOC);
+	if (S_ISDIR(file->stat.st_mode) && (ls->flags & LSO_P)) // to fix (should not but nor working, don't know why)
+		ft_printf("%s%s%s/", PF_BLUE, file->name, PF_EOC);
+	else if (S_ISDIR(file->stat.st_mode))
+		ft_printf("%s%s%s", PF_BLUE, file->name, PF_EOC);
 	else if (S_ISLNK(file->stat.st_mode))
-		printf("%s%s%s\n", PF_CYAN, file->name, PF_EOC);
+		ft_printf("%s%s%s", PF_CYAN, file->name, PF_EOC);
 	else if (S_ISREG(file->stat.st_mode) && (S_IXUSR & file->stat.st_mode))
-		printf("%s%s%s\n", PF_RED, file->name, PF_EOC);
+		ft_printf("%s%s%s", PF_RED, file->name, PF_EOC);
 	else
-		printf("%s\n", file->name);
+		ft_printf("%s", file->name);
 }
 
 void			print_basic_loop(t_ls *ls, int block_size)
@@ -36,10 +38,11 @@ void			print_basic_loop(t_ls *ls, int block_size)
 		else if (ls->flags & LSO_S)
 		{
 			ft_printf("%*lld ", block_size, tmp->stat.st_blocks);
-			set_colors(tmp);
+			set_colors(tmp, ls);
 		}
 		else
-			set_colors(tmp);
+			set_colors(tmp, ls);
+		ft_putchar('\n');
 		tmp = (ls->flags & LSO_R) ? tmp->prev : tmp->next;
 	}
 }
