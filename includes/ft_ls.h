@@ -30,7 +30,12 @@ enum {LSERR_USAGE, LSERR_MALLOC, LSERR_OTHER, LSERR_OPENFILE, LSERR_CLOSEDIR, LS
 # define LSO_1STFILE 256
 # define LSO_ARGC 512
 # define LSO_ERROPEN 1024
-
+# define LSO_U 2048
+# define LSO_O 4096
+# define LSO_F 8192
+# define LSO_GG 16384
+# define LSO_AA 32768
+# define LSO_FF 65536
 
 typedef struct		stat 	t_stat;
 typedef struct		dirent	t_dirent;
@@ -68,5 +73,6 @@ void		sort_time(t_file *current, t_file *last);
 void		print_ls(t_ls *liste1);
 void		print_basic(t_ls *ls, int first);
 void		print_detailed(t_ls *ls, int non_first);
+void		set_colors(t_file *file);
 
 #endif

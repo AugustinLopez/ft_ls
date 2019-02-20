@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:21:00 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/18 20:11:15 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/20 16:32:42 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int			ls_print_error(char *str, int errflag)
 	if (errflag == LSERR_USAGE)
 	{
 		ft_dprintf(2, "ft_ls: invalid option -- \'%c\'\n", *str);
-		ft_dprintf(2, "usage: ft_ls [-1lRarts] [file ...]\n");
+		ft_dprintf(2, "usage: ft_ls [-1lRartsTuofGAF] [file ...]\n");
 	}
 	else if (errflag == LSERR_OPENFILE || errflag == LSERR_OPENDIR)
 		ft_dprintf(2, "ft_ls: cannot access '%s': %s\n", str, strerror(errno));
