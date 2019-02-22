@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:19:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/22 17:36:18 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/22 18:30:03 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,7 @@ inline static void	print_detailed_loop_2(t_ls *ls, t_file *tmp,
 		long long (*s)[12], char (*attr)[12])
 {
 	char		*t;
-	int			six_month;
 
-	six_month = 60 * 60 * 24 * 30 * 6;
 	ls->flags & LSO_S ? ft_printf("%*lld ", (*s)[0], tmp->stat.st_blocks) : 0;
 	ft_printf("%s %*lld ", *attr, (*s)[1], tmp->stat.st_nlink);
 	!(*s)[10] || getpwuid(tmp->stat.st_uid) ?
@@ -85,8 +83,8 @@ inline static void	print_detailed_loop_2(t_ls *ls, t_file *tmp,
 		ft_printf("%-*lld  ", (*s)[2], tmp->stat.st_uid);
 	if (!(ls->flags & LSO_O))
 		!(*s)[11] || getgrgid(tmp->stat.st_gid) ?
-		ft_printf("%-*s  ", (*s)[3], getgrgid(tmp->stat.st_gid)->gr_name) :
-		ft_printf("%-*lld  ", (*s)[3], tmp->stat.st_gid);
+			ft_printf("%-*s  ", (*s)[3], getgrgid(tmp->stat.st_gid)->gr_name) :
+			ft_printf("%-*lld  ", (*s)[3], tmp->stat.st_gid);
 	((*s)[8] && ((*attr)[0] == 'b' || (*attr)[0] == 'c')) ?
 		ft_printf("%*lld, %*lld ", (*s)[5], major(tmp->stat.st_rdev),
 		(*s)[6], minor(tmp->stat.st_rdev)) :
@@ -94,18 +92,27 @@ inline static void	print_detailed_loop_2(t_ls *ls, t_file *tmp,
 	t = ctime(&tmp->stat.st_mtime) + 4;
 	if (ls->flags & LSO_TT)
 		ft_printf("%.20s ", t);
-	else if (time(NULL) > six_month
-	&& tmp->stat.st_mtime > time(NULL) - six_month)
+	else if (time(NULL) > LS_SIX_MONTH
+	&& tmp->stat.st_mtime > time(NULL) - LS_SIX_MONTH)
 		ft_printf("%.12s ", t);
 	else
 		ft_printf("%.6s  %.4s ", t, t + 16);
+	set_colors(tmp, ls);
+}
+
+inline static void	print_link(char *path)
+{
+	char	buf[PATH_MAX + 1];
+
+	ft_bzero(buf, PATH_MAX + 1);
+	readlink(path, buf, PATH_MAX);
+	ft_printf(" -> %s", buf);
 }
 
 void				print_detailed_loop(t_ls *ls, long long (*s)[12])
 {
 	t_file		*tmp;
 	char		attr[12];
-	char		buf[PATH_MAX + 1];
 
 	tmp = (ls->flags & LSO_R) ? ls->curr_file : ls->file;
 	while (tmp)
@@ -122,15 +129,8 @@ void				print_detailed_loop(t_ls *ls, long long (*s)[12])
 		ft_strcat(ls->directory->pv, tmp->name);
 		load_attribute(tmp, ls, &attr);
 		print_detailed_loop_2(ls, tmp, s, &attr);
-		set_colors(tmp, ls);
-		if (attr[0] == 'l')
-		{
-			ft_bzero(buf, PATH_MAX + 1);
-			readlink((char*)ls->directory->pv, buf, PATH_MAX);
-			ft_printf(" -> %s\n", buf);
-		}
-		else
-			ft_putchar('\n');
+		attr[0] == 'l' ? print_link((char*)ls->directory->pv) : 0;
+		ft_putchar('\n');
 		((char*)(ls->directory->pv))[ls->directory->zu] = 0;
 		tmp = (ls->flags & LSO_R) ? tmp->prev : tmp->next;
 	}
@@ -206,8 +206,12 @@ void				print_detailed(t_ls *ls, int non_first)
 
 	ft_bzero(size, 12 * (sizeof(long long)));
 	set_detailed_list_length(ls, &size);
+	if (ls->directory->zu)
+		((char*)ls->directory->pv)[ls->directory->zu - 1] = 0;
 	if (non_first && !(ls->flags & LSO_ERROPEN))
 		ft_printf("%s:\n", ls->directory->pv);
+	if (ls->directory->zu)
+		((char*)ls->directory->pv)[ls->directory->zu - 1] = '/';
 	if (ls->numfile && ls->file)
 		ft_printf("total %d\n", (int)size[7]);
 	print_detailed_loop(ls, &size);

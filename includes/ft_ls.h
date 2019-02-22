@@ -36,6 +36,7 @@ enum {LSERR_USAGE, LSERR_MALLOC, LSERR_OTHER, LSERR_OPENFILE, LSERR_CLOSEDIR, LS
 # define LSO_1STFILE 16384
 # define LSO_ARGC 32768
 # define LSO_ERROPEN 65536
+# define LS_SIX_MONTH 15552000
 
 typedef struct		stat 	t_stat;
 typedef struct		dirent	t_dirent;
