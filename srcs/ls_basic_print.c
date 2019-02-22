@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:06:08 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/22 17:26:46 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/22 17:35:40 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void			set_colors(t_file *file, t_ls *ls)
 {
-	if (S_ISDIR(file->stat.st_mode) && (ls->flags & LSO_P)) // to fix (should not but nor working, don't know why)
-		ft_printf("%s%s/%s", PF_BLUE, file->name, PF_EOC);
+	if (S_ISDIR(file->stat.st_mode) && (ls->flags & LSO_P))
+		ft_printf("%s%s%s/", PF_BLUE, file->name, PF_EOC);
 	else if (S_ISDIR(file->stat.st_mode))
 		ft_printf("%s%s%s", PF_BLUE, file->name, PF_EOC);
 	else if (S_ISLNK(file->stat.st_mode))
