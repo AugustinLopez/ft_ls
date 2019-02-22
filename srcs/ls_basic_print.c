@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:06:08 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/22 17:20:57 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/22 17:26:46 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,11 @@ void			print_basic_loop(t_ls *ls, int block_size)
 	while (tmp)
 	{
 		if ((ls->flags & LSO_AA)
-			&& (!ft_strcmp(tmp->name, ".") || !ft_strcmp(tmp->name, ".."))) //need approval
+			&& (!ft_strcmp(tmp->name, ".") || !ft_strcmp(tmp->name, "..")))
+		{
+			tmp = (ls->flags & LSO_R) ? tmp->prev : tmp->next;
 			continue ;
+		}
 		if (ls->numfile-- == 0)
 			break ;
 		else if (ls->flags & LSO_S)

@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/14 12:09:32 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/20 18:26:29 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/22 17:25:57 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int						load_info_from_directory(t_ls *ls)
 		ls->flags |= LSO_1STFILE;
 		ls->curr_file = ls->file;
 		while ((dir = readdir(ddd)))
-			if ((dir->d_name[0] != '.' || ls->flags & LSO_A)
+			if ((dir->d_name[0] != '.' || ls->flags & (LSO_A | LSO_AA))
 			&& ++(ls->numfile))
 				load_file_stats(ls, &(dir->d_name[0]));
 	}

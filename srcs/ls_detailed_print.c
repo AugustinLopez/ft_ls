@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:19:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/22 17:21:10 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/22 17:27:08 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,10 @@ void				print_detailed_loop(t_ls *ls, long long (*s)[12])
 	{
 		if ((ls->flags & LSO_AA)
 			&& (!ft_strcmp(tmp->name, ".") || !ft_strcmp(tmp->name, ".."))) //need approval here too
+		{
+			tmp = (ls->flags & LSO_R) ? tmp->prev : tmp->next;
 			continue ;
+		}
 		if (ls->numfile-- == 0)
 			break ;
 		((char*)(ls->directory->pv))[ls->directory->zu] = 0;
