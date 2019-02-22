@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 13:55:15 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/20 18:05:47 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/22 17:46:25 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ inline static int		ls_available_option(char *av, int *flags)
 		if (!(i = ft_strchri("1lRartsTuofGAp", av[0])))
 			return (ls_print_error(av, LSERR_USAGE));
 		*flags |= (1 << (i - 1));
+	}
+	if (*flags & LSO_F)
+	{
+		*flags |= LSO_A;
+		*flags &= ~LSO_AA;
 	}
 	return (i);
 }
