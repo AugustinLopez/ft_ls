@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:23:37 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/20 18:25:50 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/22 17:16:10 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ inline static void		call_sorting_option(t_ls *ls)
 {
 	unsigned int i;
 
-	if (ls->flags & !LSO_F) //need approval
-		sort_ascii(ls->file, ls->curr_file);
+	if (ls->flags & LSO_F)
+		return ;
+	sort_ascii(ls->file, ls->curr_file);
 	while (ls->file->prev)
 		ls->file = ls->file->prev;
 	ls->curr_file = ls->file;

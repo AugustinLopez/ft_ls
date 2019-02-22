@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:06:08 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/21 11:57:59 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/22 17:20:57 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void			set_colors(t_file *file, t_ls *ls)
 {
 	if (S_ISDIR(file->stat.st_mode) && (ls->flags & LSO_P)) // to fix (should not but nor working, don't know why)
-		ft_printf("%s%s%s/", PF_BLUE, file->name, PF_EOC);
+		ft_printf("%s%s/%s", PF_BLUE, file->name, PF_EOC);
 	else if (S_ISDIR(file->stat.st_mode))
 		ft_printf("%s%s%s", PF_BLUE, file->name, PF_EOC);
 	else if (S_ISLNK(file->stat.st_mode))
@@ -33,9 +33,9 @@ void			print_basic_loop(t_ls *ls, int block_size)
 	tmp = (ls->flags & LSO_R) ? ls->curr_file : ls->file;
 	while (tmp)
 	{
-		if ((ls->flags & LSO_A) && (ls->flags & LSO_AA)
-			&& (ft_strcmp(tmp->name, ".") == 0 || ft_strcmp(tmp->name, ".."))) //need approval
-			tmp = (ls->flags & LSO_R) ? tmp->prev : tmp->next;
+		if ((ls->flags & LSO_AA)
+			&& (!ft_strcmp(tmp->name, ".") || !ft_strcmp(tmp->name, ".."))) //need approval
+			continue ;
 		if (ls->numfile-- == 0)
 			break ;
 		else if (ls->flags & LSO_S)

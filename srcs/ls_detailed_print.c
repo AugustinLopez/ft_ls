@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:19:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/21 11:57:42 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/22 17:21:10 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ inline static void	print_detailed_loop_2(t_ls *ls, t_file *tmp,
 	!(*s)[10] || getpwuid(tmp->stat.st_uid) ?
 		ft_printf("%-*s  ", (*s)[2], getpwuid(tmp->stat.st_uid)->pw_name) :
 		ft_printf("%-*lld  ", (*s)[2], tmp->stat.st_uid);
-	if (ls->flags & !LSO_O)
+	if (!(ls->flags & LSO_O))
 		!(*s)[11] || getgrgid(tmp->stat.st_gid) ?
 		ft_printf("%-*s  ", (*s)[3], getgrgid(tmp->stat.st_gid)->gr_name) :
 		ft_printf("%-*lld  ", (*s)[3], tmp->stat.st_gid);
@@ -110,9 +110,9 @@ void				print_detailed_loop(t_ls *ls, long long (*s)[12])
 	tmp = (ls->flags & LSO_R) ? ls->curr_file : ls->file;
 	while (tmp)
 	{
-		if ((ls->flags & LSO_A) && (ls->flags & LSO_AA)
-			&& (ft_strcmp(tmp->name, ".") == 0 || ft_strcmp(tmp->name, ".."))) //need approval here too
-			tmp = (ls->flags & LSO_R) ? tmp->prev : tmp->next;
+		if ((ls->flags & LSO_AA)
+			&& (!ft_strcmp(tmp->name, ".") || !ft_strcmp(tmp->name, ".."))) //need approval here too
+			continue ;
 		if (ls->numfile-- == 0)
 			break ;
 		((char*)(ls->directory->pv))[ls->directory->zu] = 0;

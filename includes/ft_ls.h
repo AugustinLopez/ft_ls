@@ -27,15 +27,15 @@ enum {LSERR_USAGE, LSERR_MALLOC, LSERR_OTHER, LSERR_OPENFILE, LSERR_CLOSEDIR, LS
 # define LSO_T 32
 # define LSO_S 64
 # define LSO_TT 128
-# define LSO_1STFILE 256
-# define LSO_ARGC 512
-# define LSO_ERROPEN 1024
-# define LSO_U 2048
-# define LSO_O 4096
-# define LSO_F 8192
-# define LSO_GG 16384
-# define LSO_AA 32768
-# define LSO_P 65536
+# define LSO_U 256
+# define LSO_O 512
+# define LSO_F 1024
+# define LSO_GG 2048
+# define LSO_AA 4096
+# define LSO_P 8192
+# define LSO_1STFILE 16384
+# define LSO_ARGC 32768
+# define LSO_ERROPEN 65536
 
 typedef struct		stat 	t_stat;
 typedef struct		dirent	t_dirent;
