@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:21:00 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/20 16:32:42 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/23 11:06:10 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int			ls_print_error(char *str, int errflag)
 		ft_dprintf(2, "usage: ft_ls [-1lRartsTuofGAF] [file ...]\n");
 	}
 	else if (errflag == LSERR_OPENFILE || errflag == LSERR_OPENDIR)
-		ft_dprintf(2, "ft_ls: cannot access '%s': %s\n", str, strerror(errno));
+		ft_dprintf(2, "ft_ls: %s: %s\n", str, strerror(errno));
 	else if (errflag == LSERR_MALLOC)
 		ft_dprintf(2, "ft_ls: %s\n", strerror(errno));
 	else if (errflag == LSERR_OTHER)

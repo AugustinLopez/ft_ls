@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:19:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/22 18:30:03 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/23 11:23:37 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ void				print_detailed(t_ls *ls, int non_first)
 		ft_printf("%s:\n", ls->directory->pv);
 	if (ls->directory->zu)
 		((char*)ls->directory->pv)[ls->directory->zu - 1] = '/';
-	if (ls->numfile && ls->file)
+	if (ls->numfile && ls->file && ls->directory->zu)
 		ft_printf("total %d\n", (int)size[7]);
 	print_detailed_loop(ls, &size);
 	if (ls->flags & (LSO_ARGC | LSO_RR) && (ls->file && ls->directory->next))

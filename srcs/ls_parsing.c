@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 13:55:15 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/22 17:49:33 by lubenard         ###   ########.fr       */
+/*   Updated: 2019/02/23 11:03:05 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ inline static int		ls_available_option(char *av, int *flags)
 	if (*flags & LSO_F)
 	{
 		*flags |= LSO_A;
-		*flags &= ~LSO_AA;
+		*flags &= ~(LSO_AA | LSO_R);
 	}
 	if (*flags & LSO_O)
 		*flags |= LSO_L;

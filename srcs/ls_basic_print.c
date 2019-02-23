@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:06:08 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/22 18:30:19 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/23 11:23:54 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,29 @@
 
 void			set_colors(t_file *file, t_ls *ls)
 {
-	if (S_ISDIR(file->stat.st_mode) && (ls->flags & LSO_P))
-		ft_printf("%s%s%s/", PF_BLUE, file->name, PF_EOC);
-	else if (S_ISDIR(file->stat.st_mode))
-		ft_printf("%s%s%s", PF_BLUE, file->name, PF_EOC);
-	else if (S_ISLNK(file->stat.st_mode))
-		ft_printf("%s%s%s", PF_PURPLE, file->name, PF_EOC);
-	else if (S_ISREG(file->stat.st_mode) && (S_IXUSR & file->stat.st_mode))
-		ft_printf("%s%s%s", PF_RED, file->name, PF_EOC);
+	if (ls->flags & LSO_GG)
+	{
+		if (S_ISDIR(file->stat.st_mode))
+			ft_printf("%s%s%s", PF_BLUE, file->name, PF_EOC);
+		else if (S_ISLNK(file->stat.st_mode))
+			ft_printf("%s%s%s", PF_PURPLE, file->name, PF_EOC);
+		else if (S_ISBLK(file->stat.st_mode))
+			ft_printf("%s%s%s", PF_CYAN, file->name, PF_EOC);
+		else if (S_ISCHR(file->stat.st_mode))
+			ft_printf("%s%s%s", PF_YELLOW, file->name, PF_EOC);
+		else if (S_ISSOCK(file->stat.st_mode))
+				ft_printf("%s%s%s", PF_CYAN, file->name, PF_EOC);
+		else if (S_ISFIFO(file->stat.st_mode))
+			ft_printf("%s%s%s", PF_BLACK, file->name, PF_EOC);
+		else if (S_ISREG(file->stat.st_mode) && (S_IXUSR & file->stat.st_mode))
+			ft_printf("%s%s%s", PF_RED, file->name, PF_EOC);
+		else
+			ft_printf("%s", file->name);
+	}
 	else
 		ft_printf("%s", file->name);
+	if (ls->flags & LSO_P && S_ISDIR(file->stat.st_mode))
+		ft_putchar('/');
 }
 
 void			print_basic_loop(t_ls *ls, int block_size)
@@ -92,7 +105,7 @@ void			print_basic(t_ls *ls, int first)
 		ft_printf("%s:\n", ls->directory->pv);
 	if (ls->directory->zu)
 		((char *)ls->directory->pv)[ls->directory->zu - 1] = '/';
-	if (ls->flags & LSO_S && ls->file)
+	if (ls->flags & LSO_S && ls->file && ls->directory->zu)
 		ft_printf("total %d\n", total_size);
 	print_basic_loop(ls, block_size);
 	if (ls->flags & (LSO_ARGC | LSO_RR))
