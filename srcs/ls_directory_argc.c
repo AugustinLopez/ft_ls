@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 15:02:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/25 16:32:22 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/25 16:58:04 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,30 +49,31 @@ inline static void			adjust_pointer(t_ls *ls)
 		ls->file = ls->file->next;
 }
 
-inline static void			handle_temp(t_ls *ls, t_file **tmp, t_file **start,
+inline static void			handle_temp(t_ls *ls, t_file **start,
 							int option)
 {
+	t_file *tmp;
+
 	if (!option)
 	{
 		if (!*start)
 		{
 			*start = ls->curr_file;
 			(*start)->next = NULL;
-			*tmp = *start;
 		}
 		else
 		{
-			(*tmp)->next = ls->curr_file;
-			*tmp = ls->curr_file;
+			ls->curr_file->next = *start;
+			(*start) = ls->curr_file;
 		}
 	}
 	else
 	{
 		while (*start)
 		{
-			*tmp = *start;
+			tmp = *start;
 			*start = (*start)->next;
-			free(*tmp);
+			free(tmp);
 		}
 	}
 }
@@ -86,22 +87,22 @@ void						create_directory_from_arg_loop(t_ls *ls)
 
 	i = 0;
 	tmp_start = NULL;
-	tmp2 = NULL;
 	tmp = ls->curr_file;
 	ls->curr_file = (ls->flags & LSO_R) ? ls->curr_file : ls->file;
 	while (ls->curr_file && i++ < ls->numfile)
 	{
+		tmp2 = (ls->flags & LSO_R) ?
+			ls->curr_file->prev : ls->curr_file->next;
 		if (S_ISDIR(ls->curr_file->stat.st_mode))
 		{
-			handle_temp(ls, &tmp2, &tmp_start, 0);
 			create_directory_from_arg_unit(ls);
 			adjust_pointer(ls);
+			handle_temp(ls, &tmp_start, 0);
 			ls->numfile--;
 			i--;
 		}
-		ls->curr_file = (ls->flags & LSO_R) ?
-			ls->curr_file->prev : ls->curr_file->next;
+		ls->curr_file = tmp2;
 	}
 	ls->curr_file = tmp;
-	handle_temp(ls, &tmp2, &tmp_start, 1);
+	handle_temp(ls, &tmp_start, 1);
 }
