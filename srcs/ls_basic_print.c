@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:06:08 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/23 11:23:54 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/25 14:46:37 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void			set_colors(t_file *file, t_ls *ls)
 		else if (S_ISCHR(file->stat.st_mode))
 			ft_printf("%s%s%s", PF_YELLOW, file->name, PF_EOC);
 		else if (S_ISSOCK(file->stat.st_mode))
-				ft_printf("%s%s%s", PF_CYAN, file->name, PF_EOC);
+			ft_printf("%s%s%s", PF_CYAN, file->name, PF_EOC);
 		else if (S_ISFIFO(file->stat.st_mode))
-			ft_printf("%s%s%s", PF_BLACK, file->name, PF_EOC);
+			ft_printf("%s%s%s", PF_UNDER, file->name, PF_EOC);
 		else if (S_ISREG(file->stat.st_mode) && (S_IXUSR & file->stat.st_mode))
 			ft_printf("%s%s%s", PF_RED, file->name, PF_EOC);
 		else

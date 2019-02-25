@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:21:00 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/23 11:06:10 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/25 14:46:16 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,35 @@
 
 int			ls_print_error(char *str, int errflag)
 {
+	char	**s;
+	size_t	i;
+
 	if (errflag == LSERR_USAGE)
 	{
 		ft_dprintf(2, "ft_ls: invalid option -- \'%c\'\n", *str);
 		ft_dprintf(2, "usage: ft_ls [-1lRartsTuofGAF] [file ...]\n");
+		return (0);
 	}
-	else if (errflag == LSERR_OPENFILE || errflag == LSERR_OPENDIR)
+	s = ft_strsplit(str, '/');
+	i = 0;
+	while (s[i])
+		i++;
+	i--;
+	if (errflag == LSERR_OPENFILE || errflag == LSERR_OPENDIR
+	|| errflag == LSERR_OTHER)
+		ft_dprintf(2, "ft_ls: %s: %s\n", s[i], strerror(errno));
+	else if (errflag == LSERR_MALLOC)
+		ft_dprintf(2, "ft_ls: %s\n", strerror(errno));
+	i = 0;
+	while (s[i])
+		free(s[i++]);
+	free(s);
+	return (0);
+}
+
+int			ls_print_error_argc(char *str, int errflag)
+{
+	if (errflag == LSERR_OPENFILE || errflag == LSERR_OPENDIR)
 		ft_dprintf(2, "ft_ls: %s: %s\n", str, strerror(errno));
 	else if (errflag == LSERR_MALLOC)
 		ft_dprintf(2, "ft_ls: %s\n", strerror(errno));

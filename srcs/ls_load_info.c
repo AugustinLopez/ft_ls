@@ -6,13 +6,13 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/14 12:09:32 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/22 17:25:57 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/25 15:18:33 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-inline static int		load_file_link(t_ls *ls)
+int						load_file_link(t_ls *ls)
 {
 	ls->flags &= ~LSO_1STFILE;
 	if (!(ls->file))
@@ -36,7 +36,7 @@ inline static int		load_file_link(t_ls *ls)
 	return (1);
 }
 
-inline static int		load_file_stats(t_ls *ls, char *filename)
+int						load_file_stats(t_ls *ls, char *filename)
 {
 	char	*tmp;
 
@@ -51,31 +51,44 @@ inline static int		load_file_stats(t_ls *ls, char *filename)
 	return (1);
 }
 
+inline static void		dir_has_opened(t_ls *ls, DIR *ddd, size_t *dot)
+{
+	t_dirent *dir;
+
+	ls->flags |= LSO_1STFILE;
+	ls->curr_file = ls->file;
+	*dot = 0;
+	while ((dir = readdir(ddd)))
+	{
+		if ((dir->d_name[0] != '.' || ls->flags & LSO_A
+		|| (ls->flags & LSO_AA && !ft_strcmp(dir->d_name, ".")
+		&& !ft_strcmp(dir->d_name, ".."))) && ++(ls->numfile))
+			load_file_stats(ls, &(dir->d_name[0]));
+		if (dir->d_name[0] == '.')
+			*dot = *dot + 1;
+	}
+}
+
 int						load_info_from_directory(t_ls *ls)
 {
 	DIR			*ddd;
-	t_dirent	*dir;
+	size_t		dot;
 
 	ls->numfile = 0;
 	ls->flags &= ~LSO_ERROPEN;
 	if ((ddd = opendir((char*)(ls->directory->pv))))
-	{
-		ls->flags |= LSO_1STFILE;
-		ls->curr_file = ls->file;
-		while ((dir = readdir(ddd)))
-			if ((dir->d_name[0] != '.' || ls->flags & (LSO_A | LSO_AA))
-			&& ++(ls->numfile))
-				load_file_stats(ls, &(dir->d_name[0]));
-	}
+		dir_has_opened(ls, ddd, &dot);
 	else
 	{
 		if (ls->file && (ls->flags |= LSO_ERROPEN))
 			ft_printf("%s:\n", ls->directory->pv);
 		ls_print_error((char*)(ls->directory->pv), LSERR_OPENDIR);
 	}
+	((char*)(ls->directory->pv))[ls->directory->zu] = 0;
+	if (ddd && ls->flags & LSO_A && !dot)
+		handle_dev_fd(ls, (char*)(ls->directory->pv));
 	if (ddd)
 		closedir(ddd);
-	((char*)(ls->directory->pv))[ls->directory->zu] = 0;
 	return (0);
 }
 
@@ -92,7 +105,7 @@ int						load_info_from_argument(t_ls *ls, int argc, char **argv)
 		else
 			ft_strcpy(ls->directory->pv, "./");
 		if (lstat(argv[i], &stat) < 0)
-			ls_print_error(argv[i], LSERR_OPENFILE);
+			ls_print_error_argc(argv[i], LSERR_OPENFILE);
 		else if (++(ls->numfile))
 			load_file_stats(ls, argv[i]);
 		i++;

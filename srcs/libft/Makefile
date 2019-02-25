@@ -6,7 +6,7 @@
 #    By: aulopez <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/06 13:11:21 by aulopez           #+#    #+#              #
-#    Updated: 2019/02/12 11:52:09 by aulopez          ###   ########.fr        #
+#    Updated: 2019/02/25 14:25:48 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ ___MEM=	memcmp memdel bzero memset memcpy memccpy memmove memchr memalloc
 __LIST=	lstnew lstdelone lstdel lstadd lstinsert lstappend lstfree lstsize
 ____TO=	atoi itoa atozu
 STRCHR=	strchr strastr strastri strchri strlen wstrlen wcharlen strcmp strncmp strnchri
-STRSET=	strcat strncat strclr strcpy strdel strdup strjoin strnew
+STRSET=	strcat strncat strclr strcpy strdel strdup strjoin strnew strsplit strsub
 _OTHER=	gnl
 _LIBFT=	$(___PUT) $(___MEM) $(__LIST) $(____TO) $(STRCHR) $(STRSET) $(_OTHER)
 

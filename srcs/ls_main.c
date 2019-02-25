@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:23:37 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/23 11:23:09 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/25 15:32:53 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int						main(int ac, char **av)
 	t_ls	ls;
 
 	if (!initialisation(&ls, &ac, &av))
-		return (EXIT_FAILURE);
+		return (1);
 	(ac) ? load_info_from_argument(&ls, ac, av) : load_info_from_directory(&ls);
 	(ls.file && ls.curr_file) ? call_sorting_option(&ls) : 0;
 	(ls.flags & LSO_RR || ac) ? create_directory(&ls, ac) : 0;
@@ -101,5 +101,5 @@ int						main(int ac, char **av)
 		next_dir(&ls);
 	}
 	free_list(&ls);
-	return (EXIT_SUCCESS);
+	return (0);
 }
