@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/14 12:09:32 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/25 15:18:33 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/25 17:48:47 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,11 @@ int						load_file_stats(t_ls *ls, char *filename)
 	tmp = (char*)(ls->directory->pv);
 	ft_strcpy(ls->curr_file->name, filename);
 	tmp[ls->directory->zu] = 0;
-	if (lstat(ft_strcat(tmp, filename), &(ls->curr_file->stat)) < 0)
+	if (ls->flags & LSO_L
+	&& lstat(ft_strcat(tmp, filename), &(ls->curr_file->stat)) < 0)
+		return (ls_print_error(filename, LSERR_OPENFILE));
+	else if (!(ls->flags & LSO_L)
+	&& stat(ft_strcat(tmp, filename), &(ls->curr_file->stat)) < 0)
 		return (ls_print_error(filename, LSERR_OPENFILE));
 	ls->flags & LSO_1STFILE ? ls->flags &= ~LSO_1STFILE : 0;
 	return (1);
