@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/14 12:09:32 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/27 12:56:56 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/27 13:11:51 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int						load_file_link(t_ls *ls)
 	return (1);
 }
 
-int						load_file_stats(t_ls *ls, char *filename)
+int						load_file_stats(t_ls *ls, char *filename, int option)
 {
 	char	*tmp;
 
@@ -45,7 +45,10 @@ int						load_file_stats(t_ls *ls, char *filename)
 	tmp = (char*)(ls->directory->pv);
 	ft_strcpy(ls->curr_file->name, filename);
 	tmp[ls->directory->zu] = 0;
-	if (lstat(ft_strcat(tmp, filename), &(ls->curr_file->stat)) < 0)
+	if (!option && lstat(ft_strcat(tmp, filename), &(ls->curr_file->stat)) < 0)
+		return (ls_print_error(filename, LSERR_OPENFILE, ls));
+	else if (option
+	&& stat(ft_strcat(tmp, filename), &(ls->curr_file->stat)) < 0)
 		return (ls_print_error(filename, LSERR_OPENFILE, ls));
 	ls->flags & LSO_1STFILE ? ls->flags &= ~LSO_1STFILE : 0;
 	return (1);
@@ -63,7 +66,7 @@ inline static void		dir_has_opened(t_ls *ls, DIR *ddd, size_t *dot)
 		if ((dir->d_name[0] != '.' || ls->flags & LSO_A
 		|| (ls->flags & LSO_AA && !ft_strcmp(dir->d_name, ".")
 		&& !ft_strcmp(dir->d_name, ".."))) && ++(ls->numfile))
-			load_file_stats(ls, &(dir->d_name[0]));
+			load_file_stats(ls, &(dir->d_name[0]), 0);
 		if (dir->d_name[0] == '.')
 			*dot = *dot + 1;
 	}
@@ -107,12 +110,7 @@ int						load_info_from_argument(t_ls *ls, int argc, char **argv)
 		if (lstat(argv[i], &statt) < 0)
 			ls_print_error_argc(argv[i], LSERR_OPENFILE, ls);
 		else if (++(ls->numfile))
-		{
-			load_file_stats(ls, argv[i]);
-			if (!(ls->flags & LSO_L)
-			&& stat(argv[i], &(ls->curr_file->stat)) < 0)
-				ls_print_error_argc(argv[i], LSERR_OPENFILE, ls);
-		}
+			load_file_stats(ls, argv[i], 1);
 		i++;
 	}
 	ft_bzero(ls->directory->pv, 3);

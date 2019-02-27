@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 13:55:15 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/27 11:21:59 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:17:48 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,11 @@ int						ls_parsing(int ac, char **av, int *flags)
 	*flags = 0;
 	i = 0;
 	while (++i < ac && av[i][0] == '-' && av[i][1])
+	{
+		if (av[i][1] == '-' && !av[i][2])
+			return (i + 1);
 		if (!ls_available_option(av[i], flags))
 			return (0);
+	}
 	return (i);
 }

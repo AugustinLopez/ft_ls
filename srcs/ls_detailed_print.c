@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:19:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/25 15:13:37 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:28:08 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,31 @@
 ** if 10/11,no name associated to a uid/gid : we use the ID instead
 */
 
+inline static void	print_date(t_file *tmp, t_ls *ls)
+{
+	char	*t;
+
+	t = ctime(&tmp->stat.st_mtime) + 4;
+	if (ls->flags & LSO_TT)
+	{
+		if ((t + 16)[0] != ' ')
+			ft_printf("%.20s ", t);
+		else
+			ft_printf("%.15s %.5s ", t, t + 20);
+	}
+	else if (time(NULL) > LS_SIX_MONTH && tmp->stat.st_mtime <= time(NULL)
+	&& tmp->stat.st_mtime > time(NULL) - LS_SIX_MONTH)
+		ft_printf("%.12s ", t);
+	else if ((t + 16)[0] != ' ')
+		ft_printf("%.6s  %.4s ", t, t + 16);
+	else
+		ft_printf("%.6s  %.5s ", t, t + 20);
+
+}
+
 inline static void	print_detailed_loop_2(t_ls *ls, t_file *tmp,
 		long long (*s)[12], char (*attr)[12])
 {
-	char		*t;
-
 	ls->flags & LSO_S ? ft_printf("%*lld ", (*s)[0], tmp->stat.st_blocks) : 0;
 	ft_printf("%s %*lld ", *attr, (*s)[1], tmp->stat.st_nlink);
 	!(*s)[10] || getpwuid(tmp->stat.st_uid) ?
@@ -39,14 +59,7 @@ inline static void	print_detailed_loop_2(t_ls *ls, t_file *tmp,
 		ft_printf("%*lld, %*lld ", (*s)[5], major(tmp->stat.st_rdev),
 		(*s)[6], minor(tmp->stat.st_rdev)) :
 		ft_printf("%*lld ", (*s)[4], tmp->stat.st_size);
-	t = ctime(&tmp->stat.st_mtime) + 4;
-	if (ls->flags & LSO_TT)
-		ft_printf("%.20s ", t);
-	else if (time(NULL) > LS_SIX_MONTH
-	&& tmp->stat.st_mtime > time(NULL) - LS_SIX_MONTH)
-		ft_printf("%.12s ", t);
-	else
-		ft_printf("%.6s  %.4s ", t, t + 16);
+	print_date(tmp, ls);
 	set_colors(tmp, ls);
 }
 
@@ -101,6 +114,7 @@ void				print_detailed(t_ls *ls, int non_first)
 	if (ls->numfile && ls->file && ls->directory->zu)
 		ft_printf("total %d\n", (int)size[7]);
 	print_detailed_loop(ls, &size);
-	if (ls->flags & (LSO_ARGC | LSO_RR) && (ls->file && ls->directory->next))
-		ft_putchar('\n');
+	if (ls->flags & (LSO_ARGC | LSO_RR))
+		if (ls->directory->next && !(!ls->directory->zu && !ls->file))
+			ft_putchar('\n');
 }
