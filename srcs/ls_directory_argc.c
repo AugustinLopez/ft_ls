@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 15:02:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/25 16:58:04 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/27 11:24:10 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ inline static int			create_directory_from_arg_unit(t_ls *ls)
 	t_list		*tmpdir;
 
 	if (!(tmpdir = ft_lstnew(0, 0)))
-		return (ls_print_error(0, LSERR_MALLOC));
+		return (ls_print_error(0, LSERR_MALLOC, ls));
 	i = ft_strlen(ls->curr_file->name);
 	if (!(tmp = ft_strnew(i + 1 + 256 + 2)))
-		return (ls_print_error(0, LSERR_MALLOC));
+		return (ls_print_error(0, LSERR_MALLOC, ls));
 	ft_strcat(tmp, ls->directory->pv);
 	ft_strcat(tmp + ls->directory->zu, ls->curr_file->name);
 	ft_strcat(tmp + ls->directory->zu + i++, "/");

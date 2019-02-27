@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 20:43:00 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/25 15:04:36 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/27 11:23:52 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int							create_first_directory(t_ls *ls, int option_ac)
 	t_list		*tmpdir;
 
 	if (!(tmpdir = ft_lstnew(0, 0)))
-		return (ls_print_error(0, LSERR_MALLOC));
+		return (ls_print_error(0, LSERR_MALLOC, ls));
 	if (!(tmp = ft_strnew(2 + 256)))
-		return (ls_print_error(0, LSERR_MALLOC));
+		return (ls_print_error(0, LSERR_MALLOC, ls));
 	if (option_ac)
 		tmpdir->zu = 0;
 	else
@@ -42,10 +42,10 @@ inline static int			create_another_directory(t_ls *ls)
 	char		*tmpstr;
 
 	if (!(tmpdir = ft_lstnew(0, 0)))
-		return (ls_print_error(0, LSERR_MALLOC));
+		return (ls_print_error(0, LSERR_MALLOC, ls));
 	i = ft_strlen(ls->curr_file->name);
 	if (!(tmpstr = ft_strnew(i + 1 + 256 + ls->directory->zu)))
-		return (ls_print_error(0, LSERR_MALLOC));
+		return (ls_print_error(0, LSERR_MALLOC, ls));
 	ft_strcat(tmpstr, ls->directory->pv);
 	ft_strcat(tmpstr + ls->directory->zu, ls->curr_file->name);
 	tmpstr[i + ls->directory->zu] = 0;

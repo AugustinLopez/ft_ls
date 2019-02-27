@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 15:19:11 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/25 17:24:41 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/27 12:57:48 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@
 # define LSO_1STFILE 16384
 # define LSO_ARGC 32768
 # define LSO_ERROPEN 65536
+# define LSO_ERROR 131072
 # define LS_SIX_MONTH 15552000
 
 /*
@@ -100,8 +101,8 @@ typedef struct			s_ls
 */
 
 int						ls_parsing(int ac, char **av, int *flags);
-int						ls_print_error(char *str, int errflag);
-int						ls_print_error_argc(char *str, int errflag);
+int						ls_print_error(char *str, int errflag, t_ls *ls);
+int						ls_print_error_argc(char *str, int errflag, t_ls *ls);
 int						load_info_from_directory(t_ls *ls);
 int						load_info_from_argument(t_ls *ls, int argc,
 						char **argv);

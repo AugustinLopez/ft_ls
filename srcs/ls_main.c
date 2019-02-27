@@ -6,14 +6,17 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:23:37 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/25 17:22:55 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/27 12:57:16 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-inline static void		free_list(t_ls *ls)
+inline static int		free_list(t_ls *ls)
 {
+	int	i;
+
+	i = ls->flags & LSO_ERROR ? 1 : 0;
 	while (ls->file)
 	{
 		ls->curr_file = ls->file->next;
@@ -22,6 +25,7 @@ inline static void		free_list(t_ls *ls)
 	}
 	if (ls->directory)
 		ft_lstdel(&ls->directory, *ft_lstfree);
+	return (i);
 }
 
 inline static void		call_sorting_option(t_ls *ls)
@@ -100,6 +104,5 @@ int						main(int ac, char **av)
 		ac = 0;
 		next_dir(&ls);
 	}
-	free_list(&ls);
-	return (0);
+	return (free_list(&ls));
 }

@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/14 12:09:32 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/25 17:48:47 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/27 12:56:56 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ int						load_file_link(t_ls *ls)
 	if (!(ls->file))
 	{
 		if (!(ls->file = malloc(sizeof(t_file))))
-			return (ls_print_error(0, LSERR_MALLOC));
+			return (ls_print_error(0, LSERR_MALLOC, ls));
 		ft_bzero(ls->file, sizeof(t_file));
 		ls->curr_file = ls->file;
 	}
 	else if (!(ls->curr_file->next))
 	{
 		if (!(ls->curr_file->next = malloc(sizeof(t_file))))
-			return (ls_print_error(0, LSERR_MALLOC));
+			return (ls_print_error(0, LSERR_MALLOC, ls));
 		ft_bzero(ls->curr_file->next, sizeof(t_file));
 		ls->curr_file->next->prev = ls->curr_file;
 		ls->curr_file = ls->curr_file->next;
@@ -41,16 +41,12 @@ int						load_file_stats(t_ls *ls, char *filename)
 	char	*tmp;
 
 	if ((!ls->file || !(ls->flags & LSO_1STFILE)) && (!load_file_link(ls)))
-		return (ls_print_error(0, LSERR_MALLOC));
+		return (ls_print_error(0, LSERR_MALLOC, ls));
 	tmp = (char*)(ls->directory->pv);
 	ft_strcpy(ls->curr_file->name, filename);
 	tmp[ls->directory->zu] = 0;
-	if (ls->flags & LSO_L
-	&& lstat(ft_strcat(tmp, filename), &(ls->curr_file->stat)) < 0)
-		return (ls_print_error(filename, LSERR_OPENFILE));
-	else if (!(ls->flags & LSO_L)
-	&& stat(ft_strcat(tmp, filename), &(ls->curr_file->stat)) < 0)
-		return (ls_print_error(filename, LSERR_OPENFILE));
+	if (lstat(ft_strcat(tmp, filename), &(ls->curr_file->stat)) < 0)
+		return (ls_print_error(filename, LSERR_OPENFILE, ls));
 	ls->flags & LSO_1STFILE ? ls->flags &= ~LSO_1STFILE : 0;
 	return (1);
 }
@@ -86,7 +82,7 @@ int						load_info_from_directory(t_ls *ls)
 	{
 		if (ls->file && (ls->flags |= LSO_ERROPEN))
 			ft_printf("%s:\n", ls->directory->pv);
-		ls_print_error((char*)(ls->directory->pv), LSERR_OPENDIR);
+		ls_print_error((char*)(ls->directory->pv), LSERR_OPENDIR, ls);
 	}
 	((char*)(ls->directory->pv))[ls->directory->zu] = 0;
 	if (ddd && ls->flags & LSO_A && !dot)
@@ -98,7 +94,7 @@ int						load_info_from_directory(t_ls *ls)
 
 int						load_info_from_argument(t_ls *ls, int argc, char **argv)
 {
-	t_stat		stat;
+	t_stat		statt;
 	int			i;
 
 	i = 0;
@@ -108,10 +104,15 @@ int						load_info_from_argument(t_ls *ls, int argc, char **argv)
 			ft_bzero(ls->directory->pv, 3);
 		else
 			ft_strcpy(ls->directory->pv, "./");
-		if (lstat(argv[i], &stat) < 0)
-			ls_print_error_argc(argv[i], LSERR_OPENFILE);
+		if (lstat(argv[i], &statt) < 0)
+			ls_print_error_argc(argv[i], LSERR_OPENFILE, ls);
 		else if (++(ls->numfile))
+		{
 			load_file_stats(ls, argv[i]);
+			if (!(ls->flags & LSO_L)
+			&& stat(argv[i], &(ls->curr_file->stat)) < 0)
+				ls_print_error_argc(argv[i], LSERR_OPENFILE, ls);
+		}
 		i++;
 	}
 	ft_bzero(ls->directory->pv, 3);
