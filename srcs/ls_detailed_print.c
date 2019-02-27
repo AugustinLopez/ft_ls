@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:19:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/27 14:28:08 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/27 16:14:17 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ inline static void	print_date(t_file *tmp, t_ls *ls)
 		ft_printf("%.6s  %.4s ", t, t + 16);
 	else
 		ft_printf("%.6s  %.5s ", t, t + 20);
-
 }
 
 inline static void	print_detailed_loop_2(t_ls *ls, t_file *tmp,

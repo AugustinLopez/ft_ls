@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 17:21:00 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/27 11:35:57 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/27 18:56:36 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int			ls_print_error(char *str, int errflag, t_ls *ls)
 	if (errflag == LSERR_USAGE)
 	{
 		ft_dprintf(2, "ft_ls: illegal option -- %c\n", *str);
-		ft_dprintf(2, "usage: ft_ls [-1lRartsTuofGAF] [file ...]\n");
+		ft_dprintf(2, "usage: ft_ls [-1ACGRTafloprstu] [file ...]\n");
 		return (0);
 	}
 	s = ft_strsplit(str, '/');

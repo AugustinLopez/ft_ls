@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 15:19:11 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/27 13:11:28 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/27 18:57:14 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # include <sys/stat.h>
 # include <sys/xattr.h>
 # include <sys/acl.h>
+# include <sys/ioctl.h>
 # include <unistd.h>
 
 /*
@@ -64,10 +65,11 @@
 # define LSO_GG 2048
 # define LSO_AA 4096
 # define LSO_P 8192
-# define LSO_1STFILE 16384
-# define LSO_ARGC 32768
-# define LSO_ERROPEN 65536
-# define LSO_ERROR 131072
+# define LSO_CC 16384
+# define LSO_1STFILE 32768
+# define LSO_ARGC 65536
+# define LSO_ERROPEN 131072
+# define LSO_ERROR 262144
 # define LS_SIX_MONTH 15552000
 
 /*
@@ -114,6 +116,8 @@ void					sort_ascii(t_file *current, t_file *last);
 void					sort_time(t_file *current, t_file *last);
 void					print_ls(t_ls *liste1);
 void					print_basic(t_ls *ls, int first);
+void					print_column_loop(t_ls *ls, int block_size,
+						int str_size);
 void					print_detailed(t_ls *ls, int non_first);
 void					set_colors(t_file *file, t_ls *ls);
 void					set_detailed_list_length(t_ls *ls, long long (*s)[12]);
