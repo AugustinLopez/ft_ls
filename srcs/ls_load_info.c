@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/14 12:09:32 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/27 13:11:51 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/27 16:08:51 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,12 @@ int						load_info_from_argument(t_ls *ls, int argc, char **argv)
 		if (lstat(argv[i], &statt) < 0)
 			ls_print_error_argc(argv[i], LSERR_OPENFILE, ls);
 		else if (++(ls->numfile))
-			load_file_stats(ls, argv[i], 1);
+		{
+			if (!(ls->flags & LSO_L))
+				load_file_stats(ls, argv[i], 1);
+			else
+				load_file_stats(ls, argv[i], 0);
+		}
 		i++;
 	}
 	ft_bzero(ls->directory->pv, 3);
