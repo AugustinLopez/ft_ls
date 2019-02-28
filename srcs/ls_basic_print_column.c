@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:03:59 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/27 20:28:13 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/28 10:26:38 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,33 +53,27 @@ inline static void		set_colors_space(t_file *file, t_ls *ls, int str)
 		ft_printf("%-*s", str, cpy);
 }
 
-inline static void		actual_print(t_ls *ls, size_t size[6], t_file *tmp)
+inline static void		actual_print(t_ls *ls, size_t size[7], t_file *file)
 {
 	t_file	*tmp2;
-	int		i;
+	t_file	*tmp;
 
-	i = ls->numfile;
+	tmp = file;
 	while (size[5]--)
 	{
-		if (!tmp)
+		if (!tmp || size[6] || tmp->prev == ls->curr_file)
 			break ;
 		size[4] = size[3];
-		if ((ls->flags & LSO_AA)
-				&& (!ft_strcmp(tmp->name, ".") || !ft_strcmp(tmp->name, "..")))
-		{
-			while (size[4]-- && tmp)
-				tmp = (ls->flags & LSO_R) ? tmp->prev : tmp->next;
-			i -= size[3];
-			continue ;
-		}
-		else if (ls->flags & LSO_S)
+		if (ls->flags & LSO_S)
 			ft_printf("%*lld ", size[0], tmp->stat.st_blocks);
 		tmp2 = tmp;
 		while (size[4]-- && tmp)
+		{
+			if (tmp->prev == ls->curr_file)
+				size[6] = 1;
 			tmp = (ls->flags & LSO_R) ? tmp->prev : tmp->next;
-		i--;
-		if (i >= (int)size[3])
-			(size[5] && tmp) ? set_colors_space(tmp2, ls, size[1]) :
+		}
+		(size[5] && tmp) ? set_colors_space(tmp2, ls, size[1]) :
 			set_colors_space(tmp2, ls, 0);
 	}
 }
@@ -88,12 +82,11 @@ void					print_column_loop(t_ls *ls, int block_size,
 						int str_size)
 {
 	t_file			*tmp;
-	t_file			*tmp2;
 	struct ttysize	ts;
-	size_t			size[6];
+	size_t			size[7];
 
 	size[0] = block_size;
-	size[1] = str_size + 1 + (size[0] != 0);
+	size[1] = str_size + 1;
 	ioctl(0, TIOCGWINSZ, &ts);
 	size[2] = (ls->flags & LSO_S) ?
 	(int)(ts.ts_cols / (size[1] + size[0] + 1)) :
@@ -104,12 +97,11 @@ void					print_column_loop(t_ls *ls, int block_size,
 	(size[3] * size[2]) > ls->numfile ? size[2]-- : 0;
 	(size[3] * size[2]) < ls->numfile ? size[3]++ : 0;
 	tmp = (ls->flags & LSO_R) ? ls->curr_file : ls->file;
-	ft_printf("%zu %zu %zu\n", ls->numfile, size[2], size[3]);
 	while (ls->numfile)
 	{
-		tmp2 = tmp;
 		size[5] = size[2];
-		actual_print(ls, size, tmp2);
+		size[6] = 0;
+		actual_print(ls, size, tmp);
 		ft_putchar('\n');
 		tmp = (ls->flags & LSO_R) ? tmp->prev : tmp->next;
 		ls->numfile -= ls->numfile < size[2] ? ls->numfile : size[2];

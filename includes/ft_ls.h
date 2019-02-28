@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 15:19:11 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/27 18:57:14 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/28 10:36:13 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,17 @@
 
 /*
 ** # include <sys/sysmacros.h> //major/minor, for linux
-** libft for libft (duh)
-** errno to get error msg, ls_error
+** libft for libft
+** errno for errno
 ** stdlib for malloc/free
-** dirent, /sys/stat, time for structure
-** grp, pwd for getpwuid getgrgid
+** dirent for dirent
+** grp for getgrgid
+** time for time
+** pwd for getpwuid 
 ** sys/xattr for major/minor
+** sys_stat for stat
 ** sys/acl for bonus : acl
+** sys/ioctl for bonus : column
 ** unistd for readlink
 */
 
@@ -47,8 +51,11 @@
 */
 
 /*
-** LSO_1 to LSO_P are used for ft_ls flags
-** LSO_1STFILE to LSO_ERROPEN are used to handle special cases
+** LSO_1 to LSO_D are used for ft_ls flags
+** LSO_1STFILE is used to check if the file list has been initialized
+** LSO_ARGC is used to check if we are dealing with argc besides options
+** LSO_ERROPEN is used to print directory name before showing error message
+** LSO_ERROR is used to return 1 instead of 0 in case of error
 */
 
 # define LSO_1 1
@@ -66,10 +73,11 @@
 # define LSO_AA 4096
 # define LSO_P 8192
 # define LSO_CC 16384
-# define LSO_1STFILE 32768
-# define LSO_ARGC 65536
-# define LSO_ERROPEN 131072
-# define LSO_ERROR 262144
+# define LSO_D 32768
+# define LSO_1STFILE 65536
+# define LSO_ARGC 131072
+# define LSO_ERROPEN 262144
+# define LSO_ERROR 524288
 # define LS_SIX_MONTH 15552000
 
 /*

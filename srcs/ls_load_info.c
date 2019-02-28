@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/14 12:09:32 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/27 16:08:51 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/28 10:20:29 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,9 @@ inline static void		dir_has_opened(t_ls *ls, DIR *ddd, size_t *dot)
 	while ((dir = readdir(ddd)))
 	{
 		if ((dir->d_name[0] != '.' || ls->flags & LSO_A
-		|| (ls->flags & LSO_AA && !ft_strcmp(dir->d_name, ".")
-		&& !ft_strcmp(dir->d_name, ".."))) && ++(ls->numfile))
+		|| (ls->flags & LSO_AA
+		&& (dir->d_name[1] && ft_strcmp(dir->d_name, ".."))))
+		&& ++(ls->numfile))
 			load_file_stats(ls, &(dir->d_name[0]), 0);
 		if (dir->d_name[0] == '.')
 			*dot = *dot + 1;
