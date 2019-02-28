@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 13:55:15 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/28 09:49:52 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/28 10:49:16 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ inline static int		ls_available_option(char *av, int *flags)
 
 	while (*(++av))
 	{
-		if (!(i = ft_strchri("1lRartsTuofGApCd", av[0])))
+		if (!(i = ft_strchri("1lRartsTuofGApCdg", av[0])))
 			return (ls_print_error(av, LSERR_USAGE, 0));
 		*flags |= (1 << (i - 1));
 	}
@@ -27,7 +27,7 @@ inline static int		ls_available_option(char *av, int *flags)
 		*flags |= LSO_A;
 		*flags &= ~(LSO_AA | LSO_R);
 	}
-	if (*flags & LSO_O)
+	if (*flags & (LSO_O | LSO_G))
 		*flags |= LSO_L;
 	if (*flags & LSO_A)
 		*flags &= ~LSO_AA;

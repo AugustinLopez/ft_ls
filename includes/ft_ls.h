@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 15:19:11 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/28 10:36:13 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/28 10:50:04 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 ** dirent for dirent
 ** grp for getgrgid
 ** time for time
-** pwd for getpwuid 
+** pwd for getpwuid
 ** sys/xattr for major/minor
 ** sys_stat for stat
 ** sys/acl for bonus : acl
@@ -74,10 +74,11 @@
 # define LSO_P 8192
 # define LSO_CC 16384
 # define LSO_D 32768
-# define LSO_1STFILE 65536
-# define LSO_ARGC 131072
-# define LSO_ERROPEN 262144
-# define LSO_ERROR 524288
+# define LSO_G 65536
+# define LSO_1STFILE 131072
+# define LSO_ARGC 262144
+# define LSO_ERROPEN 524288
+# define LSO_ERROR 1048576
 # define LS_SIX_MONTH 15552000
 
 /*

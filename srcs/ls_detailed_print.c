@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:19:19 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/27 16:14:17 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/28 10:47:09 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ inline static void	print_detailed_loop_2(t_ls *ls, t_file *tmp,
 {
 	ls->flags & LSO_S ? ft_printf("%*lld ", (*s)[0], tmp->stat.st_blocks) : 0;
 	ft_printf("%s %*lld ", *attr, (*s)[1], tmp->stat.st_nlink);
-	!(*s)[10] || getpwuid(tmp->stat.st_uid) ?
-		ft_printf("%-*s  ", (*s)[2], getpwuid(tmp->stat.st_uid)->pw_name) :
-		ft_printf("%-*lld  ", (*s)[2], tmp->stat.st_uid);
+	if (!(ls->flags & LSO_G))
+		!(*s)[10] || getpwuid(tmp->stat.st_uid) ?
+			ft_printf("%-*s  ", (*s)[2], getpwuid(tmp->stat.st_uid)->pw_name) :
+			ft_printf("%-*lld  ", (*s)[2], tmp->stat.st_uid);
 	if (!(ls->flags & LSO_O))
 		!(*s)[11] || getgrgid(tmp->stat.st_gid) ?
 			ft_printf("%-*s  ", (*s)[3], getgrgid(tmp->stat.st_gid)->gr_name) :
