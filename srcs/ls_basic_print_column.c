@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:03:59 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/28 10:26:38 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/28 11:01:22 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void					print_column_loop(t_ls *ls, int block_size,
 	size_t			size[7];
 
 	size[0] = block_size;
-	size[1] = str_size + 1;
+	size[1] = str_size + 2;
 	ioctl(0, TIOCGWINSZ, &ts);
 	size[2] = (ls->flags & LSO_S) ?
 	(int)(ts.ts_cols / (size[1] + size[0] + 1)) :
