@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 09:25:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/25 14:23:52 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/03/04 14:23:32 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void		start_and_end(const char *s, char c, size_t *start, size_t *end)
 		else
 		{
 			*end = *start;
-			while (s[*end] != c)
+			while (s[*end] && s[*end] != c)
 				*end += 1;
 			return ;
 		}

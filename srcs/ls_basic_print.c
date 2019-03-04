@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:06:08 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/27 17:39:39 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/03/04 15:20:51 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void					print_basic(t_ls *ls, int first)
 	if (ls->directory->zu)
 		((char *)ls->directory->pv)[ls->directory->zu - 1] = 0;
 	if (first && (ls->flags & (LSO_RR | LSO_ARGC))
-	&& ls->directory->zu && (!(ls->flags & LSO_ERROPEN)))
+	&& ls->directory->pv && (!(ls->flags & LSO_ERROPEN)))
 		ft_printf("%s:\n", ls->directory->pv);
 	if (ls->directory->zu)
 		((char *)ls->directory->pv)[ls->directory->zu - 1] = '/';

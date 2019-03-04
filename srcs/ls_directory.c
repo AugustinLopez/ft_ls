@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 20:43:00 by lubenard          #+#    #+#             */
-/*   Updated: 2019/02/28 09:44:54 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/03/04 15:38:08 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ inline static int			create_another_directory(t_ls *ls)
 	else
 		ft_lstadd(&(ls->curr_dir->next), tmpdir);
 	ls->curr_dir = ls->curr_dir->next;
+	if (!(S_IXUSR & ls->curr_file->stat.st_mode))
+		ls->curr_dir->zu = 0;
 	return (1);
 }
 

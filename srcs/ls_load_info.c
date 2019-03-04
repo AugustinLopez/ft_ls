@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/14 12:09:32 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/28 10:20:29 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/03/04 15:45:59 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,19 @@ int						load_info_from_directory(t_ls *ls)
 	ls->numfile = 0;
 	ls->flags &= ~LSO_ERROPEN;
 	if ((ddd = opendir((char*)(ls->directory->pv))))
-		dir_has_opened(ls, ddd, &dot);
+		(ls->directory->zu) ? dir_has_opened(ls, ddd, &dot) : 0;
 	else
 	{
+		if (ft_strlen(ls->directory->pv))
+			((char*)(ls->directory->pv))[ft_strlen(ls->directory->pv) - 1] = 0;
 		if (ls->file && (ls->flags |= LSO_ERROPEN))
 			ft_printf("%s:\n", ls->directory->pv);
 		ls_print_error((char*)(ls->directory->pv), LSERR_OPENDIR, ls);
 	}
-	((char*)(ls->directory->pv))[ls->directory->zu] = 0;
+	if (ls->directory->zu)
+		((char*)(ls->directory->pv))[ls->directory->zu] = 0;
+	else if (ft_strlen(ls->directory->pv))
+		((char*)(ls->directory->pv))[ft_strlen(ls->directory->pv) - 1] = 0;
 	if (ddd && ls->flags & LSO_A && !dot)
 		handle_dev_fd(ls, (char*)(ls->directory->pv));
 	if (ddd)
