@@ -6,7 +6,7 @@
 #    By: aulopez <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/06 13:11:21 by aulopez           #+#    #+#              #
-#    Updated: 2019/02/25 14:25:48 by aulopez          ###   ########.fr        #
+#    Updated: 2019/02/22 12:29:39 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,30 +14,37 @@ NAME=libft.a
 
 # --- 1.Source/Header ----------------------------------------------------------
 
-___PUT=	putchar putchar_fd putendl putendl_fd putnbr putnbr_fd putstr putstr_fd
-___MEM=	memcmp memdel bzero memset memcpy memccpy memmove memchr memalloc
-__LIST=	lstnew lstdelone lstdel lstadd lstinsert lstappend lstfree lstsize
+___PUT=	putchar putchar_fd putendl putendl_fd \
+		putnbr putnbr_fd putstr putstr_fd
+___MEM=	memcmp memdel bzero memset \
+		memcpy memccpy memmove memchr \
+		memalloc
+__LIST=	lstnew lstdelone lstdel lstadd \
+		lstinsert lstappend lstfree lstsize
 ____TO=	atoi itoa atozu
-STRCHR=	strchr strastr strastri strchri strlen wstrlen wcharlen strcmp strncmp strnchri
-STRSET=	strcat strncat strclr strcpy strdel strdup strjoin strnew strsplit strsub
+STRCHR=	strchr strastr strastri strchri \
+		strlen wstrlen wcharlen strcmp \
+		strncmp strnchri
+STRSET=	strcat strncat strclr strcpy \
+		strdel strdup strjoin strnew \
+		strsub strsplit
 _OTHER=	gnl
 _LIBFT=	$(___PUT) $(___MEM) $(__LIST) $(____TO) $(STRCHR) $(STRSET) $(_OTHER)
 
 PRINTF=ft_printf pf_buffer pf_number pf_number_2 pf_other pf_parsing pf_string pf_double pf_string_2
 __FTOA=f_bigint f_create_unit f_operand f_create_stack f_free_precision f_putnbr
 
-1ST_HEADER=libft.h 
+1ST_HEADER=libft.h
 2ND_HEADER=ft_bigint.h ft_printf.h
 
 # --- 2.Path -------------------------------------------------------------------
 
-PATH_1HDR=../../includes/
+PATH_1HDR=./includes/
 PATH_2HDR=./srcs/includes2/
 PATH_OBJ=./obj/
 PATH_LIB=./srcs/
 PATH_PRINT=./srcs/printf/
 PATH_FTOA=./srcs/printf/ftoa/
-PATH_END=
 
 # --- 3.Object -----------------------------------------------------------------
 
@@ -64,9 +71,8 @@ all: $(NAME)
 
 $(NAME): $(OBJLIBFT) $(OBJPRINTF) $(OBJFTOA)
 	@echo "$(YELLOW)Compiling library...$(EOC)"
-	@ar rcs $(PATH_END)$(NAME) $(OBJLIBFT) $(OBJPRINTF) $(OBJFTOA)
+	@ar rcs $(NAME) $(OBJLIBFT) $(OBJPRINTF) $(OBJFTOA)
 	@echo "$(GREEN)Done$(EOC)"
-
 
 $(PATH_OBJ)%.o:$(PATH_LIB)%.c $(INCLUDES)
 	@echo "$(CYAN)Creating $@$(EOC)"
@@ -87,7 +93,7 @@ clean:
 
 fclean: clean
 	@echo "$(YELLOW)Deleting library...$(EOC)"
-	@rm -f $(PATH_END)$(NAME)
+	@rm -f $(NAME)
 	@echo "$(GREEN)Done$(EOC)"
 
 re: fclean all
@@ -96,9 +102,10 @@ re: fclean all
 
 
 # --- 6.Unused -----------------------------------------------------------------
+
 #R_LIST=	lstmap lstiter
 #R_MATH=	pow sqrt rand
 #R___IS=	isalnum isalpha isascii isdigit isprint
 #R___TO=	tolower toupper
 #RTRCHR=	strstr strnstr strrstr strrchr strcount strequ strnequ
-#RTRSET=	strlcat strncpy striter striteri strmap strmapi strtrim strsplit
+#RTRSET=	strlcat strncpy striter striteri strmap strmapi strtrim

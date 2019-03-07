@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 09:58:36 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/12 14:39:44 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/03/07 10:48:31 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,37 +52,10 @@ static int		free_mem_and_exit(int option, t_list **neur, char **tmp,
 	}
 	else
 	{
-		free((*neur)->pv);
+		if ((*neur)->pv)
+			free((*neur)->pv);
 		(*neur)->pv = *tmp;
 	}
-	return (0);
-}
-
-static int		get_from_memory(t_list **neuron, t_list **memory,
-					int fd, char **line)
-{
-	t_list		*temp;
-	char		dummy[1];
-
-	if ((fd < 0 || line == NULL || read(fd, dummy, 0) < 0))
-		return (-1);
-	temp = *memory;
-	while (temp)
-	{
-		if ((int)temp->zu == fd)
-		{
-			*neuron = temp;
-			if ((*neuron)->pv && ft_strchr((char*)((*neuron)->pv), '\n'))
-				return (1);
-			return (0);
-		}
-		temp = temp->next;
-	}
-	if (!(*neuron = ft_lstnew("", 1)))
-		return (-1);
-	(*neuron)->zu = fd;
-	ft_lstadd(memory, *neuron);
-	*neuron = *memory;
 	return (0);
 }
 
@@ -113,7 +86,32 @@ static int		ft_new_line(char **s, char **line, t_list **memory)
 	return (1);
 }
 
-int				gnl(const int fd, char **line)
+static int		get_from_memory(t_list **neuron, t_list **memory,
+								int fd, char **line)
+{
+	t_list		*temp;
+
+	temp = *memory;
+	while (temp)
+	{
+		if ((int)temp->zu == fd)
+		{
+			*neuron = temp;
+			if ((*neuron)->pv && ft_strchr((char*)((*neuron)->pv), '\n'))
+				return (1);
+			return (0);
+		}
+		temp = temp->next;
+	}
+	if (!(*neuron = ft_lstnew("\0", 1)))
+		return (-1);
+	(*neuron)->zu = fd;
+	ft_lstadd(memory, *neuron);
+	*neuron = *memory;
+	return (0);
+}
+
+int				ft_gnl(const int fd, char **line)
 {
 	static t_list	*memory;
 	t_list			*neur;
@@ -121,15 +119,16 @@ int				gnl(const int fd, char **line)
 	char			*tmp;
 	int				ret;
 
-	if (!(ret = get_from_memory(&neur, &memory, fd, line)))
+	ret = (fd < 0 || line == NULL || read(fd, buf, 0) < 0) ? -1 : 0;
+	if (!ret && !(ret = get_from_memory(&neur, &memory, fd, line)))
 	{
-		while ((ret = read(fd, buf, 4096)) && ret != -1)
+		while ((ret = read(fd, buf, 4096)) > 0)
 		{
 			buf[ret] = '\0';
 			if (!(tmp = ft_strjoin(neur->pv, buf))
-			|| ft_strlen(buf) != (unsigned int)ret)
+				|| ft_strlen(buf) != (unsigned int)ret)
 				return (free_mem_and_exit(0, &neur, 0, &memory));
-			(void)free_mem_and_exit(1, 0, &tmp, &memory);
+			(void)free_mem_and_exit(1, &neur, &tmp, &memory);
 			if (ft_strchr(buf, '\n'))
 				break ;
 		}

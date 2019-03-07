@@ -6,7 +6,7 @@
 #    By: aulopez <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/12 11:06:27 by aulopez           #+#    #+#              #
-#    Updated: 2019/03/04 09:55:37 by aulopez          ###   ########.fr        #
+#    Updated: 2019/03/07 10:53:50 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ HDR=libft.h ft_ls.h
 PATH_HDR=includes/
 PATH_SRC=srcs/
 PATH_OBJ=srcs/obj/
-PATH_LIB=srcs/libft/
+PATH_LIB=libft/
 
 # --- 3.File Variables ---------------------------------------------------------
 

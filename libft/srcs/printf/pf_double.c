@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/01 19:08:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/06 15:40:15 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/22 12:25:28 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,30 @@ static inline void	pf_load_string(t_printf *pf, char **str)
 	pf->precision = dot ? dot + pf->precision : pf->printed;
 }
 
+static inline int	minus_edge_case(t_printf *pf, int tmp, char *str)
+{
+	if (str[1] != '0')
+	{
+		pf->flag &= ~(F_NEGATIF | F_PLUS | F_SPACE);
+		return (0);
+	}
+	tmp = pf->length - pf->precision;
+	pf->padding = pf->length - pf->precision;
+	pf->flag |= F_NEGATIF;
+	!(pf->flag & F_ZERO) ? pf_padding(pf, 0) : 0;
+	pf_sign(pf);
+	((pf->flag & F_ZERO)) ? pf_padding(pf, 0) : 0;
+	pf->padding = pf->precision - pf->printed;
+	pf_buffer_write(pf, str + 1, pf->printed - 1);
+	pf->option_padding = 1;
+	pf_padding(pf, 0);
+	pf->option_padding = 0;
+	pf->padding = pf->length - pf->precision;
+	pf_padding(pf, 1);
+	free(str);
+	return (1);
+}
+
 void				pf_putdouble(t_printf *pf)
 {
 	char	*str;
@@ -43,8 +67,8 @@ void				pf_putdouble(t_printf *pf)
 	int		tmp;
 
 	pf_load_string(pf, &str);
-	if (str)
-		str[0] == '-' ? pf->flag &= ~(F_NEGATIF | F_PLUS | F_SPACE) : 0;
+	if (str && str[0] == '-' && minus_edge_case(pf, tmp, str))
+		return ;
 	tmp = pf->length - pf->precision;
 	(pf->flag & (F_NEGATIF | F_PLUS | F_SPACE)) ? --pf->length : 0;
 	pf->padding = pf->length - pf->precision;

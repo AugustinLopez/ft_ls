@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/01 19:11:26 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/03 10:59:14 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/22 11:34:47 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void				pf_padding(t_printf *pf, int n)
 	c = (pf->flag & F_ZERO || pf->option_padding) ? '0' : ' ';
 	if (pf->padding > 0)
 		if ((!n && !(pf->flag & F_MINUS)) || (n && (pf->flag & F_MINUS))
-		|| pf->option_padding)
+			|| pf->option_padding)
 			while (pf->padding--)
 				pf_buffer_write(pf, &c, 1);
 }

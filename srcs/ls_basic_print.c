@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:06:08 by lubenard          #+#    #+#             */
-/*   Updated: 2019/03/04 15:20:51 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/03/07 10:53:21 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ void					set_colors(t_file *file, t_ls *ls)
 	if (ls->flags & LSO_GG)
 	{
 		if (S_ISDIR(file->stat.st_mode))
-			ft_printf("%s%s%s", PF_BLUE, file->name, PF_EOC);
+			ft_printf("%s%s%s", FT_BLUE, file->name, FT_EOC);
 		else if (S_ISLNK(file->stat.st_mode))
-			ft_printf("%s%s%s", PF_PURPLE, file->name, PF_EOC);
+			ft_printf("%s%s%s", FT_PURPLE, file->name, FT_EOC);
 		else if (S_ISBLK(file->stat.st_mode))
-			ft_printf("%s%s%s", PF_CYAN, file->name, PF_EOC);
+			ft_printf("%s%s%s", FT_CYAN, file->name, FT_EOC);
 		else if (S_ISCHR(file->stat.st_mode))
-			ft_printf("%s%s%s", PF_YELLOW, file->name, PF_EOC);
+			ft_printf("%s%s%s", FT_YELLOW, file->name, FT_EOC);
 		else if (S_ISSOCK(file->stat.st_mode))
-			ft_printf("%s%s%s", PF_CYAN, file->name, PF_EOC);
+			ft_printf("%s%s%s", FT_CYAN, file->name, FT_EOC);
 		else if (S_ISFIFO(file->stat.st_mode))
-			ft_printf("%s%s%s", PF_UNDER, file->name, PF_EOC);
+			ft_printf("%s%s%s", FT_UNDER, file->name, FT_EOC);
 		else if (S_ISREG(file->stat.st_mode) && (S_IXUSR & file->stat.st_mode))
-			ft_printf("%s%s%s", PF_RED, file->name, PF_EOC);
+			ft_printf("%s%s%s", FT_RED, file->name, FT_EOC);
 		else
 			ft_printf("%s", file->name);
 	}

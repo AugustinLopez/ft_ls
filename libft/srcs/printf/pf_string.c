@@ -30,7 +30,7 @@
 */
 
 static inline void	pf_lenwchar(t_printf *pf, unsigned int wc,
-								unsigned int wlen, unsigned int nb_bytes)
+									unsigned int wlen, unsigned int nb_bytes)
 {
 	char	tmp[4];
 

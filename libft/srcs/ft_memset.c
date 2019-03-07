@@ -6,16 +6,15 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/08 14:56:45 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/12 14:38:38 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/22 12:27:48 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
 #include "libft.h"
 
-inline static unsigned long long	set_memory_block(unsigned long long **magic,
-													void *pc,
-													int c)
+static unsigned long long	set_memory_block(unsigned long long **magic,
+												void *pc,
+												int c)
 {
 	unsigned long long bmagic;
 

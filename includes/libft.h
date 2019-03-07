@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 08:40:39 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/25 15:18:59 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/03/07 10:52:53 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,22 @@ typedef struct		s_list
 }					t_list;
 
 /*
-** --- Colors ------------------------------------------------------------------
+** --- Color Macro -------------------------------------------------------------
 */
 
-# define PF_BLACK		"\033[30m"
-# define PF_RED			"\033[31m"
-# define PF_GREEN		"\033[32m"
-# define PF_YELLOW		"\033[33m"
-# define PF_BLUE		"\033[34m"
-# define PF_PURPLE		"\033[35m"
-# define PF_CYAN		"\033[36m"
-# define PF_EOC			"\033[0m"
-# define PF_UNDER		"\033[4m"
+# define FT_BLACK		"\033[30m"
+# define FT_RED			"\033[31m"
+# define FT_GREEN		"\033[32m"
+# define FT_YELLOW		"\033[33m"
+# define FT_BLUE		"\033[34m"
+# define FT_PURPLE		"\033[35m"
+# define FT_CYAN		"\033[36m"
+# define FT_WHITE		"\033[37m"
+# define FT_EOC			"\033[0m"
+# define FT_BOLD		"\033[1m"
+# define FT_ITALIC		"\033[3m"
+# define FT_UNDER		"\033[4m"
+# define FT_STRIKE		"\033[9m"
 
 /*
 ** --- Put Functions -----------------------------------------------------------
@@ -123,6 +127,7 @@ size_t				ft_atozu(const char *src);
 ** To find information with strings.
 **
 **
+** char				*ft_strstr(const char *haystack, const char *needle);
 ** char				*ft_strnstr(const char *haystack,
 ** 						const char *needle, size_t len);
 ** char				*ft_strrstr(const char *haystack, const char *needle);
@@ -141,7 +146,6 @@ size_t				ft_wstrlen(unsigned *str);
 size_t				ft_wcharlen(unsigned wc);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
-char				*ft_strstr(const char *haystack, const char *needle);
 
 /*
 ** --- String Set Functions ----------------------------------------------------
@@ -156,6 +160,7 @@ char				*ft_strstr(const char *haystack, const char *needle);
 ** char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 ** char				*ft_strtrim(char const *s);
 */
+
 void				ft_strclr(char *s);
 void				ft_strdel(char **as);
 char				*ft_strcat(char *s1, const char *s2);

@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/01 19:11:32 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/07 10:26:53 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/02/22 12:22:02 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static inline void	pf_itoa(uintmax_t n, t_printf *pf)
 	{
 		pf->padding = pf->length;
 		pf_padding(pf, 0);
+		(pf->flag & (F_PLUS | F_SPACE | F_NEGATIF)) ? pf_sign(pf) : 0;
 		pf_padding(pf, 1);
 	}
 	else
@@ -64,11 +65,12 @@ void				pf_itoa_base(uintmax_t n, int b, t_printf *pf)
 		pf->printed += pf->printed > 3 ? (pf->printed - 1) / 3 : 0;
 	(!n && (pf->flag & F_DOT) && !(pf->precision)) ? pf->printed = 0 : 0;
 	tmp = (b == 8 && !(pf->printed)) ? 1 : 0;
+	(tmp && pf->flag & F_SHARP) ? pf->length-- : 0;
 	pf->precision < pf->printed ? pf->precision = pf->printed : 0;
 	pf->padding = pf->length - pf->precision;
 	!(pf->flag & F_ZERO) ? pf_padding(pf, 0) : 0;
 	if ((n || tmp || (char)pf->flag == 'P' || (char)pf->flag == 'p')
-	&& (pf->flag & F_SHARP))
+		&& (pf->flag & F_SHARP))
 	{
 		pf_buffer_write(pf, "0", 1);
 		if (b == 2)
@@ -123,6 +125,7 @@ void				pf_putnbr_base(t_printf *pf)
 		n = (uintmax_t)va_arg(pf->ap, size_t);
 	else
 		n = (uintmax_t)va_arg(pf->ap, unsigned);
+	pf->flag &= pf->flag & F_DOT ? ~F_ZERO : pf->flag;
 	pf->flag &= (pf->base != 10) ? ~F_QUOTE : ~F_SHARP;
 	pf->printed = 1;
 	if ((pf->flag & F_SHARP) && n)

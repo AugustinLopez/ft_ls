@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:03:59 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/28 11:01:22 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/03/07 10:53:38 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ inline static int		create_string(t_ls *ls, t_file *file, char *dst,
 	ft_strcpy(dst, src);
 	if (ls->flags & LSO_P && S_ISDIR(file->stat.st_mode))
 	{
-		ft_strcat(dst, PF_EOC);
+		ft_strcat(dst, FT_EOC);
 		ft_strcat(dst, "/");
 		return (4);
 	}
@@ -33,19 +33,19 @@ inline static void		set_colors_space(t_file *file, t_ls *ls, int str)
 	if (ls->flags & LSO_GG)
 	{
 		if (S_ISDIR(file->stat.st_mode))
-			ft_printf("%s%-*s%s", PF_BLUE, str, cpy, PF_EOC);
+			ft_printf("%s%-*s%s", FT_BLUE, str, cpy, FT_EOC);
 		else if (S_ISLNK(file->stat.st_mode))
-			ft_printf("%s%-*s%s", PF_PURPLE, str, cpy, PF_EOC);
+			ft_printf("%s%-*s%s", FT_PURPLE, str, cpy, FT_EOC);
 		else if (S_ISBLK(file->stat.st_mode))
-			ft_printf("%s%-*s%s", PF_CYAN, str, cpy, PF_EOC);
+			ft_printf("%s%-*s%s", FT_CYAN, str, cpy, FT_EOC);
 		else if (S_ISCHR(file->stat.st_mode))
-			ft_printf("%s%-*s%s", PF_YELLOW, str, cpy, PF_EOC);
+			ft_printf("%s%-*s%s", FT_YELLOW, str, cpy, FT_EOC);
 		else if (S_ISSOCK(file->stat.st_mode))
-			ft_printf("%s%-*s%s", PF_CYAN, str, cpy, PF_EOC);
+			ft_printf("%s%-*s%s", FT_CYAN, str, cpy, FT_EOC);
 		else if (S_ISFIFO(file->stat.st_mode))
-			ft_printf("%s%-*s%s", PF_UNDER, file->name, PF_EOC);
+			ft_printf("%s%-*s%s", FT_UNDER, file->name, FT_EOC);
 		else if (S_ISREG(file->stat.st_mode) && (S_IXUSR & file->stat.st_mode))
-			ft_printf("%s%-*s%s", PF_RED, str, cpy, PF_EOC);
+			ft_printf("%s%-*s%s", FT_RED, str, cpy, FT_EOC);
 		else
 			ft_printf("%-*s", str, cpy);
 	}
