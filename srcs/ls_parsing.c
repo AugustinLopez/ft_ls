@@ -6,7 +6,7 @@
 /*   By: aulopez <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 13:55:15 by aulopez           #+#    #+#             */
-/*   Updated: 2019/02/28 10:49:16 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/03/07 10:41:53 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ inline static int		ls_available_option(char *av, int *flags)
 		*flags &= ~LSO_AA;
 	if (*flags & LSO_D)
 		*flags &= ~LSO_RR;
+	if (*flags & LSO_1)
+		*flags &= ~LSO_CC;
 	return (i);
 }
 
